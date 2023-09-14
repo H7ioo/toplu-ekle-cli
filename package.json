@@ -1,0 +1,29 @@
+{
+  "name": "toplu-ekle-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^3.0.4",
+    "@notionhq/client": "^2.2.13",
+    "@types/node": "^20.6.0",
+    "eslint-config-prettier": "^9.0.0",
+    "inquirer": "^8.0.0",
+    "inquirer-search-checkbox": "^1.0.0",
+    "inquirer-search-list": "^1.2.6",
+    "xlsx": "^0.18.5",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.49.0"
+  }
+}
