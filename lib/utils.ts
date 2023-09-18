@@ -199,7 +199,7 @@ export async function writeToExcel<
   // Read
   const filePath = path.join(
     __dirname,
-    `../workbooks/${company}/${String(category)}.xlsx`
+    `../companies/${company}/${String(category)}/${String(category)}.xlsx`
   );
   const productWorkbook = await workbook.xlsx.readFile(filePath);
   const sheetName = sheetNames[company][category];
