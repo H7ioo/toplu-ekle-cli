@@ -3,10 +3,10 @@ import { lengthValidator, writeToExcel } from "./lib/utils";
 import {
   TrendyolMainPrompts,
   TrendyolPromptsWrapper,
-} from "./prompts/trendyol";
-import { ArrayOfLiterals, Companies, ProdcutCategories } from "./types/global";
-import { companies, prodcutCategories } from "./variables/global";
-import { productMainPrompt } from "./prompts/global";
+} from "./companies/trendyol/prompts";
+import { productMainPrompt } from "./lib/prompts";
+import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
+import { companies, prodcutCategories } from "./lib/variables";
 
 // TODO: Validate function required if the generic is required
 // TODO: Filter function return is not wroking
@@ -20,7 +20,7 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
 (async () => {
   const { companies: selectedCompanies, prodcutCategory } = await prompt<{
     companies: ArrayOfLiterals<Companies>;
-    prodcutCategory: ProdcutCategories[number];
+    prodcutCategory: keyof ProdcutCategories[Companies[number]];
   }>([
     {
       name: "companies",
@@ -34,8 +34,41 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
       type: "search-list",
       name: "prodcutCategory",
       message: "Ürün kategoresi seçiniz",
-      choices: prodcutCategories,
-      validate: (input: string[]) => lengthValidator(input),
+      choices: (answers) => {
+        // 1 Company
+        if (answers.companies.length <= 1) {
+          const company = answers.companies[0];
+          if (company) return Object.values(prodcutCategories[company]);
+        }
+        // 2 or more companies
+        if (answers.companies.length > 1) {
+          const categories = answers.companies
+            .map((company) => Object.values(prodcutCategories[company]))
+            .flat();
+          return categories.filter(
+            (item, index) => categories.indexOf(item) === index
+          );
+        }
+        throw new Error("Company doesn't exists!");
+      },
+      filter: (
+        input: ProdcutCategories[Companies[number]][keyof ProdcutCategories[Companies[number]]],
+        answers
+      ) => {
+        // If 1 company exists it will get it. If there are more than one that means that the choices will get narrowed. So, typing only the first company of the array will do it.
+        const company = answers.companies[0];
+        if (company)
+          // Gets the key from the value
+          return Object.keys(prodcutCategories[company]).find((_key) => {
+            const key = _key as keyof ProdcutCategories[Companies[number]];
+            return prodcutCategories[company][key] === input;
+          });
+        throw new Error("Company doesn't exists!");
+      },
+
+      validate: (input: string[]) => {
+        return lengthValidator(input);
+      },
       suffix: ":",
     },
   ]);
@@ -51,30 +84,14 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
       productMainOptions,
       companyMainOptions
     );
-    if (result && result?.products) {
-      // Write to excel
-      writeToExcel(
-        result.products,
-        "c:\\users\\omarj\\downloads",
-        productMainOptions.productCode,
-        result.products[0]?.["Uyumlu Marka"] ?? "",
-        "trendyol"
-      );
-    } else {
-      console.error("Products doesn't exist on result.");
-    }
+    await writeToExcel({
+      company: "trendyol",
+      category: result.category,
+      caseBrand: result.products[0]?.["Uyumlu Marka"] ?? "",
+      trademark: result.products[0]?.Marka ?? "",
+      outPath: "c:\\users\\omarj\\downloads",
+      data: result.products,
+      mainModalCode: productMainOptions.productCode,
+    });
   }
 })();
-
-// {
-//   name: "test",
-//   type: "number",
-//   filter: (input: number) => {
-//     if (isNaN(input)) return undefined;
-//     return input;
-//   },
-//   validate: (input: number) => {
-//     if (input === undefined) return "Required Or Not Here!";
-//     return true;
-//   },
-// },

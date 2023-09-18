@@ -1,5 +1,5 @@
-import { companies, prodcutCategories } from "../variables/global";
 import { z } from "zod";
+import { companies, prodcutCategories } from "./variables";
 
 export type Companies = typeof companies;
 export type ProdcutCategories = typeof prodcutCategories;

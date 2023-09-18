@@ -1,11 +1,11 @@
-import { EMPTY_OPTION } from "./global";
+import { EMPTY_OPTION } from "../../../lib/variables";
 
 /**
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Cep Telefonu Modeli
  */
-export const trendyolPhonesList_PhoneCase = [
+export const PhoneCase_PhonesList = [
   "A5s",
   "A7x",
   "Alcatel 1S 2019",
@@ -780,7 +780,7 @@ export const trendyolPhonesList_PhoneCase = [
  * @Category 766
  * @Selfmade
  */
-export const trendyolPhonesListExtend_PhoneCase = [
+export const PhoneCase_PhonesListExtend = [
   "Samsung Galaxy A14",
   "Samsung Galaxy A34",
   "Samsung Galaxy A54",
@@ -796,7 +796,7 @@ export const trendyolPhonesListExtend_PhoneCase = [
  * @Category 766
  * @Field Materyal
  */
-export const trendyolCaseMaterials_PhoneCase = [
+export const PhoneCase_CaseMaterials = [
   "Silikon",
   "Plastik",
   "Hakiki Deri",
@@ -811,7 +811,7 @@ export const trendyolCaseMaterials_PhoneCase = [
  * @Category 766
  * @Field Model
  */
-export const trendyolCaseTypes_PhoneCase = [
+export const PhoneCase_CaseTypes = [
   "Arka Kapak",
   "Cüzdan Kılıf",
   "Çerçeve",
@@ -824,7 +824,7 @@ export const trendyolCaseTypes_PhoneCase = [
  * @Field Garanti Tipi
 
  */
-export const trendyolGuaranteeTypes_PhoneCase = [
+export const PhoneCase_GuaranteeTypes = [
   "İthalatçı Garantili",
   "Resmi Distribütör Garantili",
   EMPTY_OPTION,
@@ -835,7 +835,7 @@ export const trendyolGuaranteeTypes_PhoneCase = [
  * @Category 766
  * @Field Garanti Süresi
  */
-export const trendyolGuaranteePeriods_PhoneCase = [
+export const PhoneCase_GuaranteePeriods = [
   "Belirtilmemiş",
   "6 Ay",
   "1 Yıl",
@@ -851,7 +851,7 @@ export const trendyolGuaranteePeriods_PhoneCase = [
  * @Category 766
  * @Field Uyumlu Marka
  */
-export const trendyolPhoneBrands_PhoneCase = [
+export const PhoneCase_PhoneBrands = [
   "Apple",
   "Xiaomi",
   "Samsung",
@@ -863,85 +863,4 @@ export const trendyolPhoneBrands_PhoneCase = [
   "Oppo",
   "POCO",
   EMPTY_OPTION,
-] as const;
-
-/**
- * @Field Sevkiyat Tipi
- */
-export const trendyolShipmentType = [
-  "Hızlı Teslimat",
-  "Bugün Kargoda",
-  EMPTY_OPTION,
-] as const;
-
-/**
- * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
- * @Category 3494
- * @Field Garanti Süresi
- */
-export const trendyolGuaranteePeriods_HeadphoneCase = [
-  "1 Yıl",
-  "2 Yıl",
-  "3 Yıl",
-  "4 Ay",
-  "4 Yıl",
-  "5 Yıl",
-  "6 Ay",
-  "6 Yıl",
-  "7 Yıl",
-  "Belirtilmemiş",
-  EMPTY_OPTION,
-] as const;
-
-/**
- * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
- * @Category 3494
- * @Field Uyumlu Marka
- */
-export const trendyolHeadPhoneBrands_HeadphoneCase = [
-  "Apple",
-  "Belirtilmemiş",
-  "Casper",
-  "General Mobile",
-  "Huawei",
-  "JBL",
-  "Lenovo",
-  "Oppo",
-  "POCO",
-  "Reeder",
-  "Samsung",
-  "Sennheiser",
-  "Sony",
-  "Xiaomi",
-  EMPTY_OPTION,
-] as const;
-
-/**
- * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
- * @Category 3494
- * @Field Uyumlu Model
- */
-export const trendyolHeadphonesList_HeadphoneCase = [
-  "Airpods 2. Nesil",
-  "Airpods 2. Nesil Pro",
-  "Airpods 3. Nesil",
-  "Airpods Pro",
-  "Belirtilmemiş",
-  "Cx True Wireless",
-  "Enco Buds",
-  "Freebuds 4i",
-  "Galaxy Buds2",
-  "Galaxy Buds2 Pro",
-  "Lp1 Livepods",
-  "Momentum True Wireless 3",
-  "Redmi Buds 3",
-  "Tune 225",
-  "Tune 230",
-  "W32 Enco Air",
-  "Wave 100",
-  "Wave 300",
-  "WF-1000XM3",
-  "Wf-1000xm4",
-  "Wf-c500",
-  "WI-C310",
 ] as const;

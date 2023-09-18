@@ -5,7 +5,7 @@ import {
   lengthValidator,
   numberPromptConfig,
 } from "../lib/utils";
-import { ProductMainOptions, ProductMainOptionsScheme } from "../types/global";
+import { ProductMainOptions, ProductMainOptionsScheme } from "../lib/types";
 
 export async function productMainPrompt() {
   const mainCollection: QuestionCollection<ProductMainOptions> = [

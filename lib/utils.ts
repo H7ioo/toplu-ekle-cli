@@ -1,10 +1,9 @@
-import * as XLSX from "xlsx";
 import ExcelJS from "exceljs";
 
 import { Question } from "inquirer";
-import { EMPTY_OPTION, sheetNames } from "../variables/global";
 import path from "path";
-import { Companies } from "../types/global";
+import { Companies } from "./types";
+import { EMPTY_OPTION, sheetNames } from "./variables";
 
 /**
  * It validates the string or the array. It checks if the length is bigger than zero. Since split returns [''], we need to check multiple times for the Array
@@ -175,20 +174,10 @@ export function generateGTIN() {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("exceljs/lib/doc/range").prototype.forEachAddress = function () {};
 
-type WriteToExcelProps<
+export async function writeToExcel<
   CompanyT extends Companies[number] = Companies[number],
   CategoryT extends keyof (typeof sheetNames)[CompanyT] = keyof (typeof sheetNames)[CompanyT]
-> = {
-  data: object[];
-  outPath: string;
-  mainModalCode: string;
-  caseBrand: string;
-  trademark: string;
-  company: CompanyT;
-  category: CategoryT;
-};
-
-export async function writeToExcel({
+>({
   data,
   outPath,
   category,
@@ -196,7 +185,15 @@ export async function writeToExcel({
   caseBrand,
   trademark,
   company,
-}: WriteToExcelProps) {
+}: {
+  data: object[];
+  outPath: string;
+  mainModalCode: string;
+  caseBrand: string;
+  trademark: string;
+  company: CompanyT;
+  category: CategoryT;
+}) {
   // Create a new workbook
   const workbook = new ExcelJS.Workbook();
   // Read
@@ -214,7 +211,7 @@ export async function writeToExcel({
   if (company === "trendyol") worksheet.spliceRows(0, 2);
 
   // Add a row by contiguous Array (assign to columns A, B & C)
-  worksheet.addRow(Object.values(data));
+  data.forEach((dataItem) => worksheet.addRow(Object.values(dataItem)));
 
   // Save workbook
   await workbook.xlsx.writeFile(
