@@ -6,8 +6,9 @@ export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
 
 export const prodcutCategories = {
   trendyol: {
-    phoneCase: "kılıf",
-    headphoneCase: "kulaklık kılıfı",
+    phoneCase: "Kılıf",
+    headphoneCase: "Kulaklık kılıfı",
+    watchBand: "Saat kordonu",
   },
   hepsiburada: {
     phoneCase: "kılıf",
@@ -26,6 +27,7 @@ export const sheetNames: SheetNames = {
   trendyol: {
     phoneCase: "Ürünlerinizi Burada Listeleyin",
     headphoneCase: "Ürünlerinizi Burada Listeleyin",
+    watchBand: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",

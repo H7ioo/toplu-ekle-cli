@@ -16,7 +16,6 @@ export const HeadphoneCase_GuaranteePeriods = [
   "6 Yıl",
   "7 Yıl",
   "Belirtilmemiş",
-  EMPTY_OPTION,
 ] as const;
 
 /**

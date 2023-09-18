@@ -5,16 +5,18 @@ import { headphoneCase } from "./headphoneCase/prompts";
 import { phoneCase } from "./phoneCase/prompts";
 import { TrendyolMainOptions, TrendyolMainOptionsScheme } from "./types";
 import { TRENDYOL_SUFFIX, ShipmentTypes } from "./variables";
+import { watchBand } from "./watchBand/prompts";
 
 export const TrendyolPromptsWrapper: Record<
   keyof ProdcutCategories["trendyol"],
   (
     productMainOptions: ProductMainOptions,
     companyMainOptions: TrendyolMainOptions
-  ) => ReturnType<typeof phoneCase | typeof headphoneCase>
+  ) => ReturnType<typeof phoneCase | typeof headphoneCase | typeof watchBand>
 > = {
   phoneCase,
   headphoneCase,
+  watchBand,
 };
 
 export async function TrendyolMainPrompts() {

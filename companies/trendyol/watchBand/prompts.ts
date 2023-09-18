@@ -1,40 +1,41 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { ProductMainOptions } from "../../../lib/types";
-import { TrendyolMainOptions } from "../types";
 import {
-  HeadphoneCaseOptions,
-  HeadphoneCaseOptionsScheme,
-  HeadphoneFieldsOptions,
-  HeadphoneFieldsScheme,
+  capitalizeLetters,
+  cleanUp,
+  generateGTIN,
+  lengthValidator,
+  removePhoneBrandRegEx,
+  removeWhiteSpaces,
+  replaceEmptyOptionWithString,
+  replaceTurkishI,
+} from "../../../lib/utils";
+import { ProductMainOptions } from "../../../lib/types";
+import { TRENDYOL_SUFFIX } from "../variables";
+import { TrendyolMainOptions } from "../types";
+import { KDV, sheetNames } from "../../../lib/variables";
+import {
+  WatchBandFieldsOptions,
+  WatchBandFieldsScheme,
+  WatchBandOptions,
+  WatchBandOptionsScheme,
 } from "./types";
 import {
-  cleanUp,
-  lengthValidator,
-  capitalizeLetters,
-  removePhoneBrandRegEx,
-  replaceTurkishI,
-  removeWhiteSpaces,
-  generateGTIN,
-  replaceEmptyOptionWithString,
-} from "../../../lib/utils";
-import { sheetNames, KDV } from "../../../lib/variables";
-import { PhoneCase_PhonesList } from "../phoneCase/variables";
-import {
-  HeadphoneCase_HeadphonesList,
-  HeadphoneCase_GuaranteePeriods,
-  HeadphoneCase_HeadPhoneBrands,
+  WatchBand_Brands,
+  WatchBand_CustomSizes,
+  WatchBand_GuranteePeriods,
+  WatchBand_Materials,
+  WatchBand_Sizes,
 } from "./variables";
-import { TRENDYOL_SUFFIX } from "../variables";
 
-const CATEGORY_ID = 3494 as const;
+const CATEGORY_ID = 3222 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
-  "headphoneCase" as const;
-type OPTIONS_TYPE = HeadphoneCaseOptions;
-const OPTIONS_SCHEME = HeadphoneCaseOptionsScheme;
-type FIELDS_TYPE = HeadphoneFieldsOptions;
-const FIELDS_SCHEME = HeadphoneFieldsScheme;
+  "watchBand" as const;
+type OPTIONS_TYPE = WatchBandOptions;
+const OPTIONS_SCHEME = WatchBandOptionsScheme;
+type FIELDS_TYPE = WatchBandFieldsOptions;
+const FIELDS_SCHEME = WatchBandFieldsScheme;
 
-export async function headphoneCase(
+export async function watchBand(
   productMainOptions: ProductMainOptions,
   companyMainOptions: TrendyolMainOptions
 ) {
@@ -67,15 +68,15 @@ export async function headphoneCase(
     },
     {
       type: "search-checkbox",
-      name: "headPhonesList",
-      message: `Kulaklık modelleri seçiniz`,
-      choices: HeadphoneCase_HeadphonesList,
+      name: "watchBandSizesList",
+      message: `Kordon MM seçiniz`,
+      choices: [...WatchBand_Sizes, ...WatchBand_CustomSizes],
       suffix: TRENDYOL_SUFFIX,
     },
     {
       type: "input",
-      name: "customHeadPhoneList",
-      message: `Kulaklık modelleri yazınız (aralarında virgül koyarak)`,
+      name: "customWatchBandSizesList",
+      message: `Kordon MM yazınız (aralarında virgül koyarak)`,
       filter: (input: string) => {
         if (!lengthValidator(input)) return [];
         return cleanUp(input)
@@ -85,8 +86,8 @@ export async function headphoneCase(
           });
       },
       validate: (input, answers) => {
-        if (answers?.headPhonesList) {
-          if (answers.headPhonesList.length <= 0 && input.length <= 0)
+        if (answers?.watchBandSizesList) {
+          if (answers.watchBandSizesList.length <= 0 && input.length <= 0)
             return "Toplam en az 1 telefom modlei eklenmeli";
         } else {
           if (input.length <= 0)
@@ -98,16 +99,24 @@ export async function headphoneCase(
     },
     {
       type: "search-list",
+      name: "watchBandMaterial",
+      message: "Materyal seçiniz",
+      choices: WatchBand_Materials,
+      suffix: TRENDYOL_SUFFIX,
+    },
+
+    {
+      type: "search-list",
       name: "guranteePeriod",
       message: "Garanti süresi seçiniz",
-      choices: HeadphoneCase_GuaranteePeriods,
+      choices: WatchBand_GuranteePeriods,
       suffix: TRENDYOL_SUFFIX,
     },
     {
       type: "search-list",
-      name: "headPhoneBrand",
+      name: "watchBandBrand",
       message: "Uyumlu marka seçiniz",
-      choices: HeadphoneCase_HeadPhoneBrands,
+      choices: WatchBand_Brands,
       suffix: TRENDYOL_SUFFIX,
     },
   ];
@@ -124,33 +133,31 @@ export async function headphoneCase(
   for (let c = 0; c < result.colors.length; c++) {
     const color = result.colors[c] as string;
 
-    // # Headphones Loop
+    // # Phones Loop
     for (
       let p = 0;
-      p < [...result.headPhonesList, ...result.customHeadPhoneList].length;
+      p <
+      [...result.watchBandSizesList, ...result.customWatchBandSizesList].length;
       p++
     ) {
       // TODO: String | Undefined
-      const headPhone = [
-        ...result.headPhonesList,
-        ...result.customHeadPhoneList,
-      ][p] as (typeof HeadphoneCase_HeadphonesList)[number];
+      const phone = [
+        ...result.watchBandSizesList,
+        ...result.customWatchBandSizesList,
+      ][p] as (typeof WatchBand_Sizes)[number];
       // Galaxy A12 or A12 based on the input
-      const headPhoneWithoutTheBrand = capitalizeLetters(
-        cleanUp(
-          replaceTurkishI(headPhone).toLowerCase().replace(regex, ""),
-          false
-        )
+      const phoneWithoutTheBrand = capitalizeLetters(
+        cleanUp(replaceTurkishI(phone).toLowerCase().replace(regex, ""), false)
       );
 
       // 11Pro, GalaxyA12, A12
-      const headphoneCode = removeWhiteSpaces(headPhoneWithoutTheBrand);
+      const phoneCode = removeWhiteSpaces(phoneWithoutTheBrand);
 
       // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-      const productTitle = `${result.productKnownBrandName} ${headPhoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`;
+      const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`;
 
       // Example: SB-11Pro
-      const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
+      const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
       const barcode = generateGTIN();
 
@@ -181,12 +188,10 @@ export async function headphoneCase(
         "Sevkiyat Tipi":
           replaceEmptyOptionWithString(companyMainOptions.shipmentType) ?? "",
         Renk: color,
+        Materyal: replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
+        Beden: WatchBand_Sizes.includes(phone) ? phone : "",
         "Garanti Süresi": result.guranteePeriod,
-        "Uyumlu Marka":
-          replaceEmptyOptionWithString(result.headPhoneBrand) ?? "",
-        "Uyumlu Model": HeadphoneCase_HeadphonesList.includes(headPhone)
-          ? headPhone
-          : "",
+        "Uyumlu Marka": result.watchBandBrand,
       };
 
       FIELDS_SCHEME.parse(fields);
@@ -197,6 +202,3 @@ export async function headphoneCase(
 
   return { products, category: CATEGORY_NAME };
 }
-
-// TODO: replaceEmptyOptionWithString remove duplicates
-// TODO: Fields remove duplicates

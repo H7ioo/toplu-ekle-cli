@@ -188,17 +188,20 @@ export async function phoneCase(
         "Görsel 6": "",
         "Görsel 7": "",
         "Görsel 8": "",
-        "Sevkiyat Süresi": companyMainOptions.shipmentTime ?? "",
-        "Sevkiyat Tipi": companyMainOptions.shipmentType ?? "",
+        "Sevkiyat Süresi":
+          replaceEmptyOptionWithString(companyMainOptions.shipmentTime) ?? "",
+        "Sevkiyat Tipi":
+          replaceEmptyOptionWithString(companyMainOptions.shipmentType) ?? "",
         Renk: color,
         Materyal: replaceEmptyOptionWithString(result.caseMaterial) ?? "",
         Model: replaceEmptyOptionWithString(result.caseType) ?? "",
         "Cep Telefonu Modeli": PhoneCase_PhonesList.includes(phone)
           ? phone
           : "",
-        "Garanti Tipi": result.guranteeType ?? "",
-        "Garanti Süresi": result.guranteePeriod ?? "",
-        "Uyumlu Marka": result.phoneBrand ?? "",
+        "Garanti Tipi": replaceEmptyOptionWithString(result.guranteeType) ?? "",
+        "Garanti Süresi":
+          replaceEmptyOptionWithString(result.guranteePeriod) ?? "",
+        "Uyumlu Marka": replaceEmptyOptionWithString(result.phoneBrand) ?? "",
       };
 
       FIELDS_SCHEME.parse(fields);
