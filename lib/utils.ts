@@ -2,8 +2,8 @@ import ExcelJS from "exceljs";
 
 import { Question } from "inquirer";
 import path from "path";
-import { Companies } from "../types/global";
-import { EMPTY_OPTION, sheetNames } from "../variables/global";
+import { Companies } from "./types";
+import { EMPTY_OPTION, sheetNames } from "./variables";
 
 /**
  * It validates the string or the array. It checks if the length is bigger than zero. Since split returns [''], we need to check multiple times for the Array
