@@ -39,6 +39,8 @@ import {
 
 const suffix = " (trendyol):";
 
+// TODO: phoneCase prompt if the min max length does'nt match the zod scheme throw validation error
+
 export const TrendyolPromptsWrapper: Record<
   ProdcutCategories[number],
   (

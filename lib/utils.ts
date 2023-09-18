@@ -1,7 +1,10 @@
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 import { Question } from "inquirer";
-import { EMPTY_OPTION } from "../variables/global";
+import { EMPTY_OPTION, sheetNames } from "../variables/global";
+import path from "path";
+import { Companies } from "../types/global";
 
 /**
  * It validates the string or the array. It checks if the length is bigger than zero. Since split returns [''], we need to check multiple times for the Array
@@ -169,32 +172,52 @@ export function generateGTIN() {
   return gtin;
 }
 
-// TODO: Fuck excel. Find a way to append to existing workbook
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("exceljs/lib/doc/range").prototype.forEachAddress = function () {};
 
-export function writeToExcel(
-  resultArray: object[],
-  path: string,
-  mainModalCode: string,
-  caseBrand: string,
-  company: "trendyol" | "hepsiburada"
-) {
-  // Sheet name depending on company
-  let sheetName;
-  switch (company) {
-    case "hepsiburada":
-      sheetName = "Kılıflar";
-      break;
-    case "trendyol":
-      sheetName = "Ürünlerinizi Burada Listeleyin";
-      break;
-  }
+type WriteToExcelProps<
+  CompanyT extends Companies[number] = Companies[number],
+  CategoryT extends keyof (typeof sheetNames)[CompanyT] = keyof (typeof sheetNames)[CompanyT]
+> = {
+  data: object[];
+  outPath: string;
+  mainModalCode: string;
+  caseBrand: string;
+  trademark: string;
+  company: CompanyT;
+  category: CategoryT;
+};
 
-  const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.json_to_sheet(resultArray);
+export async function writeToExcel({
+  data,
+  outPath,
+  category,
+  mainModalCode,
+  caseBrand,
+  trademark,
+  company,
+}: WriteToExcelProps) {
+  // Create a new workbook
+  const workbook = new ExcelJS.Workbook();
+  // Read
+  const filePath = path.join(
+    __dirname,
+    `../workbooks/${company}/${String(category)}.xlsx`
+  );
+  const productWorkbook = await workbook.xlsx.readFile(filePath);
+  const sheetName = sheetNames[company][category];
+  if (!sheetName) throw new Error("SheetName doesn't exist");
+  // TODO: remove as string
+  const worksheet = productWorkbook.getWorksheet(sheetName as string);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-  XLSX.writeFile(
-    workbook,
-    `${path}\\${caseBrand}-${mainModalCode}-${company}.xlsx`
+  // For Trendyol
+  if (company === "trendyol") worksheet.spliceRows(0, 2);
+
+  // Add a row by contiguous Array (assign to columns A, B & C)
+  worksheet.addRow(Object.values(data));
+
+  // Save workbook
+  await workbook.xlsx.writeFile(
+    `${outPath}\\${company}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
   );
 }
