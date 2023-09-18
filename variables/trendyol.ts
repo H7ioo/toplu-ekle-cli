@@ -945,3 +945,20 @@ export const trendyolHeadphonesList_HeadphoneCase = [
   "Wf-c500",
   "WI-C310",
 ] as const;
+
+/**
+ * @CategoryName Akıllı Saat Kordon Elektronik > Elektronik Aksesuarlar > Giyilebilir Teknoloji Aksesuarları > Akıllı Saat Aksesuarları > Akıllı Saat Kordon
+ * @Category 3222
+ * @Field Beden
+ */
+export const trendyolStrapMMList_Strap = [
+  "38 mm",
+  "39mm",
+  "40 mm",
+  "41 mm",
+  "42 mm",
+  "43 MM",
+  "44 mm",
+  "45 mm",
+  "46 mm",
+] as const;

@@ -24,16 +24,21 @@ export const TrendyolMainOptionsScheme = z.object({
 export type TrendyolMainOptions = z.infer<typeof TrendyolMainOptionsScheme>;
 
 export const TrendyolMainOptionsFieldsScheme = z.object({
-  Barkod: z.string(),
-  "Model Kodu": z.string(),
+  Barkod: z
+    .string()
+    .length(8, "8 Veya 13 numaradan oluşmalıdır.")
+    .or(z.string().length(13, "8 Veya 13 numaradan oluşmalıdır.")),
+  "Model Kodu": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
   Marka: z.string(),
   "Para Birimi": z.literal("TRY"),
-  "Ürün Adı": z.string(),
-  "Ürün Açıklaması": z.string(),
+  "Ürün Adı": z.string().max(100, "En fazla 100 karakterden oluşmalıdır."),
+  "Ürün Açıklaması": z
+    .string()
+    .max(30_000, "En fazla 30.000 karakterden oluşmalıdır."),
   "Piyasa Satış Fiyatı (KDV Dahil)": z.number(),
   "Trendyol'da Satılacak Fiyat (KDV Dahil)": z.number(),
   "Ürün Stok Adedi": z.number(),
-  "Stok Kodu": z.string(),
+  "Stok Kodu": z.string().max(100, "En fazla 100 karakterden oluşmalıdır."),
   "KDV Oranı": z.literal(KDV["3"]),
   Desi: z.string(),
   "Görsel 1": z.unknown(),

@@ -23,7 +23,7 @@ import {
   TrendyolMainOptions,
   TrendyolMainOptionsScheme,
 } from "../types/trendyol";
-import { KDV } from "../variables/global";
+import { KDV, sheetNames } from "../variables/global";
 import {
   trendyolCaseMaterials_PhoneCase,
   trendyolCaseTypes_PhoneCase,
@@ -101,7 +101,9 @@ async function phoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: TrendyolMainOptions
 ) {
-  const CATEGORY_ID = 766;
+  const CATEGORY_ID = 766 as const;
+  const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
+    "phoneCase" as const;
 
   const promptQuestions: QuestionCollection<PhoneCaseOptions> = [
     {
@@ -273,14 +275,16 @@ async function phoneCase(
     }
   }
 
-  return { products };
+  return { products, category: CATEGORY_NAME };
 }
 
 async function headphoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: TrendyolMainOptions
 ) {
-  const CATEGORY_ID = 3494;
+  const CATEGORY_ID = 3494 as const;
+  const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
+    "headphoneCase" as const;
 
   const promptQuestions: QuestionCollection<HeadphoneCaseOptions> = [
     {
@@ -436,7 +440,7 @@ async function headphoneCase(
     }
   }
 
-  return { products };
+  return { products, category: CATEGORY_NAME };
 }
 
 async function charm(

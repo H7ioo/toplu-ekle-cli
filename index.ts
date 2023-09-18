@@ -51,18 +51,17 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
       productMainOptions,
       companyMainOptions
     );
-    if (result && result?.products) {
-      // Write to excel
-      writeToExcel(
-        result.products,
-        "c:\\users\\omarj\\downloads",
-        productMainOptions.productCode,
-        result.products[0]?.["Uyumlu Marka"] ?? "",
-        "trendyol"
-      );
-    } else {
-      console.error("Products doesn't exist on result.");
-    }
+    if (!result || !result?.products)
+      return console.error("Products doesn't exist on result.");
+    await writeToExcel({
+      company: "trendyol",
+      category: result.category,
+      caseBrand: result.products[0]?.["Uyumlu Marka"] ?? "",
+      trademark: result.products[0]?.Marka ?? "",
+      outPath: "c:\\users\\omarj\\downloads",
+      data: result.products,
+      mainModalCode: productMainOptions.productCode,
+    });
   }
 })();
 

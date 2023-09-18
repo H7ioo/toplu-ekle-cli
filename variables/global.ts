@@ -8,9 +8,11 @@ export const prodcutCategories = [
 ] as const;
 export const KDV = [0, 1, 10, 20] as const;
 export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
+
 export const sheetNames = {
   trendyol: {
     phoneCase: "Ürünlerinizi Burada Listeleyin",
+    headphoneCase: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",
