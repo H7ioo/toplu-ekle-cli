@@ -1,4 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
+import { ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -9,10 +10,10 @@ import {
   replaceEmptyOptionWithString,
   replaceTurkishI,
 } from "../../../lib/utils";
-import { ProductMainOptions } from "../../../lib/types";
-import { TRENDYOL_SUFFIX } from "../variables";
+import { sheetNames } from "../../../lib/variables";
+import { TrendyolMainFields } from "../prompts";
 import { TrendyolMainOptions } from "../types";
-import { KDV, sheetNames } from "../../../lib/variables";
+import { TRENDYOL_SUFFIX } from "../variables";
 import {
   PhoneCaseFieldsOptions,
   PhoneCaseFieldsScheme,
@@ -24,10 +25,9 @@ import {
   PhoneCase_CaseTypes,
   PhoneCase_GuaranteePeriods,
   PhoneCase_PhoneBrands,
-  PhoneCase_PhonesListExtend,
   PhoneCase_PhonesList,
+  PhoneCase_PhonesListExtend,
 } from "./variables";
-import { TrendyolMainFields } from "../prompts";
 
 const CATEGORY_ID = 766 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =

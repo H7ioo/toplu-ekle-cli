@@ -14,6 +14,7 @@ export const WatchBandOptionsScheme = z
       z.enum([...WatchBand_Sizes, ...WatchBand_CustomSizes])
     ),
     customWatchBandSizesList: z.array(z.string()),
+    customWatchBandList: z.array(z.string()),
     guranteePeriod: z.enum(WatchBand_GuranteePeriods),
     watchBandMaterial: z.enum(WatchBand_Materials).optional(),
     watchBandBrand: z.enum(WatchBand_Brands),
@@ -34,11 +35,9 @@ export const WatchBandFieldsScheme = z
   .object({
     Kategori: z.literal(3222),
     Renk: z.string(),
-    Beden: z
-      .enum([...WatchBand_Sizes, ...WatchBand_CustomSizes, ""])
-      .or(z.string()),
+    Beden: z.enum([...WatchBand_Sizes, ""]),
     "Garanti Süresi": z.enum(WatchBand_GuranteePeriods),
-    Materyal: z.enum([...WatchBand_Materials, ""]).or(z.string()),
+    Materyal: z.enum([...WatchBand_Materials, ""]),
     "Uyumlu Marka": z.enum(WatchBand_Brands),
   })
   .merge(TrendyolMainOptionsFieldsScheme);

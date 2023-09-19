@@ -4,6 +4,7 @@ import { EMPTY_OPTION } from "../../../lib/variables";
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Cep Telefonu Modeli
+ * @Optional
  */
 export const PhoneCase_PhonesList = [
   "A5s",
@@ -779,6 +780,7 @@ export const PhoneCase_PhonesList = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Selfmade
+ * @Optional
  */
 export const PhoneCase_PhonesListExtend = [
   "Samsung Galaxy A14",
@@ -795,6 +797,7 @@ export const PhoneCase_PhonesListExtend = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Materyal
+ * @Optional
  */
 export const PhoneCase_CaseMaterials = [
   "Silikon",
@@ -810,6 +813,7 @@ export const PhoneCase_CaseMaterials = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Model
+ * @Optional
  */
 export const PhoneCase_CaseTypes = [
   "Arka Kapak",
@@ -822,7 +826,7 @@ export const PhoneCase_CaseTypes = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Garanti Tipi
-
+ * @Optional
  */
 export const PhoneCase_GuaranteeTypes = [
   "İthalatçı Garantili",
@@ -834,6 +838,7 @@ export const PhoneCase_GuaranteeTypes = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Garanti Süresi
+ * @Optional
  */
 export const PhoneCase_GuaranteePeriods = [
   "Belirtilmemiş",
@@ -850,6 +855,7 @@ export const PhoneCase_GuaranteePeriods = [
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
  * @Field Uyumlu Marka
+ * @Optional
  */
 export const PhoneCase_PhoneBrands = [
   "Apple",

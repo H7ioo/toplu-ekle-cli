@@ -1,6 +1,19 @@
 import { QuestionCollection, prompt } from "inquirer";
 import { ProductMainOptions } from "../../../lib/types";
+import {
+  capitalizeLetters,
+  cleanUp,
+  generateGTIN,
+  lengthValidator,
+  removePhoneBrandRegEx,
+  removeWhiteSpaces,
+  replaceEmptyOptionWithString,
+  replaceTurkishI,
+} from "../../../lib/utils";
+import { sheetNames } from "../../../lib/variables";
+import { TrendyolMainFields } from "../prompts";
 import { TrendyolMainOptions } from "../types";
+import { TRENDYOL_SUFFIX } from "../variables";
 import {
   HeadphoneCaseOptions,
   HeadphoneCaseOptionsScheme,
@@ -8,24 +21,10 @@ import {
   HeadphoneFieldsScheme,
 } from "./types";
 import {
-  cleanUp,
-  lengthValidator,
-  capitalizeLetters,
-  removePhoneBrandRegEx,
-  replaceTurkishI,
-  removeWhiteSpaces,
-  generateGTIN,
-  replaceEmptyOptionWithString,
-} from "../../../lib/utils";
-import { sheetNames, KDV } from "../../../lib/variables";
-import { PhoneCase_PhonesList } from "../phoneCase/variables";
-import {
-  HeadphoneCase_HeadphonesList,
   HeadphoneCase_GuaranteePeriods,
   HeadphoneCase_HeadPhoneBrands,
+  HeadphoneCase_HeadphonesList,
 } from "./variables";
-import { TRENDYOL_SUFFIX } from "../variables";
-import { TrendyolMainFields } from "../prompts";
 
 const CATEGORY_ID = 3494 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -189,3 +188,4 @@ export async function headphoneCase(
 }
 
 // TODO: replaceEmptyOptionWithString remove duplicates
+// TODO: Find a better way for OPTIONAL_FIELD and .optional

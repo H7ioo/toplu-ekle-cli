@@ -38,14 +38,16 @@ export const PhoneCaseFieldsScheme = z
   .object({
     Kategori: z.literal(766),
     Renk: z.string(),
-    Materyal: z.enum([...PhoneCase_CaseMaterials, ""]).or(z.string()),
-    Model: z.enum([...PhoneCase_CaseTypes, ""]).or(z.string()),
-    "Cep Telefonu Modeli": z
-      .enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend, ""])
-      .or(z.string()),
-    "Garanti Tipi": z.enum(PhoneCase_GuaranteeTypes).or(z.string()),
-    "Garanti Süresi": z.enum(PhoneCase_GuaranteePeriods).or(z.string()),
-    "Uyumlu Marka": z.enum(PhoneCase_PhoneBrands).or(z.string()),
+    Materyal: z.enum([...PhoneCase_CaseMaterials, ""]),
+    Model: z.enum([...PhoneCase_CaseTypes, ""]),
+    "Cep Telefonu Modeli": z.enum([
+      ...PhoneCase_PhonesList,
+      ...PhoneCase_PhonesListExtend,
+      "",
+    ]),
+    "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),
+    "Garanti Süresi": z.enum([...PhoneCase_GuaranteePeriods, ""]),
+    "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands, ""]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
 /**

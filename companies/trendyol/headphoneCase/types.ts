@@ -29,8 +29,8 @@ export const HeadphoneFieldsScheme = z
     Kategori: z.literal(3494),
     Renk: z.string(),
     "Garanti Süresi": z.enum(HeadphoneCase_GuaranteePeriods),
-    "Uyumlu Marka": z.enum(HeadphoneCase_HeadPhoneBrands).or(z.string()),
-    "Uyumlu Model": z.enum(HeadphoneCase_HeadphonesList).or(z.string()),
+    "Uyumlu Marka": z.enum([...HeadphoneCase_HeadPhoneBrands, ""]),
+    "Uyumlu Model": z.enum([...HeadphoneCase_HeadphonesList, ""]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
 

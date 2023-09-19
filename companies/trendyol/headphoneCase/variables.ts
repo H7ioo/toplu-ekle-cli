@@ -22,10 +22,10 @@ export const HeadphoneCase_GuaranteePeriods = [
  * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
  * @Category 3494
  * @Field Uyumlu Marka
+ * @Optional
  */
 export const HeadphoneCase_HeadPhoneBrands = [
   "Apple",
-  "Belirtilmemiş",
   "Casper",
   "General Mobile",
   "Huawei",
@@ -38,6 +38,7 @@ export const HeadphoneCase_HeadPhoneBrands = [
   "Sennheiser",
   "Sony",
   "Xiaomi",
+  "Belirtilmemiş",
   EMPTY_OPTION,
 ] as const;
 
@@ -45,6 +46,7 @@ export const HeadphoneCase_HeadPhoneBrands = [
  * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
  * @Category 3494
  * @Field Uyumlu Model
+ * @Optional
  */
 export const HeadphoneCase_HeadphonesList = [
   "Airpods 2. Nesil",

@@ -1,4 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
+import { ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -9,10 +10,10 @@ import {
   replaceEmptyOptionWithString,
   replaceTurkishI,
 } from "../../../lib/utils";
-import { ProductMainOptions } from "../../../lib/types";
-import { TRENDYOL_SUFFIX } from "../variables";
+import { sheetNames } from "../../../lib/variables";
+import { TrendyolMainFields } from "../prompts";
 import { TrendyolMainOptions } from "../types";
-import { KDV, sheetNames } from "../../../lib/variables";
+import { TRENDYOL_SUFFIX } from "../variables";
 import {
   WatchBandFieldsOptions,
   WatchBandFieldsScheme,
@@ -26,7 +27,6 @@ import {
   WatchBand_Materials,
   WatchBand_Sizes,
 } from "./variables";
-import { TrendyolMainFields } from "../prompts";
 
 const CATEGORY_ID = 3222 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -99,6 +99,21 @@ export async function watchBand(
       suffix: TRENDYOL_SUFFIX,
     },
     {
+      type: "input",
+      name: "customWatchBandList",
+      message: `Saat modeli yazınız (aralarında virgül koyarak)`,
+      filter: (input: string) => {
+        if (!lengthValidator(input)) return [];
+        return cleanUp(input)
+          .split(",")
+          .map((phone) => {
+            return capitalizeLetters(phone);
+          });
+      },
+      validate: (input) => lengthValidator(input, true),
+      suffix: TRENDYOL_SUFFIX,
+    },
+    {
       type: "search-list",
       name: "watchBandMaterial",
       message: "Materyal seçiniz",
@@ -134,59 +149,87 @@ export async function watchBand(
   for (let c = 0; c < result.colors.length; c++) {
     const color = result.colors[c] as string;
 
-    // # Phones Loop
-    for (
-      let p = 0;
-      p <
-      [...result.watchBandSizesList, ...result.customWatchBandSizesList].length;
-      p++
-    ) {
-      // TODO: String | Undefined
-      const phone = [
-        ...result.watchBandSizesList,
-        ...result.customWatchBandSizesList,
-      ][p] as (typeof WatchBand_Sizes)[number];
-      // Galaxy A12 or A12 based on the input
-      const phoneWithoutTheBrand = capitalizeLetters(
-        cleanUp(replaceTurkishI(phone).toLowerCase().replace(regex, ""), false)
-      );
+    // # Watchband loop
 
-      // 11Pro, GalaxyA12, A12
-      const phoneCode = removeWhiteSpaces(phoneWithoutTheBrand);
+    for (let w = 0; w < [...result.customWatchBandList].length; w++) {
+      const watchBand = result.customWatchBandList[w]!;
 
-      // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-      const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`;
+      // # Sizes Loop
+      for (
+        let p = 0;
+        p <
+        [...result.watchBandSizesList, ...result.customWatchBandSizesList]
+          .length;
+        p++
+      ) {
+        const watchBandSize = [
+          ...result.watchBandSizesList,
+          ...result.customWatchBandSizesList,
+        ][p]!;
 
-      // Example: SB-11Pro
-      const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
+        // 42, 41, 38-40-41
+        const mm = removeWhiteSpaces(watchBandSize).replace(/m/gi, "");
 
-      const barcode = generateGTIN();
+        // TODO: String | Undefined
+        const watchBandMm = [
+          ...result.watchBandSizesList,
+          ...result.customWatchBandSizesList,
+        ][p] as (typeof WatchBand_Sizes)[number];
+        // Galaxy A12 or A12 based on the input
+        const phoneWithoutTheBrand = capitalizeLetters(
+          cleanUp(
+            replaceTurkishI(watchBand).toLowerCase().replace(regex, ""),
+            false
+          )
+        );
 
-      const fields: FIELDS_TYPE = {
-        ...TrendyolMainFields({
-          barcode,
-          productModalCode,
-          trademark: companyMainOptions.trademark,
-          CATEGORY_ID,
-          productTitle,
-          productDescription: productMainOptions.productDescription,
-          marketPrice: companyMainOptions.marketPrice,
-          price: productMainOptions.price,
-          productCode: productMainOptions.productCode,
-          shipmentTime: companyMainOptions.shipmentTime,
-          shipmentType: companyMainOptions.shipmentType,
-          stockAmount: productMainOptions.stockAmount,
-        }),
-        Renk: color,
-        Materyal: replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
-        Beden: WatchBand_Sizes.includes(phone) ? phone : "",
-        "Garanti Süresi": result.guranteePeriod,
-        "Uyumlu Marka": result.watchBandBrand,
-      };
+        // 11Pro, GalaxyA12, A12
+        const phoneCode = removeWhiteSpaces(phoneWithoutTheBrand);
 
-      FIELDS_SCHEME.parse(fields);
+        // Example: iPhone 11 Pro Uyumlu I Love Your Mom
+        const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${productMainOptions.productTitle}`;
 
-      products.push(fields);
+        // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm
+        const productModalCode = `${
+          productMainOptions.productCode
+        }-${phoneCode}-${mm.slice(0, 2)}mm`;
+
+        const barcode = generateGTIN();
+
+        const fields: FIELDS_TYPE = {
+          ...TrendyolMainFields({
+            barcode,
+            productModalCode,
+            trademark: companyMainOptions.trademark,
+            CATEGORY_ID,
+            productTitle,
+            productDescription: productMainOptions.productDescription,
+            marketPrice: companyMainOptions.marketPrice,
+            price: productMainOptions.price,
+            productCode: productMainOptions.productCode,
+            shipmentTime: companyMainOptions.shipmentTime,
+            shipmentType: companyMainOptions.shipmentType,
+            stockAmount: productMainOptions.stockAmount,
+          }),
+          Renk: color,
+          Materyal:
+            replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
+
+          Beden: WatchBand_Sizes.includes(watchBandMm)
+            ? watchBandMm
+            : WatchBand_Sizes.includes(
+                `${mm.slice(0, 2)} mm` as (typeof WatchBand_Sizes)[number]
+              )
+            ? (`${mm.slice(0, 2)} mm` as (typeof WatchBand_Sizes)[number])
+            : "",
+          "Garanti Süresi": result.guranteePeriod,
+          "Uyumlu Marka": result.watchBandBrand,
+        };
+
+        FIELDS_SCHEME.parse(fields);
+
+        products.push(fields);
+      }
     }
   }
 
