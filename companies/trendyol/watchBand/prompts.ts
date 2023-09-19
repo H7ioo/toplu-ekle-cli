@@ -26,6 +26,7 @@ import {
   WatchBand_Materials,
   WatchBand_Sizes,
 } from "./variables";
+import { TrendyolMainFields } from "../prompts";
 
 const CATEGORY_ID = 3222 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -162,31 +163,20 @@ export async function watchBand(
       const barcode = generateGTIN();
 
       const fields: FIELDS_TYPE = {
-        Barkod: barcode,
-        "Model Kodu": productModalCode,
-        Marka: companyMainOptions.trademark ?? "",
-        Kategori: CATEGORY_ID,
-        "Para Birimi": "TRY",
-        "Ürün Adı": productTitle,
-        "Ürün Açıklaması": productMainOptions.productDescription,
-        "Piyasa Satış Fiyatı (KDV Dahil)": companyMainOptions.marketPrice,
-        "Trendyol'da Satılacak Fiyat (KDV Dahil)": productMainOptions.price,
-        "Ürün Stok Adedi": productMainOptions.stockAmount,
-        "Stok Kodu": productMainOptions.productCode,
-        "KDV Oranı": KDV["3"],
-        Desi: "",
-        "Görsel 1": "",
-        "Görsel 2": "",
-        "Görsel 3": "",
-        "Görsel 4": "",
-        "Görsel 5": "",
-        "Görsel 6": "",
-        "Görsel 7": "",
-        "Görsel 8": "",
-        "Sevkiyat Süresi":
-          replaceEmptyOptionWithString(companyMainOptions.shipmentTime) ?? "",
-        "Sevkiyat Tipi":
-          replaceEmptyOptionWithString(companyMainOptions.shipmentType) ?? "",
+        ...TrendyolMainFields({
+          barcode,
+          productModalCode,
+          trademark: companyMainOptions.trademark,
+          CATEGORY_ID,
+          productTitle,
+          productDescription: productMainOptions.productDescription,
+          marketPrice: companyMainOptions.marketPrice,
+          price: productMainOptions.price,
+          productCode: productMainOptions.productCode,
+          shipmentTime: companyMainOptions.shipmentTime,
+          shipmentType: companyMainOptions.shipmentType,
+          stockAmount: productMainOptions.stockAmount,
+        }),
         Renk: color,
         Materyal: replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
         Beden: WatchBand_Sizes.includes(phone) ? phone : "",

@@ -25,6 +25,7 @@ import {
   HeadphoneCase_HeadPhoneBrands,
 } from "./variables";
 import { TRENDYOL_SUFFIX } from "../variables";
+import { TrendyolMainFields } from "../prompts";
 
 const CATEGORY_ID = 3494 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -155,31 +156,20 @@ export async function headphoneCase(
       const barcode = generateGTIN();
 
       const fields: FIELDS_TYPE = {
-        Barkod: barcode,
-        "Model Kodu": productModalCode,
-        Marka: companyMainOptions.trademark ?? "",
-        Kategori: CATEGORY_ID,
-        "Para Birimi": "TRY",
-        "Ürün Adı": productTitle,
-        "Ürün Açıklaması": productMainOptions.productDescription,
-        "Piyasa Satış Fiyatı (KDV Dahil)": companyMainOptions.marketPrice,
-        "Trendyol'da Satılacak Fiyat (KDV Dahil)": productMainOptions.price,
-        "Ürün Stok Adedi": productMainOptions.stockAmount,
-        "Stok Kodu": productMainOptions.productCode,
-        "KDV Oranı": KDV["3"],
-        Desi: "",
-        "Görsel 1": "",
-        "Görsel 2": "",
-        "Görsel 3": "",
-        "Görsel 4": "",
-        "Görsel 5": "",
-        "Görsel 6": "",
-        "Görsel 7": "",
-        "Görsel 8": "",
-        "Sevkiyat Süresi":
-          replaceEmptyOptionWithString(companyMainOptions.shipmentTime) ?? "",
-        "Sevkiyat Tipi":
-          replaceEmptyOptionWithString(companyMainOptions.shipmentType) ?? "",
+        ...TrendyolMainFields({
+          barcode,
+          productModalCode,
+          trademark: companyMainOptions.trademark,
+          CATEGORY_ID,
+          productTitle,
+          productDescription: productMainOptions.productDescription,
+          marketPrice: companyMainOptions.marketPrice,
+          price: productMainOptions.price,
+          productCode: productMainOptions.productCode,
+          shipmentTime: companyMainOptions.shipmentTime,
+          shipmentType: companyMainOptions.shipmentType,
+          stockAmount: productMainOptions.stockAmount,
+        }),
         Renk: color,
         "Garanti Süresi": result.guranteePeriod,
         "Uyumlu Marka":
@@ -199,4 +189,3 @@ export async function headphoneCase(
 }
 
 // TODO: replaceEmptyOptionWithString remove duplicates
-// TODO: Fields remove duplicates

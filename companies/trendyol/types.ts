@@ -5,7 +5,7 @@ export const TrendyolMainOptionsScheme = z.object({
   trademark: z.string(),
   marketPrice: z.number(),
   shipmentTime: z.number().optional(),
-  shipmentType: z.enum(ShipmentTypes).optional(),
+  shipmentType: z.enum(ShipmentTypes),
 });
 
 export type TrendyolMainOptions = z.infer<typeof TrendyolMainOptionsScheme>;
@@ -39,3 +39,7 @@ export const TrendyolMainOptionsFieldsScheme = z.object({
   "Sevkiyat Süresi": z.number().or(z.string()),
   "Sevkiyat Tipi": z.enum(ShipmentTypes).or(z.string()),
 });
+
+export type TrendyolMainOptionsFields = z.infer<
+  typeof TrendyolMainOptionsFieldsScheme
+>;
