@@ -9,6 +9,7 @@ export const prodcutCategories = {
     phoneCase: "Kılıf",
     headphoneCase: "Kulaklık kılıfı",
     watchBand: "Saat kordonu",
+    watchCharm: "Kordon süsü",
   },
   hepsiburada: {
     phoneCase: "kılıf",
@@ -28,6 +29,7 @@ export const sheetNames: SheetNames = {
     phoneCase: "Ürünlerinizi Burada Listeleyin",
     headphoneCase: "Ürünlerinizi Burada Listeleyin",
     watchBand: "Ürünlerinizi Burada Listeleyin",
+    watchCharm: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",

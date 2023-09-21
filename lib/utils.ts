@@ -215,6 +215,6 @@ export async function writeToExcel<
 
   // Save workbook
   await workbook.xlsx.writeFile(
-    `${outPath}\\${company}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
+    `${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
   );
 }
