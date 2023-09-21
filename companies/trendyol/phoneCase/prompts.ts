@@ -200,5 +200,9 @@ export async function phoneCase(
     }
   }
 
-  return { products, category: CATEGORY_NAME };
+  return {
+    products,
+    category: CATEGORY_NAME,
+    productKnownBrandName: result.productKnownBrandName,
+  };
 }

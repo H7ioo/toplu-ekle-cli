@@ -138,5 +138,9 @@ export async function cableProtector(
     products.push(fields);
   }
 
-  return { products, category: CATEGORY_NAME };
+  return {
+    products,
+    category: CATEGORY_NAME,
+    productKnownBrandName: result.productKnownBrandName,
+  };
 }

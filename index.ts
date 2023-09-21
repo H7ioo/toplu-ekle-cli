@@ -84,10 +84,22 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
       productMainOptions,
       companyMainOptions
     );
+
+    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
+
+    let brand: string;
+    if ("Uyumlu Marka" in result.products[0]) {
+      brand = result.products[0]?.["Uyumlu Marka"];
+    } else if ("productKnownBrandName" in result) {
+      brand = result.productKnownBrandName;
+    } else {
+      brand = "UNKNOWN";
+    }
+
     await writeToExcel({
       company: "trendyol",
       category: result.category,
-      caseBrand: result.products[0]?.["Uyumlu Marka"] ?? "",
+      caseBrand: brand,
       trademark: result.products[0]?.Marka ?? "",
       outPath: "c:\\users\\omarj\\downloads",
       data: result.products,

@@ -194,5 +194,9 @@ export async function watchCharm(
     }
   }
 
-  return { products, category: CATEGORY_NAME };
+  return {
+    products,
+    category: CATEGORY_NAME,
+    productKnownBrandName: result.productKnownBrandName,
+  };
 }

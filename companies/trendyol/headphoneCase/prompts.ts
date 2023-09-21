@@ -184,7 +184,11 @@ export async function headphoneCase(
     }
   }
 
-  return { products, category: CATEGORY_NAME };
+  return {
+    products,
+    category: CATEGORY_NAME,
+    productKnownBrandName: result.productKnownBrandName,
+  };
 }
 
 // TODO: replaceEmptyOptionWithString remove duplicates
