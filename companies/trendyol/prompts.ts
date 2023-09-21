@@ -5,6 +5,7 @@ import {
   numberPromptConfig,
   replaceEmptyOptionWithString,
 } from "../../lib/utils";
+import { KDV } from "../../lib/variables";
 import { headphoneCase } from "./headphoneCase/prompts";
 import { phoneCase } from "./phoneCase/prompts";
 import {
@@ -12,20 +13,26 @@ import {
   TrendyolMainOptionsFields,
   TrendyolMainOptionsScheme,
 } from "./types";
-import { TRENDYOL_SUFFIX, ShipmentTypes } from "./variables";
+import { ShipmentTypes, TRENDYOL_SUFFIX } from "./variables";
 import { watchBand } from "./watchBand/prompts";
-import { KDV } from "../../lib/variables";
+import { watchCharm } from "./watchCharm/prompts";
 
 export const TrendyolPromptsWrapper: Record<
   keyof ProdcutCategories["trendyol"],
   (
     productMainOptions: ProductMainOptions,
     companyMainOptions: TrendyolMainOptions
-  ) => ReturnType<typeof phoneCase | typeof headphoneCase | typeof watchBand>
+  ) => ReturnType<
+    | typeof phoneCase
+    | typeof headphoneCase
+    | typeof watchBand
+    | typeof watchCharm
+  >
 > = {
   phoneCase,
   headphoneCase,
   watchBand,
+  watchCharm,
 };
 
 export async function TrendyolMainPrompts() {

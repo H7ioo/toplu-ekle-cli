@@ -212,8 +212,6 @@ export async function watchBand(
             stockAmount: productMainOptions.stockAmount,
           }),
           Renk: color,
-          Materyal:
-            replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
 
           Beden: WatchBand_Sizes.includes(watchBandMm)
             ? watchBandMm
@@ -223,6 +221,9 @@ export async function watchBand(
             ? (`${mm.slice(0, 2)} mm` as (typeof WatchBand_Sizes)[number])
             : "",
           "Garanti Süresi": result.guranteePeriod,
+          Materyal:
+            replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
+
           "Uyumlu Marka": result.watchBandBrand,
         };
 
