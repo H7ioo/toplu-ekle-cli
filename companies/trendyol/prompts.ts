@@ -6,6 +6,7 @@ import {
   replaceEmptyOptionWithString,
 } from "../../lib/utils";
 import { KDV } from "../../lib/variables";
+import { cableProtector } from "./cableProtector/prompts";
 import { headphoneCase } from "./headphoneCase/prompts";
 import { phoneCase } from "./phoneCase/prompts";
 import {
@@ -27,12 +28,14 @@ export const TrendyolPromptsWrapper: Record<
     | typeof headphoneCase
     | typeof watchBand
     | typeof watchCharm
+    | typeof cableProtector
   >
 > = {
   phoneCase,
   headphoneCase,
   watchBand,
   watchCharm,
+  cableProtector,
 };
 
 export async function TrendyolMainPrompts() {

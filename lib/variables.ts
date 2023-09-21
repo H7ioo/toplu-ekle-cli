@@ -10,13 +10,11 @@ export const prodcutCategories = {
     headphoneCase: "Kulaklık kılıfı",
     watchBand: "Saat kordonu",
     watchCharm: "Kordon süsü",
+    cableProtector: "Kablo koryucu seti",
   },
   hepsiburada: {
     phoneCase: "kılıf",
   },
-  // "kordon",
-  // "charm",
-  // "kablo koruyucu seti",
 } as const;
 
 type SheetNames<CompanyT extends Companies[number] = Companies[number]> = {
@@ -30,6 +28,7 @@ export const sheetNames: SheetNames = {
     headphoneCase: "Ürünlerinizi Burada Listeleyin",
     watchBand: "Ürünlerinizi Burada Listeleyin",
     watchCharm: "Ürünlerinizi Burada Listeleyin",
+    cableProtector: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",
