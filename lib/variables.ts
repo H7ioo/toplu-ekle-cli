@@ -13,7 +13,6 @@ export const prodcutCategories = {
     cableProtector: "Kablo koryucu seti",
     screenProtector: "Ekran koruyucu",
     lensProtector: "Lens koruyucu",
-    // Lens
     // Saat Kasası
     // Aparat
   },
