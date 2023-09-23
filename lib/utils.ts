@@ -1,6 +1,6 @@
 import ExcelJS from "exceljs";
 
-import { Question } from "inquirer";
+import { Question, registerPrompt } from "inquirer";
 import path from "path";
 import { Companies } from "./types";
 import { EMPTY_OPTION, sheetNames } from "./variables";
