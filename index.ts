@@ -9,7 +9,6 @@ import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
 import { companies, prodcutCategories } from "./lib/variables";
 
 // TODO: Validate function required if the generic is required
-// TODO: Filter function return is not wroking
 // -----
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -62,7 +61,7 @@ registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
           return Object.keys(prodcutCategories[company]).find((_key) => {
             const key = _key as keyof ProdcutCategories[Companies[number]];
             return prodcutCategories[company][key] === input;
-          });
+          }) as keyof ProdcutCategories[Companies[number]];
         throw new Error("Company doesn't exists!");
       },
 

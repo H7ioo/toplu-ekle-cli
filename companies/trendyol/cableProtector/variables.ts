@@ -6,7 +6,7 @@ import { EMPTY_OPTION } from "../../../lib/variables";
  * @Field Garanti Tipi
  * @Optional
  */
-export const CableProtector_GuranteeTypes = [
+export const CableProtector_GuaranteeTypes = [
   "İthalatçı Garantili",
   "Resmi Distribütör Garantili",
   EMPTY_OPTION,
@@ -16,7 +16,7 @@ export const CableProtector_GuranteeTypes = [
  * @Category 5505
  * @Field Garanti Süresi
  */
-export const CableProtector_GuranteePeriods = [
+export const CableProtector_GuaranteePeriods = [
   "1 Yıl",
   "2 Yıl",
   "3 Yıl",

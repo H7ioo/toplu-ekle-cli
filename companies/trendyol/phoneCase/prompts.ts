@@ -115,7 +115,7 @@ export async function phoneCase(
     },
     {
       type: "search-list",
-      name: "guranteePeriod",
+      name: "guaranteePeriod",
       message: "Garanti süresi seçiniz",
       choices: PhoneCase_GuaranteePeriods,
       suffix: TRENDYOL_SUFFIX,
@@ -188,9 +188,10 @@ export async function phoneCase(
         "Cep Telefonu Modeli": PhoneCase_PhonesList.includes(phone)
           ? phone
           : "",
-        "Garanti Tipi": replaceEmptyOptionWithString(result.guranteeType) ?? "",
+        "Garanti Tipi":
+          replaceEmptyOptionWithString(result.guaranteeType) ?? "",
         "Garanti Süresi":
-          replaceEmptyOptionWithString(result.guranteePeriod) ?? "",
+          replaceEmptyOptionWithString(result.guaranteePeriod) ?? "",
         "Uyumlu Marka": replaceEmptyOptionWithString(result.phoneBrand) ?? "",
       };
 

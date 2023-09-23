@@ -18,8 +18,8 @@ export const PhoneCaseOptionsScheme = z
       z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
     ),
     customPhonesList: z.array(z.string()),
-    guranteeType: z.enum(PhoneCase_GuaranteeTypes).optional(),
-    guranteePeriod: z.enum(PhoneCase_GuaranteePeriods).optional(),
+    guaranteeType: z.enum(PhoneCase_GuaranteeTypes).optional(),
+    guaranteePeriod: z.enum(PhoneCase_GuaranteePeriods).optional(),
     phoneBrand: z.enum(PhoneCase_PhoneBrands).optional(),
     productKnownBrandName: z.string(),
   })

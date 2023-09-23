@@ -3,7 +3,7 @@ import { TrendyolMainOptionsFieldsScheme } from "../types";
 import {
   WatchBand_Brands,
   WatchBand_CustomSizes,
-  WatchBand_GuranteePeriods,
+  WatchBand_GuaranteePeriods,
   WatchBand_Materials,
   WatchBand_Sizes,
 } from "./variables";
@@ -15,7 +15,7 @@ export const WatchBandOptionsScheme = z
     ),
     customWatchBandSizesList: z.array(z.string()),
     customWatchBandList: z.array(z.string()),
-    guranteePeriod: z.enum(WatchBand_GuranteePeriods),
+    guaranteePeriod: z.enum(WatchBand_GuaranteePeriods),
     watchBandMaterial: z.enum(WatchBand_Materials).optional(),
     watchBandBrand: z.enum(WatchBand_Brands),
     productKnownBrandName: z.string(),
@@ -36,7 +36,7 @@ export const WatchBandFieldsScheme = z
     Kategori: z.literal(3222),
     Renk: z.string(),
     Beden: z.enum([...WatchBand_Sizes, ""]),
-    "Garanti Süresi": z.enum(WatchBand_GuranteePeriods),
+    "Garanti Süresi": z.enum(WatchBand_GuaranteePeriods),
     Materyal: z.enum([...WatchBand_Materials, ""]),
     "Uyumlu Marka": z.enum(WatchBand_Brands),
   })

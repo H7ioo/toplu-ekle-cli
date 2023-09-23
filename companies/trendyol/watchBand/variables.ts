@@ -30,7 +30,7 @@ export const WatchBand_CustomSizes = ["38-40-41", "42-44-45-49"] as const;
  * @Category 3222
  * @Field Garanti Süresi
  */
-export const WatchBand_GuranteePeriods = [
+export const WatchBand_GuaranteePeriods = [
   "1 Yıl",
   "2 Yıl",
   "3 Yıl",

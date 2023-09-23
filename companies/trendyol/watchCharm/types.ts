@@ -2,7 +2,7 @@ import { z } from "zod";
 import { TrendyolMainOptionsFieldsScheme } from "../types";
 import {
   WatchCharm_Brands,
-  WatchCharm_GuranteePeriods,
+  WatchCharm_GuaranteePeriods,
   WatchCharm_Materials,
   WatchCharm_Sizes,
 } from "./variables";
@@ -10,7 +10,7 @@ export const WatchCharmOptionsScheme = z.object({
   colors: z.array(z.string()),
   charmModel: z.array(z.string()),
   customWatchCharmList: z.array(z.string()),
-  guranteePeriod: z.enum(WatchCharm_GuranteePeriods),
+  guaranteePeriod: z.enum(WatchCharm_GuaranteePeriods),
   watchCharmMaterial: z.enum(WatchCharm_Materials).optional(),
   watchCharmBrand: z.enum(WatchCharm_Brands),
   productKnownBrandName: z.string(),
@@ -27,7 +27,7 @@ export const WatchCharmFieldsScheme = z
     Kategori: z.literal(3222),
     Renk: z.string(),
     Beden: z.enum([...WatchCharm_Sizes, ""]),
-    "Garanti Süresi": z.enum(WatchCharm_GuranteePeriods),
+    "Garanti Süresi": z.enum(WatchCharm_GuaranteePeriods),
     Materyal: z.enum([...WatchCharm_Materials, ""]),
     "Uyumlu Marka": z.enum(WatchCharm_Brands),
   })

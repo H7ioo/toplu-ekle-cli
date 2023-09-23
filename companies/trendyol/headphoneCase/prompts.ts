@@ -98,7 +98,7 @@ export async function headphoneCase(
     },
     {
       type: "search-list",
-      name: "guranteePeriod",
+      name: "guaranteePeriod",
       message: "Garanti süresi seçiniz",
       choices: HeadphoneCase_GuaranteePeriods,
       suffix: TRENDYOL_SUFFIX,
@@ -170,7 +170,7 @@ export async function headphoneCase(
           stockAmount: productMainOptions.stockAmount,
         }),
         Renk: color,
-        "Garanti Süresi": result.guranteePeriod,
+        "Garanti Süresi": result.guaranteePeriod,
         "Uyumlu Marka":
           replaceEmptyOptionWithString(result.headPhoneBrand) ?? "",
         "Uyumlu Model": HeadphoneCase_HeadphonesList.includes(headPhone)

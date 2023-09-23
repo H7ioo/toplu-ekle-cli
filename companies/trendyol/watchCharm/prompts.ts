@@ -22,7 +22,7 @@ import {
 } from "./types";
 import {
   WatchCharm_Brands,
-  WatchCharm_GuranteePeriods,
+  WatchCharm_GuaranteePeriods,
   WatchCharm_Materials,
 } from "./variables";
 
@@ -105,9 +105,9 @@ export async function watchCharm(
 
     {
       type: "search-list",
-      name: "guranteePeriod",
+      name: "guaranteePeriod",
       message: "Garanti süresi seçiniz",
-      choices: WatchCharm_GuranteePeriods,
+      choices: WatchCharm_GuaranteePeriods,
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -180,7 +180,7 @@ export async function watchCharm(
           Renk: `${color}-${watchCharmModalWithoutSpaces}`,
 
           Beden: "",
-          "Garanti Süresi": result.guranteePeriod,
+          "Garanti Süresi": result.guaranteePeriod,
           Materyal:
             replaceEmptyOptionWithString(result.watchCharmMaterial) ?? "",
 

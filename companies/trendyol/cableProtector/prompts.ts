@@ -19,8 +19,8 @@ import {
   CableProtectorOptionsScheme,
 } from "./types";
 import {
-  CableProtector_GuranteePeriods,
-  CableProtector_GuranteeTypes,
+  CableProtector_GuaranteePeriods,
+  CableProtector_GuaranteeTypes,
   CableProtector_ProdcutTypes,
 } from "./variables";
 
@@ -67,16 +67,16 @@ export async function cableProtector(
 
     {
       type: "search-list",
-      name: "guranteeType",
+      name: "guaranteeType",
       message: "Garanti tipi seçiniz",
-      choices: CableProtector_GuranteeTypes,
+      choices: CableProtector_GuaranteeTypes,
       suffix: TRENDYOL_SUFFIX,
     },
     {
       type: "search-list",
-      name: "guranteePeriod",
+      name: "guaranteePeriod",
       message: "Garanti süresi seçiniz",
-      choices: CableProtector_GuranteePeriods,
+      choices: CableProtector_GuaranteePeriods,
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -128,8 +128,8 @@ export async function cableProtector(
         stockAmount: productMainOptions.stockAmount,
       }),
       Renk: color,
-      "Garanti Tipi": replaceEmptyOptionWithString(result.guranteeType) ?? "",
-      "Garanti Süresi": result.guranteePeriod,
+      "Garanti Tipi": replaceEmptyOptionWithString(result.guaranteeType) ?? "",
+      "Garanti Süresi": result.guaranteePeriod,
       "Ürün Tipi": result.productType,
     };
 

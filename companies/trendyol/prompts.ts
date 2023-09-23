@@ -17,6 +17,7 @@ import {
 import { ShipmentTypes, TRENDYOL_SUFFIX } from "./variables";
 import { watchBand } from "./watchBand/prompts";
 import { watchCharm } from "./watchCharm/prompts";
+import { screenProtector } from "./screenProtector/prompts";
 
 export const TrendyolPromptsWrapper: Record<
   keyof ProdcutCategories["trendyol"],
@@ -29,6 +30,7 @@ export const TrendyolPromptsWrapper: Record<
     | typeof watchBand
     | typeof watchCharm
     | typeof cableProtector
+    | typeof screenProtector
   >
 > = {
   phoneCase,
@@ -36,6 +38,7 @@ export const TrendyolPromptsWrapper: Record<
   watchBand,
   watchCharm,
   cableProtector,
+  screenProtector,
 };
 
 export async function TrendyolMainPrompts() {

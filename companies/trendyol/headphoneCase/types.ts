@@ -8,7 +8,7 @@ import {
 export const HeadphoneCaseOptionsScheme = z
   .object({
     colors: z.array(z.string()),
-    guranteePeriod: z.enum(HeadphoneCase_GuaranteePeriods),
+    guaranteePeriod: z.enum(HeadphoneCase_GuaranteePeriods),
     headPhoneBrand: z.enum(HeadphoneCase_HeadPhoneBrands).optional(),
     headPhonesList: z.array(z.enum(HeadphoneCase_HeadphonesList)),
     customHeadPhoneList: z.array(z.string()),

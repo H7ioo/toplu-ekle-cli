@@ -11,9 +11,14 @@ export const prodcutCategories = {
     watchBand: "Saat kordonu",
     watchCharm: "Kordon süsü",
     cableProtector: "Kablo koryucu seti",
+    // Ekren koruyucu
+    screenProtector: "Ekran koruyucu",
+    // Lens
+    // Saat Kasası
+    // Aparat
   },
   hepsiburada: {
-    phoneCase: "kılıf",
+    phoneCase: "Kılıf",
   },
 } as const;
 
@@ -29,6 +34,7 @@ export const sheetNames: SheetNames = {
     watchBand: "Ürünlerinizi Burada Listeleyin",
     watchCharm: "Ürünlerinizi Burada Listeleyin",
     cableProtector: "Ürünlerinizi Burada Listeleyin",
+    screenProtector: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",

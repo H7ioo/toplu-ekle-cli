@@ -23,7 +23,7 @@ import {
 import {
   WatchBand_Brands,
   WatchBand_CustomSizes,
-  WatchBand_GuranteePeriods,
+  WatchBand_GuaranteePeriods,
   WatchBand_Materials,
   WatchBand_Sizes,
 } from "./variables";
@@ -123,9 +123,9 @@ export async function watchBand(
 
     {
       type: "search-list",
-      name: "guranteePeriod",
+      name: "guaranteePeriod",
       message: "Garanti süresi seçiniz",
-      choices: WatchBand_GuranteePeriods,
+      choices: WatchBand_GuaranteePeriods,
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -220,7 +220,7 @@ export async function watchBand(
               )
             ? (`${mm.slice(0, 2)} mm` as (typeof WatchBand_Sizes)[number])
             : "",
-          "Garanti Süresi": result.guranteePeriod,
+          "Garanti Süresi": result.guaranteePeriod,
           Materyal:
             replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
 

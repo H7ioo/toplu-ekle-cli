@@ -1,15 +1,15 @@
 import { z } from "zod";
 import { TrendyolMainOptionsFieldsScheme } from "../types";
 import {
-  CableProtector_GuranteePeriods,
-  CableProtector_GuranteeTypes,
+  CableProtector_GuaranteePeriods,
+  CableProtector_GuaranteeTypes,
   CableProtector_ProdcutTypes,
 } from "./variables";
 
 export const CableProtectorOptionsScheme = z.object({
   colors: z.array(z.string()),
-  guranteeType: z.enum(CableProtector_GuranteeTypes).optional(),
-  guranteePeriod: z.enum(CableProtector_GuranteePeriods),
+  guaranteeType: z.enum(CableProtector_GuaranteeTypes).optional(),
+  guaranteePeriod: z.enum(CableProtector_GuaranteePeriods),
   productType: z.enum(CableProtector_ProdcutTypes),
   productKnownBrandName: z.string(),
 });
@@ -23,8 +23,8 @@ export const CableProtectorFieldsScheme = z
 
   .object({
     Kategori: z.literal(5505),
-    "Garanti Tipi": z.enum([...CableProtector_GuranteeTypes, ""]),
-    "Garanti Süresi": z.enum(CableProtector_GuranteePeriods),
+    "Garanti Tipi": z.enum([...CableProtector_GuaranteeTypes, ""]),
+    "Garanti Süresi": z.enum(CableProtector_GuaranteePeriods),
     "Ürün Tipi": z.enum([...CableProtector_ProdcutTypes]),
     Renk: z.string(),
   })
