@@ -1,20 +1,14 @@
-import { prompt, registerPrompt } from "inquirer";
-import { lengthValidator, writeToExcel } from "./lib/utils";
+import { prompt } from "inquirer";
 import {
   TrendyolMainPrompts,
   TrendyolPromptsWrapper,
 } from "./companies/trendyol/prompts";
 import { productMainPrompt } from "./lib/prompts";
 import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
+import { lengthValidator, registerPrompts, writeToExcel } from "./lib/utils";
 import { companies, prodcutCategories } from "./lib/variables";
 
-// TODO: Validate function required if the generic is required
-// -----
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-registerPrompt("search-list", require("inquirer-search-list"));
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
+registerPrompts();
 
 (async () => {
   const { companies: selectedCompanies, prodcutCategory } = await prompt<{

@@ -218,3 +218,10 @@ export async function writeToExcel<
     `${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
   );
 }
+
+export function registerPrompts() {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  registerPrompt("search-list", require("inquirer-search-list"));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
+}
