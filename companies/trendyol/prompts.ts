@@ -9,6 +9,7 @@ import { KDV } from "../../lib/variables";
 import { cableProtector } from "./cableProtector/prompts";
 import { headphoneCase } from "./headphoneCase/prompts";
 import { phoneCase } from "./phoneCase/prompts";
+import { screenProtector } from "./screenProtector/prompts";
 import {
   TrendyolMainOptions,
   TrendyolMainOptionsFields,
@@ -17,7 +18,7 @@ import {
 import { ShipmentTypes, TRENDYOL_SUFFIX } from "./variables";
 import { watchBand } from "./watchBand/prompts";
 import { watchCharm } from "./watchCharm/prompts";
-import { screenProtector } from "./screenProtector/prompts";
+import { lensProtector } from "./lensProtector/prompts";
 
 export const TrendyolPromptsWrapper: Record<
   keyof ProdcutCategories["trendyol"],
@@ -31,6 +32,7 @@ export const TrendyolPromptsWrapper: Record<
     | typeof watchCharm
     | typeof cableProtector
     | typeof screenProtector
+    | typeof lensProtector
   >
 > = {
   phoneCase,
@@ -39,6 +41,7 @@ export const TrendyolPromptsWrapper: Record<
   watchCharm,
   cableProtector,
   screenProtector,
+  lensProtector,
 };
 
 export async function TrendyolMainPrompts() {
