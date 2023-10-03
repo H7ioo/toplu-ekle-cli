@@ -7,6 +7,10 @@ import { productMainPrompt } from "./lib/prompts";
 import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
 import { lengthValidator, registerPrompts, writeToExcel } from "./lib/utils";
 import { companies, prodcutCategories } from "./lib/variables";
+import {
+  HepsiburadaMainPrompts,
+  HepsiburadaPromptsWrapper,
+} from "./companies/hepsiburada/prompts";
 
 registerPrompts();
 
@@ -91,6 +95,33 @@ registerPrompts();
 
     await writeToExcel({
       company: "trendyol",
+      category: result.category,
+      caseBrand: brand,
+      trademark: result.products[0]?.Marka ?? "",
+      outPath: "c:\\users\\omarj\\downloads",
+      data: result.products,
+      mainModalCode: productMainOptions.productCode,
+    });
+  } else if (selectedCompanies.includes("hepsiburada")) {
+    const companyMainOptions = await HepsiburadaMainPrompts();
+    const result = await HepsiburadaPromptsWrapper[prodcutCategory](
+      productMainOptions,
+      companyMainOptions
+    );
+
+    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
+
+    let brand: string;
+    if ("Uyumlu Marka" in result.products[0]) {
+      brand = result.products[0]?.["Uyumlu Marka"];
+    } else if ("productKnownBrandName" in result) {
+      brand = result.productKnownBrandName;
+    } else {
+      brand = "UNKNOWN";
+    }
+
+    await writeToExcel({
+      company: "hepsiburada",
       category: result.category,
       caseBrand: brand,
       trademark: result.products[0]?.Marka ?? "",
