@@ -18,6 +18,7 @@ export const prodcutCategories = {
   },
   hepsiburada: {
     phoneCase: "Kılıf",
+    headphoneCase: "Kulaklık kılıfı",
   },
 } as const;
 
@@ -38,5 +39,6 @@ export const sheetNames: SheetNames = {
   },
   hepsiburada: {
     phoneCase: "Kılıflar",
+    headphoneCase: "Bluetooth Kulaklık Aksesuarları",
   },
 } as const;

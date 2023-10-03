@@ -190,10 +190,8 @@ export async function phoneCase(
         // Example: SB-11Pro
         const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
-        const productCodeForHepsiburada = `${productModalCode}-${cleanUp(
-          color,
-          false
-        )}`.toUpperCase();
+        const productCodeForHepsiburada =
+          `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
 
         const barcode = generateGTIN();
 
