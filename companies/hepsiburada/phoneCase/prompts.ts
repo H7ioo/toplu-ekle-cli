@@ -169,7 +169,6 @@ export async function phoneCase(
         p < [...result.phonesList, ...result.customPhonesList].length;
         p++
       ) {
-        // TODO: String | Undefined
         const phone = [...result.phonesList, ...result.customPhonesList][
           p
         ] as (typeof PhoneCase_PhonesList)[number];
@@ -193,7 +192,7 @@ export async function phoneCase(
         const productCodeForHepsiburada =
           `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
 
-        const barcode = generateGTIN();
+        const barcode = generateGTIN(companyMainOptions.trademark);
 
         const fields: FIELDS_TYPE = {
           ...HepsiburadaMainFields({

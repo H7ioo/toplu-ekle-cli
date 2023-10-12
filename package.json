@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./index.ts",
-    "check": "ts-node ./scripts/checkDirectories.ts"
+    "check": "ts-node ./scripts/checkDirectories.ts",
+    "config": "ts-node ./scripts/config.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "exceljs": "^4.3.0",
     "fs": "^0.0.1-security",
     "inquirer": "^8.0.0",
+    "inquirer-directory": "^2.2.0",
     "inquirer-search-checkbox": "^1.0.0",
     "inquirer-search-list": "^1.2.6",
     "xlsx": "^0.18.5",

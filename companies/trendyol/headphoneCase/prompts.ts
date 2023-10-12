@@ -130,7 +130,6 @@ export async function headphoneCase(
       p < [...result.headPhonesList, ...result.customHeadPhoneList].length;
       p++
     ) {
-      // TODO: String | Undefined
       const headPhone = [
         ...result.headPhonesList,
         ...result.customHeadPhoneList,
@@ -152,7 +151,7 @@ export async function headphoneCase(
       // Example: SB-11Pro
       const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
 
-      const barcode = generateGTIN();
+      const barcode = generateGTIN(companyMainOptions.trademark);
 
       const fields: FIELDS_TYPE = {
         ...TrendyolMainFields({

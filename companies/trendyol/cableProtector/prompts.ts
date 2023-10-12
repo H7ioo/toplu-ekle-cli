@@ -110,7 +110,7 @@ export async function cableProtector(
     // Example: SB-Apple
     const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
-    const barcode = generateGTIN();
+    const barcode = generateGTIN(companyMainOptions.trademark);
 
     const fields: FIELDS_TYPE = {
       ...TrendyolMainFields({

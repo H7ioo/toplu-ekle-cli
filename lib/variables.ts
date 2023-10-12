@@ -1,5 +1,11 @@
-import { Companies, ProdcutCategories } from "./types";
-
+import { DistinctQuestion } from "inquirer";
+import {
+  Companies,
+  ConfigFile,
+  ConfigOptions,
+  ProdcutCategories,
+} from "./types";
+import { homedir } from "os";
 export const companies = ["trendyol", "hepsiburada"] as const;
 export const KDV = [0, 1, 10, 20] as const;
 export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
@@ -42,3 +48,23 @@ export const sheetNames: SheetNames = {
     headphoneCase: "Bluetooth Kulaklık Aksesuarları",
   },
 } as const;
+
+export const configQuestionsObject: Record<
+  keyof ConfigOptions,
+  DistinctQuestion & { name: "defaultValue" }
+> = {
+  path: {
+    name: "defaultValue",
+    type: "directory",
+    basePath: homedir(),
+    message: "Klasör yolu seçiniz",
+  },
+};
+
+export const configDefaultValues: Record<keyof ConfigOptions, ConfigFile> = {
+  path: {
+    name: "path",
+    defaultValue: "Downloads",
+    alwaysAsk: false,
+  },
+};

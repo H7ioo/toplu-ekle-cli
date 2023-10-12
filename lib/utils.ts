@@ -1,7 +1,11 @@
 import ExcelJS from "exceljs";
 
-import { Question, registerPrompt } from "inquirer";
+import { readFileSync, writeFile } from "fs";
+import { Question, QuestionCollection, prompt, registerPrompt } from "inquirer";
+import { homedir } from "os";
 import path from "path";
+import { ConfigFileData, ConfigOptions } from "../lib/types";
+import { configDefaultValues, configQuestionsObject } from "../lib/variables";
 import { Companies } from "./types";
 import { EMPTY_OPTION, sheetNames } from "./variables";
 
@@ -148,7 +152,7 @@ export function replaceEmptyOptionWithString<T>(value: T) {
   return value === EMPTY_OPTION ? "" : value;
 }
 
-export function generateGTIN() {
+export function generateGTIN(trademark: string) {
   const length = 8;
   let gtin = "";
   for (let i = 0; i < length - 1; i++) {
@@ -168,7 +172,7 @@ export function generateGTIN() {
   const checkDigit = (10 - (sum % 10)) % 10;
   gtin += checkDigit.toString();
 
-  return gtin;
+  return `${trademark}${gtin}`;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -204,8 +208,7 @@ export async function writeToExcel<
   const productWorkbook = await workbook.xlsx.readFile(filePath);
   const sheetName = sheetNames[company][category];
   if (!sheetName) throw new Error("SheetName doesn't exist");
-  // TODO: remove as string
-  const worksheet = productWorkbook.getWorksheet(sheetName as string);
+  const worksheet = productWorkbook.getWorksheet(sheetName);
 
   // For Trendyol
   if (company === "trendyol") worksheet.spliceRows(0, 2);
@@ -214,8 +217,9 @@ export async function writeToExcel<
   data.forEach((dataItem) => worksheet.addRow(Object.values(dataItem)));
 
   // Save workbook
+  // TODO: PATH
   await workbook.xlsx.writeFile(
-    `${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
+    `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
   );
 }
 
@@ -224,4 +228,50 @@ export function registerPrompts() {
   registerPrompt("search-list", require("inquirer-search-list"));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   registerPrompt("search-checkbox", require("inquirer-search-checkbox"));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  registerPrompt("directory", require("inquirer-directory"));
+}
+
+export const isObjectEmpty = (object: object) => {
+  return Object.keys(object).length === 0;
+};
+
+export async function setDefaultConfig() {
+  // Setting config
+  const configFile = readFileSync("./data/config.json", "utf8");
+  const configData: ConfigFileData = JSON.parse(configFile);
+
+  if (isObjectEmpty(configData)) {
+    writeFile(
+      "./data/config.json",
+      JSON.stringify(configDefaultValues),
+      (err) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      }
+    );
+  }
+}
+
+export async function configPrompt() {
+  setDefaultConfig();
+
+  const configFile = readFileSync("./data/config.json", "utf8");
+  const configData: ConfigFileData = JSON.parse(configFile);
+
+  const configQuestions: QuestionCollection<ConfigOptions> = [
+    {
+      name: "path",
+      type: configQuestionsObject["path"].type,
+      basePath: homedir(),
+      message: configQuestionsObject["path"].message,
+      default: configData["path"].defaultValue ?? undefined,
+      when: configData["path"].alwaysAsk,
+    },
+  ];
+
+  const configOptions = await prompt(configQuestions);
+  return configOptions;
 }

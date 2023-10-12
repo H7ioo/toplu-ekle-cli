@@ -11,10 +11,7 @@ export const TrendyolMainOptionsScheme = z.object({
 export type TrendyolMainOptions = z.infer<typeof TrendyolMainOptionsScheme>;
 
 export const TrendyolMainOptionsFieldsScheme = z.object({
-  Barkod: z
-    .string()
-    .length(8, "8 Veya 13 numaradan oluşmalıdır.")
-    .or(z.string().length(13, "8 Veya 13 numaradan oluşmalıdır.")),
+  Barkod: z.string(),
   "Model Kodu": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
   Marka: z.string(),
   "Para Birimi": z.literal("TRY"),

@@ -170,7 +170,6 @@ export async function watchBand(
         // 42, 41, 38-40-41
         const mm = removeWhiteSpaces(watchBandSize).replace(/m/gi, "");
 
-        // TODO: String | Undefined
         const watchBandMm = [
           ...result.watchBandSizesList,
           ...result.customWatchBandSizesList,
@@ -194,7 +193,7 @@ export async function watchBand(
           productMainOptions.productCode
         }-${phoneCode}-${mm.slice(0, 2)}mm`;
 
-        const barcode = generateGTIN();
+        const barcode = generateGTIN(companyMainOptions.trademark);
 
         const fields: FIELDS_TYPE = {
           ...TrendyolMainFields({

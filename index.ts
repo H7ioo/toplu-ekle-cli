@@ -5,7 +5,12 @@ import {
 } from "./companies/trendyol/prompts";
 import { productMainPrompt } from "./lib/prompts";
 import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
-import { lengthValidator, registerPrompts, writeToExcel } from "./lib/utils";
+import {
+  configPrompt,
+  lengthValidator,
+  registerPrompts,
+  writeToExcel,
+} from "./lib/utils";
 import { companies, prodcutCategories } from "./lib/variables";
 import {
   HepsiburadaMainPrompts,
@@ -72,9 +77,8 @@ registerPrompts();
 
   const productMainOptions = await productMainPrompt();
 
-  // if (selectedCompanies.includes("hepsiburada")) {
-  //   TrendyolPromptsWrapper[prodcutCategory]();
-  // }
+  const configData = await configPrompt();
+
   if (selectedCompanies.includes("trendyol")) {
     const companyMainOptions = await TrendyolMainPrompts();
     const result = await TrendyolPromptsWrapper[prodcutCategory](
@@ -98,11 +102,12 @@ registerPrompts();
       category: result.category,
       caseBrand: brand,
       trademark: result.products[0]?.Marka ?? "",
-      outPath: "c:\\users\\omarj\\downloads",
+      outPath: configData.path,
       data: result.products,
       mainModalCode: productMainOptions.productCode,
     });
-  } else if (selectedCompanies.includes("hepsiburada")) {
+  }
+  if (selectedCompanies.includes("hepsiburada")) {
     const companyMainOptions = await HepsiburadaMainPrompts();
     const result = await HepsiburadaPromptsWrapper[prodcutCategory](
       productMainOptions,
@@ -125,7 +130,7 @@ registerPrompts();
       category: result.category,
       caseBrand: brand,
       trademark: result.products[0]?.Marka ?? "",
-      outPath: "c:\\users\\omarj\\downloads",
+      outPath: configData.path,
       data: result.products,
       mainModalCode: productMainOptions.productCode,
     });

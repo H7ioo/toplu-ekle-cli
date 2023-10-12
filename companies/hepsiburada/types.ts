@@ -15,10 +15,7 @@ export const HepsiburadaMainOptionsFieldsScheme = z.object({
   "Satıcı Stok Kodu": z
     .string()
     .max(100, "En fazla 100 karakterden oluşmalıdır."),
-  Barkod: z
-    .string()
-    .length(8, "8 Veya 13 numaradan oluşmalıdır.")
-    .or(z.string().length(13, "8 Veya 13 numaradan oluşmalıdır.")),
+  Barkod: z.string(),
   "Varyant Grup Id": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
   "Ürün Açıklaması": z
     .string()

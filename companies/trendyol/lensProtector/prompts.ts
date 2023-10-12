@@ -121,7 +121,6 @@ export async function lensProtector(
       p < [...result.phonesList, ...result.customPhonesList].length;
       p++
     ) {
-      // TODO: String | Undefined
       const phone = [...result.phonesList, ...result.customPhonesList][
         p
       ] as (typeof LensProtector_CustomPhonesList)[number];
@@ -139,7 +138,7 @@ export async function lensProtector(
       // Example: SB-11Pro
       const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
-      const barcode = generateGTIN();
+      const barcode = generateGTIN(companyMainOptions.trademark);
 
       const fields: FIELDS_TYPE = {
         ...TrendyolMainFields({

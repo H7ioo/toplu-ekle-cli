@@ -120,7 +120,6 @@ export async function screenProtector(
     p < [...result.phonesList, ...result.customPhonesList].length;
     p++
   ) {
-    // TODO: String | Undefined
     const phone = [...result.phonesList, ...result.customPhonesList][
       p
     ] as (typeof ScreenProtector_PhonesList)[number];
@@ -138,7 +137,7 @@ export async function screenProtector(
     // Example: SB-11Pro
     const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
-    const barcode = generateGTIN();
+    const barcode = generateGTIN(companyMainOptions.trademark);
 
     const fields: FIELDS_TYPE = {
       ...TrendyolMainFields({

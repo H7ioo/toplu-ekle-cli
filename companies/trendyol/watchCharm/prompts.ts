@@ -160,7 +160,7 @@ export async function watchCharm(
         // Example: SB-Watch1-Kalp, SB-1-B, SB-1-2-3-4-A
         const productModalCode = `${productMainOptions.productCode}-${phoneCode}-${watchCharmModalWithoutSpaces}`;
 
-        const barcode = generateGTIN();
+        const barcode = generateGTIN(companyMainOptions.trademark);
 
         const fields: FIELDS_TYPE = {
           ...TrendyolMainFields({
