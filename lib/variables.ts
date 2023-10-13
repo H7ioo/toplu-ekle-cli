@@ -25,6 +25,7 @@ export const prodcutCategories = {
   hepsiburada: {
     phoneCase: "Kılıf",
     headphoneCase: "Kulaklık kılıfı",
+    watchBand: "Saat kordonu",
   },
 } as const;
 
@@ -46,6 +47,7 @@ export const sheetNames: SheetNames = {
   hepsiburada: {
     phoneCase: "Kılıflar",
     headphoneCase: "Bluetooth Kulaklık Aksesuarları",
+    watchBand: "5cdae8208f5811000fde4296",
   },
 } as const;
 

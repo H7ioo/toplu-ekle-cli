@@ -47,8 +47,9 @@ registerPrompts();
           const categories = answers.companies
             .map((company) => Object.values(prodcutCategories[company]))
             .flat();
+          // TODO: DOESN'T WORK
           return categories.filter(
-            (item, index) => categories.indexOf(item) === index
+            (item, index) => !(categories.indexOf(item) === index)
           );
         }
         throw new Error("Company doesn't exists!");

@@ -11,6 +11,7 @@ import { lengthValidator, numberPromptConfig } from "../../lib/utils";
 import { HEPSIBURADA_SUFFIX } from "./variables";
 import { phoneCase } from "./phoneCase/prompts";
 import { headphoneCase } from "./headphoneCase/prompts";
+import { watchBand } from "./watchBand/prompts";
 //
 export const HepsiburadaPromptsWrapper: Record<
   keyof ProdcutCategories["hepsiburada"],
@@ -18,8 +19,7 @@ export const HepsiburadaPromptsWrapper: Record<
     productMainOptions: ProductMainOptions,
     companyMainOptions: HepsiburadaMainOptions
   ) => ReturnType<
-    typeof phoneCase | typeof headphoneCase
-    // | typeof watchBand
+    typeof phoneCase | typeof headphoneCase | typeof watchBand
     // | typeof watchCharm
     // | typeof cableProtector
     // | typeof screenProtector
@@ -28,7 +28,7 @@ export const HepsiburadaPromptsWrapper: Record<
 > = {
   phoneCase,
   headphoneCase,
-  // watchBand,
+  watchBand,
   // watchCharm,
   // cableProtector,
   // screenProtector,
