@@ -52,7 +52,6 @@ export async function caseStand(
             return capitalizeLetters(colorAnswer);
           });
       },
-      validate: (input) => lengthValidator(input, true),
       suffix: HEPSIBURADA_SUFFIX,
     },
   ];
