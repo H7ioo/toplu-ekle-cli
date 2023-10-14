@@ -35,7 +35,7 @@ export async function caseStand(
 ) {
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
     {
-      type: "search-list",
+      type: "search-checkbox",
       name: "colors",
       message: "Renk seçiniz",
       choices: CaseStand_ColorProductType,
