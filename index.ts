@@ -124,7 +124,10 @@ registerPrompts();
     let brand: string;
     if ("Uyumlu Marka" in result.products[0]) {
       brand = result.products[0]?.["Uyumlu Marka"];
-    } else if ("productKnownBrandName" in result) {
+    } else if (
+      "productKnownBrandName" in result &&
+      result.productKnownBrandName !== undefined
+    ) {
       brand = result.productKnownBrandName;
     } else {
       brand = "UNKNOWN";
