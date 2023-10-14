@@ -19,13 +19,18 @@ export const prodcutCategories = {
     cableProtector: "Kablo koryucu seti",
     screenProtector: "Ekran koruyucu",
     lensProtector: "Lens koruyucu",
+    caseStand: "Aparat",
     // Saat Kasası
-    // Aparat
   },
   hepsiburada: {
     phoneCase: "Kılıf",
     headphoneCase: "Kulaklık kılıfı",
     watchBand: "Saat kordonu",
+    // watchCharm: "Kordon süsü",
+    // cableProtector: "Kablo koryucu seti",
+    // screenProtector: "Ekran koruyucu",
+    // lensProtector: "Lens koruyucu",
+    caseStand: "Aparat",
   },
 } as const;
 
@@ -43,11 +48,17 @@ export const sheetNames: SheetNames = {
     cableProtector: "Ürünlerinizi Burada Listeleyin",
     screenProtector: "Ürünlerinizi Burada Listeleyin",
     lensProtector: "Ürünlerinizi Burada Listeleyin",
+    caseStand: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",
     headphoneCase: "Bluetooth Kulaklık Aksesuarları",
     watchBand: "5cdae8208f5811000fde4296",
+    // watchCharm: "Ürünlerinizi Burada Listeleyin",
+    // cableProtector: "Ürünlerinizi Burada Listeleyin",
+    // screenProtector: "Ürünlerinizi Burada Listeleyin",
+    // lensProtector: "Ürünlerinizi Burada Listeleyin",
+    caseStand: "Diğer Telefon Aksesuarları",
   },
 } as const;
 

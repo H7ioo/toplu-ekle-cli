@@ -12,6 +12,7 @@ import { HEPSIBURADA_SUFFIX } from "./variables";
 import { phoneCase } from "./phoneCase/prompts";
 import { headphoneCase } from "./headphoneCase/prompts";
 import { watchBand } from "./watchBand/prompts";
+import { caseStand } from "./caseStand/prompts";
 //
 export const HepsiburadaPromptsWrapper: Record<
   keyof ProdcutCategories["hepsiburada"],
@@ -19,7 +20,10 @@ export const HepsiburadaPromptsWrapper: Record<
     productMainOptions: ProductMainOptions,
     companyMainOptions: HepsiburadaMainOptions
   ) => ReturnType<
-    typeof phoneCase | typeof headphoneCase | typeof watchBand
+    | typeof phoneCase
+    | typeof headphoneCase
+    | typeof watchBand
+    | typeof caseStand
     // | typeof watchCharm
     // | typeof cableProtector
     // | typeof screenProtector
@@ -29,6 +33,7 @@ export const HepsiburadaPromptsWrapper: Record<
   phoneCase,
   headphoneCase,
   watchBand,
+  caseStand,
   // watchCharm,
   // cableProtector,
   // screenProtector,
