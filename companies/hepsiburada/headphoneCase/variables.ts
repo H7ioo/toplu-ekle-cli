@@ -333,9 +333,9 @@ export const HeadphoneCase_HeadphoneAccessoryType = ["Askı", "Kılıf"] as cons
 export const HeadphoneCase_CustomHeadphonesList = [
   "Airpods 1. Nesil",
   "Airpods 2. Nesil",
-  "Airpods 2. Nesil Pro",
   "Airpods 3. Nesil",
   "Airpods Pro",
+  "Airpods 2. Nesil Pro",
   "Belirtilmemiş",
   "Cx True Wireless",
   "Enco Buds",

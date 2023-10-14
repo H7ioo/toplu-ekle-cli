@@ -4,13 +4,19 @@ import {
   HeadphoneCase_GuaranteePeriods,
   HeadphoneCase_HeadPhoneBrands,
   HeadphoneCase_HeadphonesList,
+  HeadphoneCase_CustomHeadphonesList,
 } from "./variables";
 export const HeadphoneCaseOptionsScheme = z
   .object({
     colors: z.array(z.string()),
     guaranteePeriod: z.enum(HeadphoneCase_GuaranteePeriods),
     headPhoneBrand: z.enum(HeadphoneCase_HeadPhoneBrands).optional(),
-    headPhonesList: z.array(z.enum(HeadphoneCase_HeadphonesList)),
+    headPhonesList: z.array(
+      z.enum([
+        ...HeadphoneCase_HeadphonesList,
+        ...HeadphoneCase_CustomHeadphonesList,
+      ])
+    ),
     customHeadPhoneList: z.array(z.string()),
     productKnownBrandName: z.string(),
   })

@@ -50,9 +50,9 @@ export const HeadphoneCase_HeadPhoneBrands = [
  */
 export const HeadphoneCase_HeadphonesList = [
   "Airpods 2. Nesil",
-  "Airpods 2. Nesil Pro",
   "Airpods 3. Nesil",
   "Airpods Pro",
+  "Airpods 2. Nesil Pro",
   "Belirtilmemiş",
   "Cx True Wireless",
   "Enco Buds",
@@ -72,3 +72,10 @@ export const HeadphoneCase_HeadphonesList = [
   "Wf-c500",
   "WI-C310",
 ] as const;
+
+/**
+ * @CategoryName Kulaklık Kılıfı Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kulaklık Kılıfı
+ * @Category 3494
+ * @Selfmade
+ */
+export const HeadphoneCase_CustomHeadphonesList = ["Airpods 1. Nesil"] as const;

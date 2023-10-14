@@ -21,6 +21,7 @@ import {
   HeadphoneFieldsScheme,
 } from "./types";
 import {
+  HeadphoneCase_CustomHeadphonesList,
   HeadphoneCase_GuaranteePeriods,
   HeadphoneCase_HeadPhoneBrands,
   HeadphoneCase_HeadphonesList,
@@ -69,7 +70,10 @@ export async function headphoneCase(
       type: "search-checkbox",
       name: "headPhonesList",
       message: `Kulaklık modelleri seçiniz`,
-      choices: HeadphoneCase_HeadphonesList,
+      choices: [
+        ...HeadphoneCase_CustomHeadphonesList,
+        ...HeadphoneCase_HeadphonesList,
+      ],
       suffix: TRENDYOL_SUFFIX,
     },
     {
