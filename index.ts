@@ -80,6 +80,38 @@ registerPrompts();
 
   const configData = await configPrompt();
 
+  if (selectedCompanies.includes("hepsiburada")) {
+    const companyMainOptions = await HepsiburadaMainPrompts();
+    const result = await HepsiburadaPromptsWrapper[prodcutCategory](
+      productMainOptions,
+      companyMainOptions
+    );
+
+    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
+
+    let brand: string;
+    if ("Uyumlu Marka" in result.products[0]) {
+      brand = result.products[0]?.["Uyumlu Marka"];
+    } else if (
+      "productKnownBrandName" in result &&
+      result.productKnownBrandName !== undefined
+    ) {
+      brand = result.productKnownBrandName;
+    } else {
+      brand = "UNKNOWN";
+    }
+
+    await writeToExcel({
+      company: "hepsiburada",
+      category: result.category,
+      caseBrand: brand,
+      trademark: result.products[0]?.Marka ?? "",
+      outPath: configData.path,
+      data: result.products,
+      mainModalCode: productMainOptions.productCode,
+    });
+  }
+
   if (selectedCompanies.includes("trendyol")) {
     const companyMainOptions = await TrendyolMainPrompts();
     const result = await TrendyolPromptsWrapper[prodcutCategory](
@@ -104,37 +136,6 @@ registerPrompts();
 
     await writeToExcel({
       company: "trendyol",
-      category: result.category,
-      caseBrand: brand,
-      trademark: result.products[0]?.Marka ?? "",
-      outPath: configData.path,
-      data: result.products,
-      mainModalCode: productMainOptions.productCode,
-    });
-  }
-  if (selectedCompanies.includes("hepsiburada")) {
-    const companyMainOptions = await HepsiburadaMainPrompts();
-    const result = await HepsiburadaPromptsWrapper[prodcutCategory](
-      productMainOptions,
-      companyMainOptions
-    );
-
-    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
-
-    let brand: string;
-    if ("Uyumlu Marka" in result.products[0]) {
-      brand = result.products[0]?.["Uyumlu Marka"];
-    } else if (
-      "productKnownBrandName" in result &&
-      result.productKnownBrandName !== undefined
-    ) {
-      brand = result.productKnownBrandName;
-    } else {
-      brand = "UNKNOWN";
-    }
-
-    await writeToExcel({
-      company: "hepsiburada",
       category: result.category,
       caseBrand: brand,
       trademark: result.products[0]?.Marka ?? "",
