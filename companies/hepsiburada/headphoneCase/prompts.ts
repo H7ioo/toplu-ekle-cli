@@ -132,7 +132,12 @@ export async function headphoneCase(
       const headphoneCode = removeWhiteSpaces(headPhoneWithoutTheBrand);
 
       // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-      const productTitle = `${result.productKnownBrandName} ${headPhoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`;
+      // ! Airpods should not be in the title for some reason
+      const productTitle =
+        `${result.productKnownBrandName} ${headPhoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`.replace(
+          "Airpods",
+          "Arpds"
+        );
 
       // Example: SB-11Pro
       const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;

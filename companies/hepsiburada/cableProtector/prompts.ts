@@ -143,6 +143,6 @@ export async function cableProtector(
   return {
     products,
     category: CATEGORY_NAME,
-    productKnownBrandName: undefined,
+    productKnownBrandName: result.productKnownBrandName,
   };
 }
