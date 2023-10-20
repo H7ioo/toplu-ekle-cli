@@ -34,7 +34,7 @@ export const CableProtector_GuaranteePeriods = [
  * @Field Ürün Tipi
  */
 export const CableProtector_ProdcutTypes = [
-  "Adaptör ve Kablo Koruyucu Set",
   "Belirtilmemiş",
+  "Adaptör ve Kablo Koruyucu Set",
   "Kablo Koruyucu",
 ] as const;

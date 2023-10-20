@@ -4,6 +4,7 @@ import {
   capitalizeLetters,
   cleanUp,
   generateGTIN,
+  lengthValidator,
   removeWhiteSpaces,
 } from "../../../lib/utils";
 import { sheetNames } from "../../../lib/variables";
@@ -20,19 +21,33 @@ import {
   CaseStand_ColorProductType,
   CaseStand_ColorVariant,
 } from "./variables";
+import { CableProtector_ProdcutTypes } from "../../trendyol/cableProtector/variables";
 
 const CATEGORY_NAME: keyof (typeof sheetNames)["hepsiburada"] =
-  "caseStand" as const;
+  "cableProtector" as const;
 type OPTIONS_TYPE = CaseStandOptions;
 const OPTIONS_SCHEME = CaseStandOptionsScheme;
 type FIELDS_TYPE = CaseStandFieldsOptions;
 const FIELDS_SCHEME = CaseStandFieldsScheme;
 
-export async function caseStand(
+export async function cableProtector(
   productMainOptions: ProductMainOptions,
   companyMainOptions: HepsiburadaMainOptions
 ) {
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
+    {
+      type: "input",
+      name: "productKnownBrandName",
+      message:
+        "Markanın bilinen adı ve *watt bilgisi yazınız (ör. iPhone 18-20w, iPhone, Apple)",
+      filter: (input: string) => {
+        return cleanUp(input, false);
+      },
+      validate: (input) => {
+        return lengthValidator(input, true);
+      },
+      suffix: HEPSIBURADA_SUFFIX,
+    },
     {
       type: "search-checkbox",
       name: "colors",
@@ -53,6 +68,13 @@ export async function caseStand(
       },
       suffix: HEPSIBURADA_SUFFIX,
     },
+    {
+      type: "search-list",
+      name: "productType",
+      message: "Ürün tipi seçiniz",
+      choices: CableProtector_ProdcutTypes,
+      suffix: HEPSIBURADA_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -70,11 +92,20 @@ export async function caseStand(
         c
       ] as (typeof CaseStand_ColorProductType)[number];
 
-      // Example: Astronot Standlı Aparat vs.
-      const productTitle = `${productMainOptions.productTitle}`;
+      // Apple, iPhone18-20W
+      const phoneCode = removeWhiteSpaces(result.productKnownBrandName);
 
-      // Example: SB-11Pro
-      const productModalCode = `${productMainOptions.productCode}`;
+      // Example: Apple 18-20W Uyumlu ...
+      const productTitle = `${result.productKnownBrandName} 
+      ${
+        result.productType === "Adaptör ve Kablo Koruyucu Set"
+          ? "Şarj Adaptörü"
+          : ""
+      }
+       ile Uyumlu ${productMainOptions.productTitle}`;
+
+      // Example: SB-Apple
+      const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
       const productCodeForHepsiburada =
         `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
