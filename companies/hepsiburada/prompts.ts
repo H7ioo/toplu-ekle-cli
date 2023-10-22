@@ -14,6 +14,7 @@ import { headphoneCase } from "./headphoneCase/prompts";
 import { watchBand } from "./watchBand/prompts";
 import { caseStand } from "./caseStand/prompts";
 import { cableProtector } from "./cableProtector/prompts";
+import { inCarPhoneHolder } from "./inCarPhoneHolder/prompts";
 //
 export const HepsiburadaPromptsWrapper: Record<
   keyof ProdcutCategories["hepsiburada"],
@@ -29,6 +30,7 @@ export const HepsiburadaPromptsWrapper: Record<
     | typeof cableProtector
     // | typeof screenProtector
     // | typeof lensProtector
+    | typeof inCarPhoneHolder
   >
 > = {
   phoneCase,
@@ -39,6 +41,7 @@ export const HepsiburadaPromptsWrapper: Record<
   cableProtector,
   // screenProtector,
   // lensProtector,
+  inCarPhoneHolder,
 };
 
 export async function HepsiburadaMainPrompts() {

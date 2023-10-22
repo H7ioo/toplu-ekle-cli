@@ -20,6 +20,7 @@ import { watchBand } from "./watchBand/prompts";
 import { watchCharm } from "./watchCharm/prompts";
 import { lensProtector } from "./lensProtector/prompts";
 import { caseStand } from "./caseStand/prompts";
+import { inCarPhoneHolder } from "./inCarPhoneHolder/prompts";
 
 export const TrendyolPromptsWrapper: Record<
   keyof ProdcutCategories["trendyol"],
@@ -35,6 +36,7 @@ export const TrendyolPromptsWrapper: Record<
     | typeof screenProtector
     | typeof lensProtector
     | typeof caseStand
+    | typeof inCarPhoneHolder
   >
 > = {
   phoneCase,
@@ -45,6 +47,7 @@ export const TrendyolPromptsWrapper: Record<
   screenProtector,
   lensProtector,
   caseStand,
+  inCarPhoneHolder,
 };
 
 export async function TrendyolMainPrompts() {
