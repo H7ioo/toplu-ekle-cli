@@ -21,7 +21,7 @@ export const prodcutCategories = {
     lensProtector: "Lens koruyucu",
     caseStand: "Aparat",
     // Saat Kasası
-    // Kulaklık
+    earphone: "Kulaklık",
     inCarPhoneHolder: "Araç içi telefon tutucu",
   },
   hepsiburada: {
@@ -34,7 +34,7 @@ export const prodcutCategories = {
     // lensProtector: "Lens koruyucu",
     caseStand: "Aparat",
     // Saat Kasası
-    // Kulaklık
+    earphone: "Kulaklık",
     inCarPhoneHolder: "Araç içi telefon tutucu",
   },
 } as const;
@@ -55,6 +55,7 @@ export const sheetNames: SheetNames = {
     lensProtector: "Ürünlerinizi Burada Listeleyin",
     caseStand: "Ürünlerinizi Burada Listeleyin",
     inCarPhoneHolder: "Ürünlerinizi Burada Listeleyin",
+    earphone: "Ürünlerinizi Burada Listeleyin",
   },
   hepsiburada: {
     phoneCase: "Kılıflar",
@@ -66,6 +67,7 @@ export const sheetNames: SheetNames = {
     // lensProtector: "Ürünlerinizi Burada Listeleyin",
     caseStand: "Diğer Telefon Aksesuarları",
     inCarPhoneHolder: "Araç İçi Telefon Tutacakları",
+    earphone: "Kulak İçi Kulaklık",
   },
 } as const;
 
