@@ -22,6 +22,7 @@ export const PhoneCaseOptionsScheme = z
     guaranteePeriod: z.enum(PhoneCase_GuaranteePeriods).optional(),
     phoneBrand: z.enum(PhoneCase_PhoneBrands).optional(),
     productKnownBrandName: z.string(),
+    includeOptionInTitle: z.boolean(),
   })
   .refine(({ phonesList, customPhonesList }) => {
     if (!phonesList && !customPhonesList) return false;

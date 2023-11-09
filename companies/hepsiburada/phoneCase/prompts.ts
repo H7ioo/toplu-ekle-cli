@@ -78,10 +78,11 @@ export async function phoneCase(
       message: `Telefon modelleri yazınız (aralarında virgül koyarak)`,
       filter: (input: string) => {
         if (!lengthValidator(input)) return [];
-        return cleanUp(input)
+        return cleanUp(input, false)
           .split(",")
           .map((phone) => {
-            return capitalizeLetters(phone);
+            // return capitalizeLetters(phone).replace(/iphone/gi, "iPhone");
+            return phone;
           });
       },
       validate: (input, answers) => {
@@ -144,6 +145,13 @@ export async function phoneCase(
       },
       suffix: HEPSIBURADA_SUFFIX,
     },
+    {
+      type: "confirm",
+      name: "includeOptionInTitle",
+      message: "Seçenek ürünün başlığında yer alsın mı?",
+      default: false,
+      suffix: HEPSIBURADA_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -184,7 +192,11 @@ export async function phoneCase(
         const phoneCode = removeWhiteSpaces(phoneWithoutTheBrand);
 
         // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-        const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`;
+        const productTitle = `${
+          result.productKnownBrandName
+        } ${phoneWithoutTheBrand} Uyumlu ${
+          result.includeOptionInTitle && `${option} `
+        }${productMainOptions.productTitle}`;
 
         // Example: SB-11Pro
         const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;

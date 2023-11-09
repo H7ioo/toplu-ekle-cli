@@ -25,6 +25,7 @@ import {
   WatchBand_CustomSizes,
   WatchBand_GuaranteePeriods,
   WatchBand_Materials,
+  WatchBand_Models,
   WatchBand_Sizes,
 } from "./variables";
 
@@ -135,6 +136,13 @@ export async function watchBand(
       choices: WatchBand_Brands,
       suffix: TRENDYOL_SUFFIX,
     },
+    {
+      type: "search-list",
+      name: "model",
+      message: "Uyumlu model seçiniz",
+      choices: WatchBand_Models,
+      suffix: TRENDYOL_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -224,6 +232,7 @@ export async function watchBand(
             replaceEmptyOptionWithString(result.watchBandMaterial) ?? "",
 
           "Uyumlu Marka": result.watchBandBrand,
+          "Uyumlu Model": replaceEmptyOptionWithString(result.model),
         };
 
         FIELDS_SCHEME.parse(fields);

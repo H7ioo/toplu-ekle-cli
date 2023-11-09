@@ -26,6 +26,7 @@ export const PhoneCaseOptionsScheme = z
     phoneWaterProof: z.enum(PhoneCase_WaterProof).optional(),
     options: z.array(z.string()),
     productKnownBrandName: z.string(),
+    includeOptionInTitle: z.boolean(),
   })
   .refine(({ phonesList, customPhonesList }) => {
     if (!phonesList && !customPhonesList) return false;
@@ -46,6 +47,7 @@ export const PhoneCaseFieldsScheme = z
     "Telefon Modeli": z.enum([
       ...PhoneCase_PhonesList,
       ...PhoneCase_PhonesListExtend,
+      "",
     ]),
     "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands]),
     "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),

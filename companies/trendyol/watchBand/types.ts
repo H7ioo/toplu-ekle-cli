@@ -5,6 +5,7 @@ import {
   WatchBand_CustomSizes,
   WatchBand_GuaranteePeriods,
   WatchBand_Materials,
+  WatchBand_Models,
   WatchBand_Sizes,
 } from "./variables";
 export const WatchBandOptionsScheme = z
@@ -18,6 +19,7 @@ export const WatchBandOptionsScheme = z
     guaranteePeriod: z.enum(WatchBand_GuaranteePeriods),
     watchBandMaterial: z.enum(WatchBand_Materials).optional(),
     watchBandBrand: z.enum(WatchBand_Brands),
+    model: z.enum(WatchBand_Models),
     productKnownBrandName: z.string(),
   })
   .refine(({ watchBandSizesList, customWatchBandSizesList }) => {
@@ -39,6 +41,7 @@ export const WatchBandFieldsScheme = z
     "Garanti Süresi": z.enum(WatchBand_GuaranteePeriods),
     Materyal: z.enum([...WatchBand_Materials, ""]),
     "Uyumlu Marka": z.enum(WatchBand_Brands),
+    "Uyumlu Model": z.enum([...WatchBand_Models, ""]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
 /**
