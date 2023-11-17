@@ -67,7 +67,6 @@ export async function earphone(
       validate: (input) => lengthValidator(input, true),
       suffix: HEPSIBURADA_SUFFIX,
     },
-
     {
       type: "search-list",
       name: "model",

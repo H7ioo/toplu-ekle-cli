@@ -795,6 +795,8 @@ export const PhoneCase_PhonesListExtend = [
   "Xiaomi Redmi Note 11",
   "Xiaomi Redmi Note 11 Pro 5G",
   "Xiaomi Redmi Note 12 Pro 4G",
+  "Redmi Note 12 Plus",
+  "Redmi Note 12 Pro Plus",
 ] as const;
 
 /**

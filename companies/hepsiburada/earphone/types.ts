@@ -23,7 +23,6 @@ export const EarphoneOptionsScheme = z.object({
   noiseCancel: z.enum(Earphone_NoiseCancel),
   cableLength: z.enum(Earphone_CableLength),
   packageContent: z.enum(Earphone_PackageContent),
-  // productKnownBrandName: z.string(),
 });
 /**
  * @CategoryName Telefon > Cep Telefonu Aksesuarları > Bluetooth Kulaklık Aksesuarları

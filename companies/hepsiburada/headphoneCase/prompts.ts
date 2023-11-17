@@ -96,6 +96,31 @@ export async function headphoneCase(
       choices: HeadphoneCase_HeadphoneAccessoryType,
       suffix: HEPSIBURADA_SUFFIX,
     },
+    {
+      type: "confirm",
+      name: "includeOptionInTitle",
+      message: "Renk ürünün başlığında yer alsın mı?",
+      default: false,
+      suffix: HEPSIBURADA_SUFFIX,
+    },
+    {
+      type: "input",
+      name: "includeInTitleOptions",
+      // Hello kitty pembe ise winnie sarı ise sonuç Hello kitty pembe Hello kitty sarı... olacak
+      message: `Seçenekleri yazınız (her renk için eklenecek!) (aralarında virgül koyarak)`,
+      when(answers) {
+        answers.includeInTitleOptions = [""];
+        return answers.includeOptionInTitle;
+      },
+      filter: (input: string) => {
+        if (!lengthValidator(input)) return [];
+        return cleanUp(input)
+          .split(",")
+          .map((phone) => {
+            return capitalizeLetters(phone);
+          });
+      },
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -106,67 +131,72 @@ export async function headphoneCase(
 
   const products: FIELDS_TYPE[] = [];
 
-  // # Colors Loop
-  for (let c = 0; c < result.colors.length; c++) {
-    const color = result.colors[c] as (typeof HeadphoneCase_Colors)[number];
+  // # Options Loop
+  for (let op = 0; op < result.includeInTitleOptions.length; op++) {
+    const option = result.includeInTitleOptions[op]!;
 
-    // # Headphones Loop
-    for (
-      let p = 0;
-      p < [...result.headPhonesList, ...result.customHeadPhoneList].length;
-      p++
-    ) {
-      const headPhone = [
-        ...result.headPhonesList,
-        ...result.customHeadPhoneList,
-      ][p] as (typeof HeadphoneCase_CustomHeadphonesList)[number];
-      // Galaxy A12 or A12 based on the input
-      const headPhoneWithoutTheBrand = capitalizeLetters(
-        cleanUp(
-          replaceTurkishI(headPhone).toLowerCase().replace(regex, ""),
-          false
-        )
-      );
+    // # Colors Loop
+    for (let c = 0; c < result.colors.length; c++) {
+      const color = result.colors[c] as (typeof HeadphoneCase_Colors)[number];
 
-      // 11Pro, GalaxyA12, A12
-      const headphoneCode = removeWhiteSpaces(headPhoneWithoutTheBrand);
-
-      // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-      // ! Airpods should not be in the title for some reason
-      const productTitle =
-        `${result.productKnownBrandName} ${headPhoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`.replace(
-          "Airpods",
-          "Arpds"
+      // # Headphones Loop
+      for (
+        let p = 0;
+        p < [...result.headPhonesList, ...result.customHeadPhoneList].length;
+        p++
+      ) {
+        const headPhone = [
+          ...result.headPhonesList,
+          ...result.customHeadPhoneList,
+        ][p] as (typeof HeadphoneCase_CustomHeadphonesList)[number];
+        // Galaxy A12 or A12 based on the input
+        const headPhoneWithoutTheBrand = capitalizeLetters(
+          cleanUp(
+            replaceTurkishI(headPhone).toLowerCase().replace(regex, ""),
+            false
+          )
         );
 
-      // Example: SB-11Pro
-      const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
+        // 11Pro, GalaxyA12, A12
+        const headphoneCode = removeWhiteSpaces(headPhoneWithoutTheBrand);
 
-      const barcode = generateGTIN(companyMainOptions.trademark);
+        // Example: iPhone 11 Pro Uyumlu I Love Your Mom
+        // ! Airpods should not be in the title for some reason
+        const productTitle = `${
+          result.productKnownBrandName
+        } ${headPhoneWithoutTheBrand} Uyumlu ${
+          result.includeOptionInTitle ? `${option} ` : ""
+        }${productMainOptions.productTitle}`.replace("Airpods", "Arpds");
 
-      const productCodeForHepsiburada =
-        `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
+        // Example: SB-11Pro
+        const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
 
-      const fields: FIELDS_TYPE = {
-        ...HepsiburadaMainFields({
-          barcode,
-          productModalCode,
-          trademark: companyMainOptions.trademark,
-          productTitle,
-          productDescription: productMainOptions.productDescription,
-          price: productMainOptions.price,
-          productCode: productCodeForHepsiburada,
-          stockAmount: productMainOptions.stockAmount,
-          guaranteePeriod: companyMainOptions.guaranteePeriod,
-          productVideo: companyMainOptions.productVideo,
-        }),
-        Renk: replaceEmptyOptionWithString(color),
-        "Kulaklık Aksesuarı Türü": result.accessoryType,
-      };
+        const barcode = generateGTIN(companyMainOptions.trademark);
 
-      FIELDS_SCHEME.parse(fields);
+        const productCodeForHepsiburada =
+          `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
 
-      products.push(fields);
+        const fields: FIELDS_TYPE = {
+          ...HepsiburadaMainFields({
+            barcode,
+            productModalCode,
+            trademark: companyMainOptions.trademark,
+            productTitle,
+            productDescription: productMainOptions.productDescription,
+            price: productMainOptions.price,
+            productCode: productCodeForHepsiburada,
+            stockAmount: productMainOptions.stockAmount,
+            guaranteePeriod: companyMainOptions.guaranteePeriod,
+            productVideo: companyMainOptions.productVideo,
+          }),
+          Renk: replaceEmptyOptionWithString(color),
+          "Kulaklık Aksesuarı Türü": result.accessoryType,
+        };
+
+        FIELDS_SCHEME.parse(fields);
+
+        products.push(fields);
+      }
     }
   }
 

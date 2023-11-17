@@ -114,6 +114,13 @@ export async function headphoneCase(
       choices: HeadphoneCase_HeadPhoneBrands,
       suffix: TRENDYOL_SUFFIX,
     },
+    {
+      type: "confirm",
+      name: "includeOptionInTitle",
+      message: "Renk ürünün başlığında yer alsın mı?",
+      default: false,
+      suffix: TRENDYOL_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -151,11 +158,11 @@ export async function headphoneCase(
 
       // Example: iPhone 11 Pro Uyumlu I Love Your Mom
       // ! Airpods should not be in the title for some reason
-      const productTitle =
-        `${result.productKnownBrandName} ${headPhoneWithoutTheBrand} Uyumlu ${productMainOptions.productTitle}`.replace(
-          "Airpods",
-          "Arpds"
-        );
+      const productTitle = `${
+        result.productKnownBrandName
+      } ${headPhoneWithoutTheBrand} Uyumlu ${
+        result.includeOptionInTitle ? `${color} ` : ""
+      }${productMainOptions.productTitle}`.replace("Airpods", "Arpds");
 
       // Example: SB-11Pro
       const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;

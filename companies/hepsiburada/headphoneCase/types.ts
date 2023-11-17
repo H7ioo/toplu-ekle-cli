@@ -12,6 +12,8 @@ export const HeadphoneCaseOptionsScheme = z
     headPhonesList: z.array(z.enum(HeadphoneCase_CustomHeadphonesList)),
     customHeadPhoneList: z.array(z.string()),
     productKnownBrandName: z.string(),
+    includeOptionInTitle: z.boolean(),
+    includeInTitleOptions: z.array(z.string()),
   })
   .refine(({ headPhonesList, customHeadPhoneList }) => {
     if (!headPhonesList && !customHeadPhoneList) return false;

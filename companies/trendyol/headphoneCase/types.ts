@@ -19,6 +19,7 @@ export const HeadphoneCaseOptionsScheme = z
     ),
     customHeadPhoneList: z.array(z.string()),
     productKnownBrandName: z.string(),
+    includeOptionInTitle: z.boolean(),
   })
   .refine(({ headPhonesList, customHeadPhoneList }) => {
     if (!headPhonesList && !customHeadPhoneList) return false;

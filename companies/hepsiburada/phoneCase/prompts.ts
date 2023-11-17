@@ -82,7 +82,7 @@ export async function phoneCase(
           .split(",")
           .map((phone) => {
             // return capitalizeLetters(phone).replace(/iphone/gi, "iPhone");
-            return phone;
+            return phone.trim();
           });
       },
       validate: (input, answers) => {
@@ -195,7 +195,7 @@ export async function phoneCase(
         const productTitle = `${
           result.productKnownBrandName
         } ${phoneWithoutTheBrand} Uyumlu ${
-          result.includeOptionInTitle && `${option} `
+          result.includeOptionInTitle ? `${option} ` : ""
         }${productMainOptions.productTitle}`;
 
         // Example: SB-11Pro
