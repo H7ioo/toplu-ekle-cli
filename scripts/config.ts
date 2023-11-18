@@ -41,7 +41,7 @@ registerPrompts();
   const configFile = readFileSync("./data/config.json", "utf8");
   const configData: ConfigFileData = JSON.parse(configFile);
 
-  configData.path = result[option];
+  configData[option] = result[option]!;
 
   writeFile("./data/config.json", JSON.stringify(configData), (err) => {
     if (err) {
