@@ -73,10 +73,10 @@ export const sheetNames: SheetNames = {
 
 export const configQuestionsObject: Record<
   keyof ConfigOptions,
-  DistinctQuestion & { name: "defaultValue" }
+  DistinctQuestion
 > = {
   path: {
-    name: "defaultValue",
+    name: "path",
     type: "directory",
     basePath: homedir(),
     message: "Klasör yolu seçiniz",

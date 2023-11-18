@@ -262,16 +262,38 @@ export async function configPrompt() {
   const configData: ConfigFileData = JSON.parse(configFile);
 
   const configQuestions: QuestionCollection<ConfigOptions> = [
-    {
-      name: "path",
-      type: configQuestionsObject["path"].type,
-      basePath: homedir(),
-      message: configQuestionsObject["path"].message,
-      default: configData["path"].defaultValue ?? undefined,
-      when: configData["path"].alwaysAsk,
-    },
+    // {
+    //   name: "path",
+    //   type: configQuestionsObject["path"].type,
+    //   basePath: homedir(),
+    //   message: configQuestionsObject["path"].message,
+    //   default: configData["path"].defaultValue ?? undefined,
+    //   when: configData["path"].alwaysAsk,
+    // },
   ];
 
+  const configDataKeys = Object.keys(configData);
+
+  const dontAskValues: Partial<ConfigOptions> = {};
+
+  for (let index = 0; index < configDataKeys.length; index++) {
+    const key = configDataKeys[index] as keyof ConfigFileData;
+    const configDataObj = configData[key];
+
+    if (configDataObj.alwaysAsk === false) {
+      dontAskValues[key] = configDataObj.defaultValue;
+    }
+
+    (configQuestions as Array<object>).push({
+      ...configQuestionsObject[key],
+      when: configDataObj.alwaysAsk,
+      default: configDataObj.defaultValue
+        ? configDataObj.defaultValue
+        : undefined,
+    });
+  }
+
   const configOptions = await prompt(configQuestions);
-  return configOptions;
+
+  return { ...configOptions, ...dontAskValues };
 }

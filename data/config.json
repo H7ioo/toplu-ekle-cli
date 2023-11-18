@@ -1,1 +1,7 @@
-{ "path": { "name": "path", "defaultValue": "Downloads", "alwaysAsk": true } }
+{
+  "path": {
+    "name": "path",
+    "defaultValue": "Downloads\\BB\\doing",
+    "alwaysAsk": false
+  }
+}
