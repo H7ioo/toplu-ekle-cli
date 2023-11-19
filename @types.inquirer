@@ -453,11 +453,50 @@ export interface InputQuestionOptions<T extends Answers = Answers> extends Quest
  * @template T
  * The type of the answers.
  */
+export interface DirectoryQuestionOptions<T extends Answers = Answers> extends Question<T> {
+    /**
+     * Transforms the value to display to the user.
+     *
+     * @param input
+     * The input provided by the user.
+     *
+     * @param answers
+     * The answers provided by the users.
+     *
+     * @param flags
+     * Additional information about the value.
+     *
+     * @returns
+     * The value to display to the user.
+     */
+    basePath: string;
+}
+
+/**
+ * Provides options for a question for the {@link InputPrompt `InputPrompt<TQuestion>`}.
+ *
+ * @template T
+ * The type of the answers.
+ */
 export interface InputQuestion<T extends Answers = Answers> extends InputQuestionOptions<T> {
     /**
      * @inheritdoc
      */
     type?: 'input' | undefined;
+}
+
+
+/**
+ * Provides options for a question for the {@link InputPrompt `InputPrompt<TQuestion>`}.
+ *
+ * @template T
+ * The type of the answers.
+ */
+export interface DirectoryQuestion<T extends Answers = Answers> extends DirectoryQuestionOptions<T> {
+    /**
+     * @inheritdoc
+     */
+    type?: 'directory' | undefined;
 }
 
 /**
@@ -743,6 +782,11 @@ export interface QuestionMap<T extends Answers = Answers> {
      * The {@link EditorQuestion `EditorQuestion<T>`} type.
      */
     editor: EditorQuestion<T>;
+
+    /**
+     * The {@link EditorQuestion `EditorQuestion<T>`} type.
+     */
+    directory: DirectoryQuestion<T>;
 }
 
 /**
