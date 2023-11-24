@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { companies, prodcutCategories } from "./variables";
+import { companies, productCategories } from "./variables";
 
 export type Companies = typeof companies;
-export type ProdcutCategories = typeof prodcutCategories;
+export type ProductCategories = typeof productCategories;
 
 export const ProductMainOptionsScheme = z.object({
   productTitle: z.string(),
@@ -42,3 +42,12 @@ export const ConfigFileScheme = z.object({
 export type ConfigFile = z.infer<typeof ConfigFileScheme>;
 
 export type ConfigFileData = Record<keyof ConfigOptions, ConfigFile>;
+
+export type CollectionFileData = {
+  [Company in keyof ProductCategories]: {
+    [Key in keyof ProductCategories[Company]]?: {
+      collectionName: string;
+      values: string[];
+    }[];
+  };
+};

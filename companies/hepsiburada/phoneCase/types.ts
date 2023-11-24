@@ -17,6 +17,7 @@ export const PhoneCaseOptionsScheme = z
     colors: z.array(z.enum([...PhoneCase_Colors])),
     caseMaterial: z.enum(PhoneCase_CaseMaterials).optional(),
     caseType: z.enum(PhoneCase_CaseTypes).optional(),
+    phonesCollection: z.array(z.string()).optional(),
     phonesList: z.array(
       z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
     ),

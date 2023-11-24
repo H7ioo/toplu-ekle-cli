@@ -3755,6 +3755,7 @@ export const PhoneCase_PhonesList = [
   "Redmi Note 12S",
   "Redmi Note 12T",
   "Redmi Note 12T Pro",
+  "Redmi 12",
   "Redmi Note 13",
   "Redmi Note 2",
   "Redmi Note 3",

@@ -1,5 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { ProductMainOptions } from "../../../lib/types";
+import { CollectionFileData, ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -28,6 +28,7 @@ import {
   PhoneCase_PhonesList,
   PhoneCase_PhonesListExtend,
 } from "./variables";
+import { readFileSync } from "fs";
 
 const CATEGORY_ID = 766 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -41,6 +42,9 @@ export async function phoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: TrendyolMainOptions
 ) {
+  const collectionFile = readFileSync("./data/collections.json", "utf8");
+  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
     {
       type: "input",
@@ -69,6 +73,25 @@ export async function phoneCase(
       suffix: TRENDYOL_SUFFIX,
     },
     {
+      type: "checkbox",
+      name: "phonesCollection",
+      choices: collectionData.trendyol[CATEGORY_NAME]?.map(
+        (collection) => collection.collectionName
+      ),
+      filter: (input: string[]) => {
+        return input
+          .map(
+            (collectionName) =>
+              collectionData.trendyol[CATEGORY_NAME]!.find(
+                (collection) => collection.collectionName === collectionName
+              )!.values
+          )
+          .flat(1);
+      },
+      when: collectionData.trendyol[CATEGORY_NAME] !== undefined,
+      suffix: TRENDYOL_SUFFIX,
+    },
+    {
       type: "search-checkbox",
       name: "phonesList",
       message: `Telefon modelleri seçiniz`,
@@ -91,10 +114,10 @@ export async function phoneCase(
       validate: (input, answers) => {
         if (answers?.phonesList) {
           if (answers.phonesList.length <= 0 && input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
+            return "Toplam en az 1 telefon modeli eklenmeli";
         } else {
           if (input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
+            return "Toplam en az 1 telefon modeli eklenmeli";
         }
         return true;
       },
@@ -138,6 +161,8 @@ export async function phoneCase(
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
+  console.log({ result });
+
   OPTIONS_SCHEME.parse(result);
 
   // Regex made to remove Samsung from "Samsung Galaxy A12"
@@ -152,7 +177,12 @@ export async function phoneCase(
     // # Phones Loop
     for (
       let p = 0;
-      p < [...result.phonesList, ...result.customPhonesList].length;
+      p <
+      [
+        ...result.phonesList,
+        ...result.customPhonesList,
+        ...(result.phonesCollection ? result.phonesCollection : ""),
+      ].length;
       p++
     ) {
       const phone = [...result.phonesList, ...result.customPhonesList][

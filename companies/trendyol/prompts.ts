@@ -1,5 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { ProdcutCategories, ProductMainOptions } from "../../lib/types";
+import { ProductCategories, ProductMainOptions } from "../../lib/types";
 import {
   lengthValidator,
   numberPromptConfig,
@@ -24,7 +24,7 @@ import { inCarPhoneHolder } from "./inCarPhoneHolder/prompts";
 import { earphone } from "./earphone/prompts";
 
 export const TrendyolPromptsWrapper: Record<
-  keyof ProdcutCategories["trendyol"],
+  keyof ProductCategories["trendyol"],
   (
     productMainOptions: ProductMainOptions,
     companyMainOptions: TrendyolMainOptions

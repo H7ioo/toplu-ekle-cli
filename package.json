@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node ./index.ts",
     "check": "ts-node ./scripts/checkDirectories.ts",
-    "config": "ts-node ./scripts/config.ts"
+    "config": "ts-node ./scripts/config.ts",
+    "collections": "ts-node ./scripts/collections.ts"
   },
   "keywords": [],
   "author": "",

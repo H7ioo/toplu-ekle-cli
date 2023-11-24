@@ -1,10 +1,30 @@
 import ExcelJS from "exceljs";
 
-import { readFileSync, writeFile } from "fs";
+import { input } from "@inquirer/prompts";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFile,
+  writeFileSync,
+} from "fs";
 import { Question, QuestionCollection, prompt, registerPrompt } from "inquirer";
 import { homedir } from "os";
 import path from "path";
-import { ConfigFileData, ConfigOptions } from "../lib/types";
+import {
+  PhoneCase_PhonesList as Hepsiburada_PhoneCase_PhonesList,
+  PhoneCase_PhonesListExtend as Hepsiburada_PhoneCase_PhonesListExtend,
+} from "../companies/hepsiburada/phoneCase/variables";
+import {
+  PhoneCase_PhonesList as Trendyol_PhoneCase_PhonesList,
+  PhoneCase_PhonesListExtend as Trendyol_PhoneCase_PhonesListExtend,
+} from "../companies/trendyol/phoneCase/variables";
+import {
+  CollectionFileData,
+  ConfigFileData,
+  ConfigOptions,
+  ProductCategories,
+} from "../lib/types";
 import { configDefaultValues, configQuestionsObject } from "../lib/variables";
 import { Companies } from "./types";
 import { EMPTY_OPTION, sheetNames } from "./variables";
@@ -112,7 +132,7 @@ export function numberPromptConfig(required: boolean) {
     },
     validate: (input) => {
       if (required && input === undefined)
-        return "Bu alan rakamlardan oluşmalı ve boş bırakılmamlı.";
+        return "Bu alan rakamlardan oluşmalı ve boş bırakılmamalı.";
       if (input === undefined) return true;
       return true;
     },
@@ -236,7 +256,44 @@ export const isObjectEmpty = (object: object) => {
   return Object.keys(object).length === 0;
 };
 
-export async function setDefaultConfig() {
+// TODO: find a better way
+export function setDefaultCollections() {
+  const collectionsFile = readFileSync("./data/collections.json", "utf8");
+  const collectionsData: CollectionFileData = JSON.parse(collectionsFile);
+
+  const collectionsDefaultValues: CollectionFileData = {
+    hepsiburada: {},
+    trendyol: {},
+  };
+
+  if (isObjectEmpty(collectionsData)) {
+    writeFile(
+      "./data/collections.json",
+      JSON.stringify(collectionsDefaultValues),
+      (err) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      }
+    );
+  }
+
+  if (!Object.keys(collectionsData).includes("trendyol")) {
+    const newObj = { ...collectionsData, trendyol: {} };
+    writeFileSync("./data/collections.json", JSON.stringify(newObj));
+    setDefaultCollections();
+    return;
+  }
+  if (!Object.keys(collectionsData).includes("hepsiburada")) {
+    const newObj = { ...collectionsData, hepsiburada: {} };
+    writeFileSync("./data/collections.json", JSON.stringify(newObj));
+    setDefaultCollections();
+    return;
+  }
+}
+
+export function setDefaultConfig() {
   // Setting config
   const configFile = readFileSync("./data/config.json", "utf8");
   const configData: ConfigFileData = JSON.parse(configFile);
@@ -296,4 +353,100 @@ export async function configPrompt() {
   const configOptions = await prompt(configQuestions);
 
   return { ...configOptions, ...dontAskValues };
+}
+
+// TODO: Meeeh.
+export function checkAndCreateDirectoryFile(
+  directoryToCheck: string,
+  fileToCheck: string
+) {
+  if (!existsSync(directoryToCheck)) {
+    mkdirSync(directoryToCheck, { recursive: true });
+  }
+
+  if (!existsSync(fileToCheck)) {
+    writeFileSync(fileToCheck, JSON.stringify({}));
+  }
+}
+
+// TODO: Better implementation
+export async function createCollection<
+  companyT extends Companies[number] = Companies[number]
+>(company: companyT, category: keyof ProductCategories[companyT]) {
+  const collectionFile = readFileSync("./data/collections.json", "utf8");
+  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+
+  const collectionName = await input({
+    message: "Koleksiyon adı yazınız",
+    validate(value) {
+      if (collectionData[company][category]) {
+        const collectionNameExists = !collectionData[company][category]?.find(
+          (c) => c.collectionName.toLowerCase() === value.toLowerCase()
+        );
+        return collectionNameExists;
+      } else {
+        return lengthValidator(value, true);
+      }
+    },
+  });
+
+  let collectionList: string[] = [];
+
+  if (company === "trendyol") {
+    type Category = keyof ProductCategories["trendyol"];
+    switch (category) {
+      case "phoneCase":
+        collectionList = await prompt<{ collectionList: string[] }>({
+          type: "search-checkbox",
+          name: "collectionList",
+          message: "Koleksiyon değerleri seçiniz",
+          choices: [
+            ...Trendyol_PhoneCase_PhonesList,
+            ...Trendyol_PhoneCase_PhonesListExtend,
+          ],
+          validate: (input: string[]) => lengthValidator(input),
+        }).then((o) => o.collectionList);
+        break;
+
+        // default:
+        break;
+    }
+
+    if (!collectionData.trendyol[category as Category]) {
+      collectionData.trendyol[category as Category] = [];
+    }
+    collectionData.trendyol[category]?.push({
+      collectionName,
+      values: collectionList,
+    });
+  } else if (company === "hepsiburada") {
+    type Category = keyof ProductCategories["hepsiburada"];
+    switch (category) {
+      case "phoneCase":
+        collectionList = await prompt<{ collectionList: string[] }>({
+          type: "search-checkbox",
+          name: "collectionList",
+          message: "Koleksiyon değerleri seçiniz",
+          choices: [
+            ...Hepsiburada_PhoneCase_PhonesList,
+            ...Hepsiburada_PhoneCase_PhonesListExtend,
+          ],
+          validate: (input: string[]) => lengthValidator(input),
+        }).then((o) => o.collectionList);
+        break;
+
+        // default:
+        break;
+    }
+
+    if (!collectionData.hepsiburada[category as Category]) {
+      collectionData.hepsiburada[category as Category] = [];
+    }
+    collectionData.hepsiburada[category]?.push({
+      collectionName,
+      values: collectionList,
+    });
+  }
+
+  writeFileSync("./data/collections.json", JSON.stringify(collectionData));
 }

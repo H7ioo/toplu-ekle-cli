@@ -174,7 +174,9 @@ export async function headphoneCase(
         const barcode = generateGTIN(companyMainOptions.trademark);
 
         const productCodeForHepsiburada =
-          `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
+          `${productModalCode}-${removeWhiteSpaces(color)}${
+            result.includeOptionInTitle ? `-${removeWhiteSpaces(option)}` : ""
+          }`.toUpperCase();
 
         const fields: FIELDS_TYPE = {
           ...HepsiburadaMainFields({

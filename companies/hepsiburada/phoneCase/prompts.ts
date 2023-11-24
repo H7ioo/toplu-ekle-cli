@@ -1,5 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { ProductMainOptions } from "../../../lib/types";
+import { CollectionFileData, ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -32,6 +32,7 @@ import {
   PhoneCase_PhonesListCode,
   PhoneCase_PhoneModelsList,
 } from "./variables";
+import { readFileSync } from "fs";
 
 const CATEGORY_NAME: keyof (typeof sheetNames)["hepsiburada"] =
   "phoneCase" as const;
@@ -44,6 +45,9 @@ export async function phoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: HepsiburadaMainOptions
 ) {
+  const collectionFile = readFileSync("./data/collections.json", "utf8");
+  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
     {
       type: "input",
@@ -63,6 +67,25 @@ export async function phoneCase(
       message: "Renkleri seçiniz",
       choices: PhoneCase_Colors,
       validate: (input) => lengthValidator(input, true),
+      suffix: HEPSIBURADA_SUFFIX,
+    },
+    {
+      type: "checkbox",
+      name: "phonesCollection",
+      choices: collectionData.hepsiburada[CATEGORY_NAME]?.map(
+        (collection) => collection.collectionName
+      ),
+      filter: (input: string[]) => {
+        return input
+          .map(
+            (collectionName) =>
+              collectionData.hepsiburada[CATEGORY_NAME]!.find(
+                (collection) => collection.collectionName === collectionName
+              )!.values
+          )
+          .flat(1);
+      },
+      when: collectionData.hepsiburada[CATEGORY_NAME] !== undefined,
       suffix: HEPSIBURADA_SUFFIX,
     },
     {
@@ -88,10 +111,10 @@ export async function phoneCase(
       validate: (input, answers) => {
         if (answers?.phonesList) {
           if (answers.phonesList.length <= 0 && input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
+            return "Toplam en az 1 telefon modeli eklenmeli";
         } else {
           if (input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
+            return "Toplam en az 1 telefon modeli eklenmeli";
         }
         return true;
       },
@@ -128,7 +151,7 @@ export async function phoneCase(
     {
       type: "search-list",
       name: "phoneWaterProof",
-      message: "Su geçirmezlik seçeniz",
+      message: "Su geçirmezlik seçiniz",
       choices: PhoneCase_WaterProof,
       suffix: HEPSIBURADA_SUFFIX,
     },
@@ -174,7 +197,12 @@ export async function phoneCase(
       // # Phones Loop
       for (
         let p = 0;
-        p < [...result.phonesList, ...result.customPhonesList].length;
+        p <
+        [
+          ...result.phonesList,
+          ...result.customPhonesList,
+          ...(result.phonesCollection ? result.phonesCollection : ""),
+        ].length;
         p++
       ) {
         const phone = [...result.phonesList, ...result.customPhonesList][

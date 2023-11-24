@@ -6,7 +6,7 @@ import {
 } from "./types";
 
 import { QuestionCollection, prompt } from "inquirer";
-import { ProdcutCategories, ProductMainOptions } from "../../lib/types";
+import { ProductCategories, ProductMainOptions } from "../../lib/types";
 import { lengthValidator, numberPromptConfig } from "../../lib/utils";
 import { HEPSIBURADA_SUFFIX } from "./variables";
 import { phoneCase } from "./phoneCase/prompts";
@@ -18,7 +18,7 @@ import { inCarPhoneHolder } from "./inCarPhoneHolder/prompts";
 import { earphone } from "./earphone/prompts";
 //
 export const HepsiburadaPromptsWrapper: Record<
-  keyof ProdcutCategories["hepsiburada"],
+  keyof ProductCategories["hepsiburada"],
   (
     productMainOptions: ProductMainOptions,
     companyMainOptions: HepsiburadaMainOptions

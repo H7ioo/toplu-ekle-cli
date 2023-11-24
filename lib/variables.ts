@@ -3,14 +3,14 @@ import {
   Companies,
   ConfigFile,
   ConfigOptions,
-  ProdcutCategories,
+  ProductCategories,
 } from "./types";
 import { homedir } from "os";
 export const companies = ["trendyol", "hepsiburada"] as const;
 export const KDV = [0, 1, 10, 20] as const;
 export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
 
-export const prodcutCategories = {
+export const productCategories = {
   trendyol: {
     phoneCase: "Kılıf",
     headphoneCase: "Kulaklık kılıfı",
@@ -37,11 +37,11 @@ export const prodcutCategories = {
     earphone: "Kulaklık",
     inCarPhoneHolder: "Araç içi telefon tutucu",
   },
-} as const;
+};
 
 type SheetNames<CompanyT extends Companies[number] = Companies[number]> = {
   [Company in CompanyT]: {
-    [Category in keyof ProdcutCategories[Company]]: string;
+    [Category in keyof ProductCategories[Company]]: string;
   };
 };
 export const sheetNames: SheetNames = {

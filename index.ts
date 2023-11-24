@@ -4,25 +4,29 @@ import {
   TrendyolPromptsWrapper,
 } from "./companies/trendyol/prompts";
 import { productMainPrompt } from "./lib/prompts";
-import { ArrayOfLiterals, Companies, ProdcutCategories } from "./lib/types";
+import { ArrayOfLiterals, Companies, ProductCategories } from "./lib/types";
 import {
   configPrompt,
   lengthValidator,
   registerPrompts,
+  setDefaultCollections,
+  setDefaultConfig,
   writeToExcel,
 } from "./lib/utils";
-import { companies, prodcutCategories } from "./lib/variables";
+import { companies, productCategories } from "./lib/variables";
 import {
   HepsiburadaMainPrompts,
   HepsiburadaPromptsWrapper,
 } from "./companies/hepsiburada/prompts";
 
 registerPrompts();
+setDefaultConfig();
+setDefaultCollections();
 
 (async () => {
-  const { companies: selectedCompanies, prodcutCategory } = await prompt<{
+  const { companies: selectedCompanies, productCategory } = await prompt<{
     companies: ArrayOfLiterals<Companies>;
-    prodcutCategory: keyof ProdcutCategories[Companies[number]];
+    productCategory: keyof ProductCategories[Companies[number]];
   }>([
     {
       name: "companies",
@@ -34,18 +38,18 @@ registerPrompts();
     },
     {
       type: "search-list",
-      name: "prodcutCategory",
-      message: "Ürün kategoresi seçiniz",
+      name: "productCategory",
+      message: "Ürün kategorisi seçiniz",
       choices: (answers) => {
         // 1 Company
         if (answers.companies.length <= 1) {
           const company = answers.companies[0];
-          if (company) return Object.values(prodcutCategories[company]);
+          if (company) return Object.values(productCategories[company]);
         }
         // 2 or more companies
         if (answers.companies.length > 1) {
           const categories = answers.companies
-            .map((company) => Object.values(prodcutCategories[company]))
+            .map((company) => Object.values(productCategories[company]))
             .flat();
           // TODO: DOESN'T WORK
           return categories.filter(
@@ -55,17 +59,17 @@ registerPrompts();
         throw new Error("Company doesn't exists!");
       },
       filter: (
-        input: ProdcutCategories[Companies[number]][keyof ProdcutCategories[Companies[number]]],
+        input: ProductCategories[Companies[number]][keyof ProductCategories[Companies[number]]],
         answers
       ) => {
         // If 1 company exists it will get it. If there are more than one that means that the choices will get narrowed. So, typing only the first company of the array will do it.
         const company = answers.companies[0];
         if (company)
           // Gets the key from the value
-          return Object.keys(prodcutCategories[company]).find((_key) => {
-            const key = _key as keyof ProdcutCategories[Companies[number]];
-            return prodcutCategories[company][key] === input;
-          }) as keyof ProdcutCategories[Companies[number]];
+          return Object.keys(productCategories[company]).find((_key) => {
+            const key = _key as keyof ProductCategories[Companies[number]];
+            return productCategories[company][key] === input;
+          }) as keyof ProductCategories[Companies[number]];
         throw new Error("Company doesn't exists!");
       },
 
@@ -82,12 +86,12 @@ registerPrompts();
 
   if (selectedCompanies.includes("hepsiburada")) {
     const companyMainOptions = await HepsiburadaMainPrompts();
-    const result = await HepsiburadaPromptsWrapper[prodcutCategory](
+    const result = await HepsiburadaPromptsWrapper[productCategory](
       productMainOptions,
       companyMainOptions
     );
 
-    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
+    if (!result.products[0]) throw new Error("Products array is empty!");
 
     let brand: string;
     if ("Uyumlu Marka" in result.products[0]) {
@@ -114,12 +118,12 @@ registerPrompts();
 
   if (selectedCompanies.includes("trendyol")) {
     const companyMainOptions = await TrendyolMainPrompts();
-    const result = await TrendyolPromptsWrapper[prodcutCategory](
+    const result = await TrendyolPromptsWrapper[productCategory](
       productMainOptions,
       companyMainOptions
     );
 
-    if (!result.products[0]) throw new Error("Prodcuts array is empty!");
+    if (!result.products[0]) throw new Error("Products array is empty!");
 
     let brand: string;
 
