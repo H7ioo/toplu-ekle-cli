@@ -3918,6 +3918,8 @@ export const PhoneCase_PhonesList = [
   "Xiaomi 12S",
   "Xiaomi 12S Ultra",
   "Xiaomi 12T",
+  "Mi 12t",
+  "Mi 12t Pro",
   "Xiaomi 12T Pro",
   "Xiaomi 12T/12T Pro",
   "Xiaomi 12X",
@@ -3986,6 +3988,7 @@ export const PhoneCase_PhonesListExtend = [
   "Poco X3",
   "Poco X3 Pro",
   "Galaxy Z Fold 5",
+  "Oppo A16",
 ] as const;
 
 /**

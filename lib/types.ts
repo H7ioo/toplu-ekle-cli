@@ -43,11 +43,30 @@ export type ConfigFile = z.infer<typeof ConfigFileScheme>;
 
 export type ConfigFileData = Record<keyof ConfigOptions, ConfigFile>;
 
-export type CollectionFileData = {
-  [Company in keyof ProductCategories]: {
-    [Key in keyof ProductCategories[Company]]?: {
-      collectionName: string;
-      values: string[];
-    }[];
-  };
-};
+// export type CollectionFileData = {
+//   [Company in keyof ProductCategories]: {
+//     [Key in keyof ProductCategories[Company]]?: {
+//       collectionName: string;
+//       values: string[];
+//     }[];
+//   };
+// };
+
+// TODO: Collections
+// export type CollectionFileData<
+//   CompanyT extends Companies[number] = Companies[number]
+// > = {
+//   company: CompanyT;
+//   category: keyof ProductCategories[CompanyT];
+//   collectionName: string;
+//   values: string[];
+// }[];
+
+export type CollectionFileData<
+  CompanyT extends Companies[number] = Companies[number]
+> = {
+  company: CompanyT;
+  category: keyof ProductCategories[CompanyT];
+  collectionName: string;
+  values: string[];
+}[];

@@ -75,20 +75,33 @@ export async function phoneCase(
     {
       type: "checkbox",
       name: "phonesCollection",
-      choices: collectionData.trendyol[CATEGORY_NAME]?.map(
-        (collection) => collection.collectionName
-      ),
+      message: "Koleksiyon seçiniz",
+      choices: collectionData
+        .filter(
+          (collection) =>
+            collection.company === "trendyol" &&
+            collection.category === CATEGORY_NAME
+        )
+        .map((collection) => collection.collectionName),
       filter: (input: string[]) => {
         return input
           .map(
             (collectionName) =>
-              collectionData.trendyol[CATEGORY_NAME]!.find(
-                (collection) => collection.collectionName === collectionName
+              collectionData.find(
+                (collection) =>
+                  collection.company === "trendyol" &&
+                  collection.category === CATEGORY_NAME &&
+                  collection.collectionName === collectionName
               )!.values
           )
           .flat(1);
       },
-      when: collectionData.trendyol[CATEGORY_NAME] !== undefined,
+      when:
+        collectionData.find(
+          (collection) =>
+            collection.company === "trendyol" &&
+            collection.category === CATEGORY_NAME
+        ) !== undefined,
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -112,12 +125,12 @@ export async function phoneCase(
           });
       },
       validate: (input, answers) => {
-        if (answers?.phonesList) {
-          if (answers.phonesList.length <= 0 && input.length <= 0)
-            return "Toplam en az 1 telefon modeli eklenmeli";
-        } else {
-          if (input.length <= 0)
-            return "Toplam en az 1 telefon modeli eklenmeli";
+        if (
+          !answers?.phonesCollection?.length &&
+          !answers?.phonesList.length &&
+          input.length <= 0
+        ) {
+          return "Toplam en az 1 telefon modeli eklenmeli";
         }
         return true;
       },
@@ -161,8 +174,6 @@ export async function phoneCase(
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
-  console.log({ result });
-
   OPTIONS_SCHEME.parse(result);
 
   // Regex made to remove Samsung from "Samsung Galaxy A12"
@@ -185,9 +196,11 @@ export async function phoneCase(
       ].length;
       p++
     ) {
-      const phone = [...result.phonesList, ...result.customPhonesList][
-        p
-      ] as (typeof PhoneCase_PhonesList)[number];
+      const phone = [
+        ...result.phonesList,
+        ...result.customPhonesList,
+        ...(result.phonesCollection ? result.phonesCollection : ""),
+      ][p] as (typeof PhoneCase_PhonesList)[number];
       // Galaxy A12 or A12 based on the input
       const phoneWithoutTheBrand = capitalizeLetters(
         cleanUp(replaceTurkishI(phone).toLowerCase().replace(regex, ""), false)

@@ -4,7 +4,6 @@ import {
   checkAndCreateDirectoryFile,
   createCollection,
   registerPrompts,
-  setDefaultCollections,
 } from "../lib/utils";
 import { companies, productCategories } from "../lib/variables";
 
@@ -30,7 +29,6 @@ Idk bout this
 
 (async () => {
   checkAndCreateDirectoryFile("./data", "./data/collections.json");
-  setDefaultCollections();
   registerPrompts();
 
   const transaction = await select({

@@ -1,5 +1,9 @@
 import { prompt } from "inquirer";
 import {
+  HepsiburadaMainPrompts,
+  HepsiburadaPromptsWrapper,
+} from "./companies/hepsiburada/prompts";
+import {
   TrendyolMainPrompts,
   TrendyolPromptsWrapper,
 } from "./companies/trendyol/prompts";
@@ -9,19 +13,14 @@ import {
   configPrompt,
   lengthValidator,
   registerPrompts,
-  setDefaultCollections,
   setDefaultConfig,
   writeToExcel,
 } from "./lib/utils";
 import { companies, productCategories } from "./lib/variables";
-import {
-  HepsiburadaMainPrompts,
-  HepsiburadaPromptsWrapper,
-} from "./companies/hepsiburada/prompts";
+import { nanoid } from "nanoid";
 
 registerPrompts();
 setDefaultConfig();
-setDefaultCollections();
 
 (async () => {
   const { companies: selectedCompanies, productCategory } = await prompt<{
@@ -84,6 +83,8 @@ setDefaultCollections();
 
   const configData = await configPrompt();
 
+  const nanoId = nanoid(5);
+
   if (selectedCompanies.includes("hepsiburada")) {
     const companyMainOptions = await HepsiburadaMainPrompts();
     const result = await HepsiburadaPromptsWrapper[productCategory](
@@ -113,6 +114,7 @@ setDefaultCollections();
       outPath: configData.path,
       data: result.products,
       mainModalCode: productMainOptions.productCode,
+      nanoId,
     });
   }
 
@@ -146,6 +148,7 @@ setDefaultCollections();
       outPath: configData.path,
       data: result.products,
       mainModalCode: productMainOptions.productCode,
+      nanoId,
     });
   }
 })();

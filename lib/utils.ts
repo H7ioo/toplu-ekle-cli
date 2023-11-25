@@ -209,6 +209,7 @@ export async function writeToExcel<
   caseBrand,
   trademark,
   company,
+  nanoId,
 }: {
   data: object[];
   outPath: string;
@@ -217,6 +218,7 @@ export async function writeToExcel<
   trademark: string;
   company: CompanyT;
   category: CategoryT;
+  nanoId: string;
 }) {
   // Create a new workbook
   const workbook = new ExcelJS.Workbook();
@@ -237,9 +239,10 @@ export async function writeToExcel<
   data.forEach((dataItem) => worksheet.addRow(Object.values(dataItem)));
 
   // Save workbook
-  // TODO: PATH
   await workbook.xlsx.writeFile(
-    `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}.xlsx`
+    `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}-${new Date().toLocaleDateString(
+      "tr"
+    )}-${nanoId}.xlsx`
   );
 }
 
@@ -255,43 +258,6 @@ export function registerPrompts() {
 export const isObjectEmpty = (object: object) => {
   return Object.keys(object).length === 0;
 };
-
-// TODO: find a better way
-export function setDefaultCollections() {
-  const collectionsFile = readFileSync("./data/collections.json", "utf8");
-  const collectionsData: CollectionFileData = JSON.parse(collectionsFile);
-
-  const collectionsDefaultValues: CollectionFileData = {
-    hepsiburada: {},
-    trendyol: {},
-  };
-
-  if (isObjectEmpty(collectionsData)) {
-    writeFile(
-      "./data/collections.json",
-      JSON.stringify(collectionsDefaultValues),
-      (err) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-      }
-    );
-  }
-
-  if (!Object.keys(collectionsData).includes("trendyol")) {
-    const newObj = { ...collectionsData, trendyol: {} };
-    writeFileSync("./data/collections.json", JSON.stringify(newObj));
-    setDefaultCollections();
-    return;
-  }
-  if (!Object.keys(collectionsData).includes("hepsiburada")) {
-    const newObj = { ...collectionsData, hepsiburada: {} };
-    writeFileSync("./data/collections.json", JSON.stringify(newObj));
-    setDefaultCollections();
-    return;
-  }
-}
 
 export function setDefaultConfig() {
   // Setting config
@@ -355,6 +321,7 @@ export async function configPrompt() {
   return { ...configOptions, ...dontAskValues };
 }
 
+// TODO: Create directory with json, array etc,
 // TODO: Meeeh.
 export function checkAndCreateDirectoryFile(
   directoryToCheck: string,
@@ -371,21 +338,24 @@ export function checkAndCreateDirectoryFile(
 
 // TODO: Better implementation
 export async function createCollection<
-  companyT extends Companies[number] = Companies[number]
->(company: companyT, category: keyof ProductCategories[companyT]) {
+  CompanyT extends Companies[number] = Companies[number]
+>(company: CompanyT, category: keyof ProductCategories[CompanyT]) {
   const collectionFile = readFileSync("./data/collections.json", "utf8");
   const collectionData: CollectionFileData = JSON.parse(collectionFile);
 
   const collectionName = await input({
     message: "Koleksiyon adı yazınız",
-    validate(value) {
-      if (collectionData[company][category]) {
-        const collectionNameExists = !collectionData[company][category]?.find(
-          (c) => c.collectionName.toLowerCase() === value.toLowerCase()
+    validate(collectionName) {
+      if (collectionData) {
+        const collectionNameExists = !collectionData?.find(
+          (c) =>
+            c.category === category &&
+            c.company === company &&
+            c.collectionName.toLowerCase() === collectionName.toLowerCase()
         );
-        return collectionNameExists;
+        return collectionNameExists ? true : "Koleksiyon adı kullanılmış!";
       } else {
-        return lengthValidator(value, true);
+        return lengthValidator(collectionName, true);
       }
     },
   });
@@ -393,7 +363,6 @@ export async function createCollection<
   let collectionList: string[] = [];
 
   if (company === "trendyol") {
-    type Category = keyof ProductCategories["trendyol"];
     switch (category) {
       case "phoneCase":
         collectionList = await prompt<{ collectionList: string[] }>({
@@ -407,20 +376,17 @@ export async function createCollection<
           validate: (input: string[]) => lengthValidator(input),
         }).then((o) => o.collectionList);
         break;
-
-        // default:
-        break;
     }
 
-    if (!collectionData.trendyol[category as Category]) {
-      collectionData.trendyol[category as Category] = [];
-    }
-    collectionData.trendyol[category]?.push({
+    // TODO:
+    const obj: CollectionFileData<"trendyol">[number] = {
+      company: "trendyol",
+      category: category as keyof ProductCategories["trendyol"],
       collectionName,
       values: collectionList,
-    });
+    };
+    collectionData?.push(obj as CollectionFileData[number]);
   } else if (company === "hepsiburada") {
-    type Category = keyof ProductCategories["hepsiburada"];
     switch (category) {
       case "phoneCase":
         collectionList = await prompt<{ collectionList: string[] }>({
@@ -439,13 +405,13 @@ export async function createCollection<
         break;
     }
 
-    if (!collectionData.hepsiburada[category as Category]) {
-      collectionData.hepsiburada[category as Category] = [];
-    }
-    collectionData.hepsiburada[category]?.push({
+    const obj: CollectionFileData<"hepsiburada">[number] = {
+      company: "hepsiburada",
+      category: category as keyof ProductCategories["hepsiburada"],
       collectionName,
       values: collectionList,
-    });
+    };
+    collectionData?.push(obj as CollectionFileData[number]);
   }
 
   writeFileSync("./data/collections.json", JSON.stringify(collectionData));
