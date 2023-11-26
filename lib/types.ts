@@ -65,6 +65,7 @@ export type ConfigFileData = Record<keyof ConfigOptions, ConfigFile>;
 export type CollectionFileData<
   CompanyT extends Companies[number] = Companies[number]
 > = {
+  id: string;
   company: CompanyT;
   category: keyof ProductCategories[CompanyT];
   collectionName: string;

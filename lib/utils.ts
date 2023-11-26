@@ -1,6 +1,6 @@
 import ExcelJS from "exceljs";
 
-import { input } from "@inquirer/prompts";
+import { checkbox, input } from "@inquirer/prompts";
 import {
   existsSync,
   mkdirSync,
@@ -9,6 +9,7 @@ import {
   writeFileSync,
 } from "fs";
 import { Question, QuestionCollection, prompt, registerPrompt } from "inquirer";
+import { nanoid } from "nanoid";
 import { homedir } from "os";
 import path from "path";
 import {
@@ -336,7 +337,6 @@ export function checkAndCreateDirectoryFile(
   }
 }
 
-// TODO: Better implementation
 export async function createCollection<
   CompanyT extends Companies[number] = Companies[number]
 >(company: CompanyT, category: keyof ProductCategories[CompanyT]) {
@@ -380,6 +380,7 @@ export async function createCollection<
 
     // TODO:
     const obj: CollectionFileData<"trendyol">[number] = {
+      id: nanoid(),
       company: "trendyol",
       category: category as keyof ProductCategories["trendyol"],
       collectionName,
@@ -406,6 +407,7 @@ export async function createCollection<
     }
 
     const obj: CollectionFileData<"hepsiburada">[number] = {
+      id: nanoid(),
       company: "hepsiburada",
       category: category as keyof ProductCategories["hepsiburada"],
       collectionName,
@@ -415,4 +417,23 @@ export async function createCollection<
   }
 
   writeFileSync("./data/collections.json", JSON.stringify(collectionData));
+}
+
+export async function deleteCollection() {
+  const collectionFile = readFileSync("./data/collections.json", "utf8");
+  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+
+  const collections = await checkbox({
+    message: "Silmek istediğiniz koleksiyonları seçiniz",
+    choices: collectionData.map((c) => ({
+      value: c.id,
+      name: `${c.company}->${c.category}->${c.collectionName}`,
+    })),
+  });
+
+  const editedCollection = collectionData.filter(
+    (c) => !collections.find((cd) => cd.includes(c.id))
+  );
+
+  writeFileSync("./data/collections.json", JSON.stringify(editedCollection));
 }
