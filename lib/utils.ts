@@ -1,6 +1,6 @@
 import ExcelJS from "exceljs";
 
-import { checkbox, input } from "@inquirer/prompts";
+import { checkbox, input, select } from "@inquirer/prompts";
 import {
   existsSync,
   mkdirSync,
@@ -401,9 +401,6 @@ export async function createCollection<
           validate: (input: string[]) => lengthValidator(input),
         }).then((o) => o.collectionList);
         break;
-
-        // default:
-        break;
     }
 
     const obj: CollectionFileData<"hepsiburada">[number] = {
@@ -431,9 +428,92 @@ export async function deleteCollection() {
     })),
   });
 
+  if (!collections.length) {
+    console.log("Koleksiyon seçilmedi!");
+    return;
+  }
+
   const editedCollection = collectionData.filter(
     (c) => !collections.find((cd) => cd.includes(c.id))
   );
+
+  writeFileSync("./data/collections.json", JSON.stringify(editedCollection));
+}
+
+// TODO: Remove duplicates
+export async function editCollection() {
+  const collectionFile = readFileSync("./data/collections.json", "utf8");
+  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+
+  const collection = await select({
+    message: "Düzenlemek istediğiniz koleksiyonu seçiniz",
+    choices: collectionData.map((c) => ({
+      value: c,
+      name: `${c.company}->${c.category}->${c.collectionName}`,
+    })),
+  });
+
+  let editedCollection: CollectionFileData = [];
+  let collectionList: string[] = [];
+
+  if (collection.company === "trendyol") {
+    switch (collection.category) {
+      case "phoneCase":
+        collectionList = await prompt<{ collectionList: string[] }>({
+          type: "search-checkbox",
+          name: "collectionList",
+          message: "Koleksiyon değerleri seçiniz",
+          choices: [
+            ...Trendyol_PhoneCase_PhonesList,
+            ...Trendyol_PhoneCase_PhonesListExtend,
+          ],
+          validate: (input: string[]) => lengthValidator(input),
+        }).then((o) => o.collectionList);
+        break;
+    }
+
+    editedCollection = collectionData.map((c) => {
+      if (c.id === collection.id) {
+        return {
+          id: collection.id,
+          company: collection.company,
+          category: collection.category,
+          collectionName: collection.collectionName,
+          values: collectionList,
+        };
+      }
+      return c;
+    });
+  } else if (collection.company === "hepsiburada") {
+    switch (collection.category) {
+      case "phoneCase":
+        collectionList = await prompt<{ collectionList: string[] }>({
+          type: "search-checkbox",
+          name: "collectionList",
+          message: "Koleksiyon değerleri seçiniz",
+          choices: [
+            ...Hepsiburada_PhoneCase_PhonesList,
+            ...Hepsiburada_PhoneCase_PhonesListExtend,
+          ],
+
+          validate: (input: string[]) => lengthValidator(input),
+        }).then((o) => o.collectionList);
+        break;
+    }
+
+    editedCollection = collectionData.map((c) => {
+      if (c.id === collection.id) {
+        return {
+          id: collection.id,
+          company: collection.company,
+          category: collection.category,
+          collectionName: collection.collectionName,
+          values: collectionList,
+        };
+      }
+      return c;
+    });
+  }
 
   writeFileSync("./data/collections.json", JSON.stringify(editedCollection));
 }

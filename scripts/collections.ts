@@ -4,6 +4,7 @@ import {
   checkAndCreateDirectoryFile,
   createCollection,
   deleteCollection,
+  editCollection,
   registerPrompts,
 } from "../lib/utils";
 import { companies, productCategories } from "../lib/variables";
@@ -37,7 +38,7 @@ import { companies, productCategories } from "../lib/variables";
 
     createCollection(company, category);
   } else if (transaction === "edit") {
-    //
+    editCollection();
   } else if (transaction === "delete") {
     deleteCollection();
   }
