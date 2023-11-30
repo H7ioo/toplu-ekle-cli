@@ -1,7 +1,6 @@
 import { select } from "@inquirer/prompts";
 import { ProductCategories } from "../lib/types";
 import {
-  checkAndCreateDirectoryFile,
   createCollection,
   deleteCollection,
   editCollection,
@@ -10,7 +9,6 @@ import {
 import { companies, productCategories } from "../lib/variables";
 
 (async () => {
-  checkAndCreateDirectoryFile("./data", "./data/collections.json");
   registerPrompts();
 
   const transaction = await select({

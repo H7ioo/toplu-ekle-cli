@@ -1,5 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { CollectionFileData, ProductMainOptions } from "../../../lib/types";
+import { ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -9,6 +9,7 @@ import {
   removeWhiteSpaces,
   replaceEmptyOptionWithString,
   replaceTurkishI,
+  returnDataFile,
 } from "../../../lib/utils";
 import { sheetNames } from "../../../lib/variables";
 import { HepsiburadaMainFields } from "../prompts";
@@ -23,16 +24,15 @@ import {
 import {
   PhoneCase_CaseMaterials,
   PhoneCase_CaseTypes,
-  PhoneCase_PhoneBrands,
-  PhoneCase_PhonesList,
-  PhoneCase_PhonesListExtend,
-  PhoneCase_GuaranteeTypes,
   PhoneCase_Colors,
-  PhoneCase_WaterProof,
-  PhoneCase_PhonesListCode,
+  PhoneCase_GuaranteeTypes,
+  PhoneCase_PhoneBrands,
   PhoneCase_PhoneModelsList,
+  PhoneCase_PhonesList,
+  PhoneCase_PhonesListCode,
+  PhoneCase_PhonesListExtend,
+  PhoneCase_WaterProof,
 } from "./variables";
-import { readFileSync } from "fs";
 
 const CATEGORY_NAME: keyof (typeof sheetNames)["hepsiburada"] =
   "phoneCase" as const;
@@ -45,8 +45,7 @@ export async function phoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: HepsiburadaMainOptions
 ) {
-  const collectionFile = readFileSync("./data/collections.json", "utf8");
-  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+  const collectionData = returnDataFile("collections");
 
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
     {

@@ -13,14 +13,12 @@ import {
   configPrompt,
   lengthValidator,
   registerPrompts,
-  setDefaultConfig,
   writeToExcel,
 } from "./lib/utils";
 import { companies, productCategories } from "./lib/variables";
 import { nanoid } from "nanoid";
 
 registerPrompts();
-setDefaultConfig();
 
 (async () => {
   const { companies: selectedCompanies, productCategory } = await prompt<{

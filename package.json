@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./index.ts",
+    "setup": "ts-node ./scripts/setup.ts",
+    "start": "npm run setup && ts-node ./index.ts",
     "check": "ts-node ./scripts/checkDirectories.ts",
-    "config": "ts-node ./scripts/config.ts",
-    "collections": "ts-node ./scripts/collections.ts"
+    "config": "npm run setup && ts-node ./scripts/config.ts",
+    "collections": "npm run setup && ts-node ./scripts/collections.ts",
+    "defaults": "npm run setup && ts-node ./scripts/defaults.ts"
   },
   "keywords": [],
   "author": "",

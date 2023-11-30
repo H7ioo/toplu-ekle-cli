@@ -1,11 +1,13 @@
 import { DistinctQuestion } from "inquirer";
+import { homedir } from "os";
 import {
+  Collections,
   Companies,
-  ConfigFile,
+  Config,
   ConfigOptions,
+  Defaults,
   ProductCategories,
 } from "./types";
-import { homedir } from "os";
 export const companies = ["trendyol", "hepsiburada"] as const;
 export const KDV = [0, 1, 10, 20] as const;
 export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
@@ -80,13 +82,52 @@ export const configQuestionsObject: Record<
     type: "directory",
     basePath: homedir(),
     message: "Klasör yolu seçiniz",
+    suffix: ":",
   },
 };
 
-export const configDefaultValues: Record<keyof ConfigOptions, ConfigFile> = {
+export const configDefaultValues: Config = {
   path: {
     name: "path",
     defaultValue: "Downloads",
     alwaysAsk: false,
   },
+} as const;
+
+export const collectionsDefaultValues: Collections = [] as const;
+export const defaultsDefaultValues: Defaults = {
+  hepsiburada: {
+    trademark: {
+      alwaysAsk: true,
+      value: "",
+    },
+  },
+  trendyol: {
+    trademark: {
+      alwaysAsk: true,
+      value: "",
+    },
+  },
+} as const;
+
+export const dataFiles = ["collections", "config", "defaults"] as const;
+
+// Define a helper type to get default values based on the key
+type DefaultValues<
+  Key extends keyof Record<(typeof dataFiles)[number], unknown>
+> = Key extends "collections"
+  ? Collections
+  : Key extends "config"
+  ? Config
+  : Key extends "defaults"
+  ? Defaults
+  : never;
+
+// Create the object with inferred keys and default values
+export const dataFilesInitialValue: {
+  [Key in (typeof dataFiles)[number]]: DefaultValues<Key>;
+} = {
+  collections: collectionsDefaultValues,
+  config: configDefaultValues,
+  defaults: defaultsDefaultValues,
 };

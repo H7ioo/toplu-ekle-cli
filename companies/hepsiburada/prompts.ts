@@ -7,7 +7,11 @@ import {
 
 import { QuestionCollection, prompt } from "inquirer";
 import { ProductCategories, ProductMainOptions } from "../../lib/types";
-import { lengthValidator, numberPromptConfig } from "../../lib/utils";
+import {
+  lengthValidator,
+  numberPromptConfig,
+  returnDataFile,
+} from "../../lib/utils";
 import { HEPSIBURADA_SUFFIX } from "./variables";
 import { phoneCase } from "./phoneCase/prompts";
 import { headphoneCase } from "./headphoneCase/prompts";
@@ -48,6 +52,8 @@ export const HepsiburadaPromptsWrapper: Record<
 };
 
 export async function HepsiburadaMainPrompts() {
+  const defaults = returnDataFile("defaults");
+
   const HepsiburadaMainPrompts: QuestionCollection<HepsiburadaMainOptions> = [
     {
       type: "input",
@@ -55,6 +61,8 @@ export async function HepsiburadaMainPrompts() {
       message: "Marka adı yazınız",
       validate: (input: string) => lengthValidator(input, true),
       suffix: HEPSIBURADA_SUFFIX,
+      default: defaults?.hepsiburada.trademark.value,
+      when: defaults?.hepsiburada.trademark.alwaysAsk,
     },
     {
       name: "guaranteePeriod",
@@ -70,6 +78,11 @@ export async function HepsiburadaMainPrompts() {
     },
   ];
   const result = await prompt<HepsiburadaMainOptions>(HepsiburadaMainPrompts);
+
+  // TODO: BETTER IMPLEMENTATION
+  if (defaults?.hepsiburada.trademark.alwaysAsk === false) {
+    result.trademark = defaults?.hepsiburada.trademark.value;
+  }
 
   HepsiburadaMainOptionsScheme.parse(result);
 

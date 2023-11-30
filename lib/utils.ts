@@ -1,13 +1,7 @@
 import ExcelJS from "exceljs";
 
 import { checkbox, input, select } from "@inquirer/prompts";
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFile,
-  writeFileSync,
-} from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { Question, QuestionCollection, prompt, registerPrompt } from "inquirer";
 import { nanoid } from "nanoid";
 import { homedir } from "os";
@@ -21,12 +15,16 @@ import {
   PhoneCase_PhonesListExtend as Trendyol_PhoneCase_PhonesListExtend,
 } from "../companies/trendyol/phoneCase/variables";
 import {
-  CollectionFileData,
-  ConfigFileData,
+  Collections,
+  Config,
   ConfigOptions,
   ProductCategories,
 } from "../lib/types";
-import { configDefaultValues, configQuestionsObject } from "../lib/variables";
+import {
+  configQuestionsObject,
+  dataFiles,
+  dataFilesInitialValue,
+} from "../lib/variables";
 import { Companies } from "./types";
 import { EMPTY_OPTION, sheetNames } from "./variables";
 
@@ -196,9 +194,6 @@ export function generateGTIN(trademark: string) {
   return `${trademark}${gtin}`;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("exceljs/lib/doc/range").prototype.forEachAddress = function () {};
-
 export async function writeToExcel<
   CompanyT extends Companies[number] = Companies[number],
   CategoryT extends keyof (typeof sheetNames)[CompanyT] = keyof (typeof sheetNames)[CompanyT]
@@ -221,6 +216,9 @@ export async function writeToExcel<
   category: CategoryT;
   nanoId: string;
 }) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require("exceljs/lib/doc/range").prototype.forEachAddress = function () {};
+
   // Create a new workbook
   const workbook = new ExcelJS.Workbook();
   // Read
@@ -260,30 +258,33 @@ export const isObjectEmpty = (object: object) => {
   return Object.keys(object).length === 0;
 };
 
-export function setDefaultConfig() {
-  // Setting config
-  const configFile = readFileSync("./data/config.json", "utf8");
-  const configData: ConfigFileData = JSON.parse(configFile);
-
-  if (isObjectEmpty(configData)) {
-    writeFile(
-      "./data/config.json",
-      JSON.stringify(configDefaultValues),
-      (err) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-      }
+export function setDataFiles() {
+  for (const dataFile of dataFiles) {
+    createFileWithDirectory(
+      `./data/${dataFile}.json`,
+      dataFilesInitialValue[dataFile]
     );
   }
 }
 
-export async function configPrompt() {
-  setDefaultConfig();
+export function returnDataFile<TDataFiles extends (typeof dataFiles)[number]>(
+  file: TDataFiles
+) {
+  try {
+    const fileString = readFileSync(`./data/${file}.json`, "utf8");
+    return JSON.parse(fileString) as (typeof dataFilesInitialValue)[TDataFiles]; // TODO: AS CONST BASED ON THE FILE
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log({ error }, error.message);
+      throw new Error(error.message);
+    } else {
+      throw new Error(`${error}`);
+    }
+  }
+}
 
-  const configFile = readFileSync("./data/config.json", "utf8");
-  const configData: ConfigFileData = JSON.parse(configFile);
+export async function configPrompt() {
+  const configData = returnDataFile("config");
 
   const configQuestions: QuestionCollection<ConfigOptions> = [
     // {
@@ -301,7 +302,7 @@ export async function configPrompt() {
   const dontAskValues: Partial<ConfigOptions> = {};
 
   for (let index = 0; index < configDataKeys.length; index++) {
-    const key = configDataKeys[index] as keyof ConfigFileData;
+    const key = configDataKeys[index] as keyof Config;
     const configDataObj = configData[key];
 
     if (configDataObj.alwaysAsk === false) {
@@ -322,26 +323,26 @@ export async function configPrompt() {
   return { ...configOptions, ...dontAskValues };
 }
 
-// TODO: Create directory with json, array etc,
-// TODO: Meeeh.
-export function checkAndCreateDirectoryFile(
-  directoryToCheck: string,
-  fileToCheck: string
-) {
-  if (!existsSync(directoryToCheck)) {
-    mkdirSync(directoryToCheck, { recursive: true });
+export function createFileWithDirectory(filePath: string, content = {}) {
+  const directory = path.dirname(filePath);
+
+  // Create the directory if it doesn't exist
+  if (!existsSync(directory)) {
+    mkdirSync(directory, { recursive: true });
+    console.log(`${directory} directory created!`);
   }
 
-  if (!existsSync(fileToCheck)) {
-    writeFileSync(fileToCheck, JSON.stringify({}));
+  // Create the file if it doesn't exist
+  if (!existsSync(filePath)) {
+    writeFileSync(filePath, JSON.stringify(content));
+    console.log(`${directory} file created!`);
   }
 }
 
 export async function createCollection<
   CompanyT extends Companies[number] = Companies[number]
 >(company: CompanyT, category: keyof ProductCategories[CompanyT]) {
-  const collectionFile = readFileSync("./data/collections.json", "utf8");
-  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+  const collectionData = returnDataFile("collections");
 
   const collectionName = await input({
     message: "Koleksiyon adı yazınız",
@@ -379,14 +380,14 @@ export async function createCollection<
     }
 
     // TODO:
-    const obj: CollectionFileData<"trendyol">[number] = {
+    const obj: Collections<"trendyol">[number] = {
       id: nanoid(),
       company: "trendyol",
       category: category as keyof ProductCategories["trendyol"],
       collectionName,
       values: collectionList,
     };
-    collectionData?.push(obj as CollectionFileData[number]);
+    collectionData?.push(obj as Collections[number]);
   } else if (company === "hepsiburada") {
     switch (category) {
       case "phoneCase":
@@ -403,22 +404,21 @@ export async function createCollection<
         break;
     }
 
-    const obj: CollectionFileData<"hepsiburada">[number] = {
+    const obj: Collections<"hepsiburada">[number] = {
       id: nanoid(),
       company: "hepsiburada",
       category: category as keyof ProductCategories["hepsiburada"],
       collectionName,
       values: collectionList,
     };
-    collectionData?.push(obj as CollectionFileData[number]);
+    collectionData?.push(obj as Collections[number]);
   }
 
   writeFileSync("./data/collections.json", JSON.stringify(collectionData));
 }
 
 export async function deleteCollection() {
-  const collectionFile = readFileSync("./data/collections.json", "utf8");
-  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+  const collectionData = returnDataFile("collections");
 
   const collections = await checkbox({
     message: "Silmek istediğiniz koleksiyonları seçiniz",
@@ -442,8 +442,7 @@ export async function deleteCollection() {
 
 // TODO: Remove duplicates
 export async function editCollection() {
-  const collectionFile = readFileSync("./data/collections.json", "utf8");
-  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+  const collectionData = returnDataFile("collections");
 
   const collection = await select({
     message: "Düzenlemek istediğiniz koleksiyonu seçiniz",
@@ -453,7 +452,7 @@ export async function editCollection() {
     })),
   });
 
-  let editedCollection: CollectionFileData = [];
+  let editedCollection: Collections = [];
   let collectionList: string[] = [];
 
   if (collection.company === "trendyol") {

@@ -1,5 +1,5 @@
 import { QuestionCollection, prompt } from "inquirer";
-import { CollectionFileData, ProductMainOptions } from "../../../lib/types";
+import { ProductMainOptions } from "../../../lib/types";
 import {
   capitalizeLetters,
   cleanUp,
@@ -9,6 +9,7 @@ import {
   removeWhiteSpaces,
   replaceEmptyOptionWithString,
   replaceTurkishI,
+  returnDataFile,
 } from "../../../lib/utils";
 import { sheetNames } from "../../../lib/variables";
 import { TrendyolMainFields } from "../prompts";
@@ -28,7 +29,6 @@ import {
   PhoneCase_PhonesList,
   PhoneCase_PhonesListExtend,
 } from "./variables";
-import { readFileSync } from "fs";
 
 const CATEGORY_ID = 766 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -42,8 +42,7 @@ export async function phoneCase(
   productMainOptions: ProductMainOptions,
   companyMainOptions: TrendyolMainOptions
 ) {
-  const collectionFile = readFileSync("./data/collections.json", "utf8");
-  const collectionData: CollectionFileData = JSON.parse(collectionFile);
+  const collectionData = returnDataFile("collections");
 
   const promptQuestions: QuestionCollection<OPTIONS_TYPE> = [
     {

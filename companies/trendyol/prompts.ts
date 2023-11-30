@@ -4,6 +4,7 @@ import {
   lengthValidator,
   numberPromptConfig,
   replaceEmptyOptionWithString,
+  returnDataFile,
 } from "../../lib/utils";
 import { KDV } from "../../lib/variables";
 import { cableProtector } from "./cableProtector/prompts";
@@ -54,6 +55,8 @@ export const TrendyolPromptsWrapper: Record<
 };
 
 export async function TrendyolMainPrompts() {
+  const defaults = returnDataFile("defaults");
+
   const trendyolMainPrompts: QuestionCollection<TrendyolMainOptions> = [
     {
       type: "input",
@@ -61,6 +64,8 @@ export async function TrendyolMainPrompts() {
       message: "Marka adı yazınız",
       validate: (input: string) => lengthValidator(input, true),
       suffix: TRENDYOL_SUFFIX,
+      default: defaults?.trendyol.trademark.value, // TODO:
+      when: defaults?.trendyol.trademark.alwaysAsk,
     },
     {
       name: "marketPrice",
@@ -83,6 +88,11 @@ export async function TrendyolMainPrompts() {
     },
   ];
   const result = await prompt<TrendyolMainOptions>(trendyolMainPrompts);
+
+  // TODO: BETTER IMPLEMENTATION
+  if (defaults?.trendyol.trademark.alwaysAsk === false) {
+    result.trademark = defaults?.trendyol.trademark.value;
+  }
 
   TrendyolMainOptionsScheme.parse(result);
 

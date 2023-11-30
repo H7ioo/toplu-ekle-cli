@@ -1,16 +1,13 @@
 import { confirm, select } from "@inquirer/prompts";
-import { readFileSync, writeFile } from "fs";
+import { writeFile } from "fs";
 import { prompt } from "inquirer";
-import { ConfigFileData } from "../lib/types";
-import { registerPrompts, setDefaultConfig } from "../lib/utils";
+import { registerPrompts, returnDataFile } from "../lib/utils";
 import { configQuestionsObject } from "../lib/variables";
 registerPrompts();
 
 // TODO: CONFIG CONCEPT, IT'S SO BAD AND NOT CLEAN
 
 (async () => {
-  setDefaultConfig();
-
   const option = await select({
     message: "Değiştirmek istediğiniz seçeneği seçiniz",
     choices: (
@@ -38,8 +35,7 @@ registerPrompts();
     },
   };
 
-  const configFile = readFileSync("./data/config.json", "utf8");
-  const configData: ConfigFileData = JSON.parse(configFile);
+  const configData = returnDataFile("config");
 
   configData[option] = result[option]!;
 

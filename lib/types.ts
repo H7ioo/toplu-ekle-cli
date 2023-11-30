@@ -23,16 +23,6 @@ export const ConfigOptionsScheme = z.object({
 
 export type ConfigOptions = z.infer<typeof ConfigOptionsScheme>;
 
-// export type ConfigFile<
-//   TName extends keyof z.infer<typeof ConfigOptionsScheme> = keyof z.infer<
-//     typeof ConfigOptionsScheme
-//   >
-// > = {
-//   name: TName;
-//   defaultValue: z.infer<typeof ConfigOptionsScheme>[TName];
-//   alwaysAsk: boolean;
-// };
-
 export const ConfigFileScheme = z.object({
   name: ConfigOptionsScheme.keyof(),
   defaultValue: z.string(),
@@ -41,28 +31,9 @@ export const ConfigFileScheme = z.object({
 
 export type ConfigFile = z.infer<typeof ConfigFileScheme>;
 
-export type ConfigFileData = Record<keyof ConfigOptions, ConfigFile>;
+export type Config = Record<keyof ConfigOptions, ConfigFile>;
 
-// export type CollectionFileData = {
-//   [Company in keyof ProductCategories]: {
-//     [Key in keyof ProductCategories[Company]]?: {
-//       collectionName: string;
-//       values: string[];
-//     }[];
-//   };
-// };
-
-// TODO: Collections
-// export type CollectionFileData<
-//   CompanyT extends Companies[number] = Companies[number]
-// > = {
-//   company: CompanyT;
-//   category: keyof ProductCategories[CompanyT];
-//   collectionName: string;
-//   values: string[];
-// }[];
-
-export type CollectionFileData<
+export type Collections<
   CompanyT extends Companies[number] = Companies[number]
 > = {
   id: string;
@@ -71,3 +42,12 @@ export type CollectionFileData<
   collectionName: string;
   values: string[];
 }[];
+
+export type Defaults = {
+  [Company in Companies[number]]: {
+    trademark: {
+      value: string;
+      alwaysAsk: boolean;
+    };
+  };
+};
