@@ -94,7 +94,7 @@ export const configDefaultValues: Config = {
   },
 } as const;
 
-export const collectionsDefaultValues: Collections = [] as const;
+export const collectionsDefaultValues: Collections = [];
 export const defaultsDefaultValues: Defaults = {
   hepsiburada: {
     trademark: {
