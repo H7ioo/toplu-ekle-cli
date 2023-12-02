@@ -237,12 +237,14 @@ export async function writeToExcel<
   // Add a row by contiguous Array (assign to columns A, B & C)
   data.forEach((dataItem) => worksheet.addRow(Object.values(dataItem)));
 
+  const fileName = `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}-${new Date().toLocaleDateString(
+    "tr"
+  )}-${nanoId}.xlsx`;
+
   // Save workbook
-  await workbook.xlsx.writeFile(
-    `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}-${new Date().toLocaleDateString(
-      "tr"
-    )}-${nanoId}.xlsx`
-  );
+  await workbook.xlsx.writeFile(fileName);
+
+  console.log("File created successfully!", fileName);
 }
 
 export function registerPrompts() {

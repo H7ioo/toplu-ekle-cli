@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { companies, productCategories } from "./variables";
+import { companies, databases, productCategories } from "./variables";
 
 export type Companies = typeof companies;
 export type ProductCategories = typeof productCategories;
@@ -19,13 +19,14 @@ export type ArrayOfLiterals<T extends readonly (string | number)[]> =
 
 export const ConfigOptionsScheme = z.object({
   path: z.string(),
+  runDatabase: z.boolean(),
 });
 
 export type ConfigOptions = z.infer<typeof ConfigOptionsScheme>;
 
 export const ConfigFileScheme = z.object({
   name: ConfigOptionsScheme.keyof(),
-  defaultValue: z.string(),
+  defaultValue: z.any(),
   alwaysAsk: z.boolean(),
 });
 
@@ -50,4 +51,12 @@ export type Defaults = {
       alwaysAsk: boolean;
     };
   };
+};
+
+export type Project = {
+  database: (typeof databases)[number];
+};
+
+export type Product = ProductMainOptions & {
+  id: string;
 };

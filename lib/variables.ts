@@ -7,6 +7,8 @@ import {
   ConfigOptions,
   Defaults,
   ProductCategories,
+  Product,
+  Project,
 } from "./types";
 export const companies = ["trendyol", "hepsiburada"] as const;
 export const KDV = [0, 1, 10, 20] as const;
@@ -84,12 +86,23 @@ export const configQuestionsObject: Record<
     message: "Klasör yolu seçiniz",
     suffix: ":",
   },
+  runDatabase: {
+    name: "runDatabase",
+    type: "confirm",
+    message: "Ürün kaydedilsin mi",
+    suffix: "?",
+  },
 };
 
 export const configDefaultValues: Config = {
   path: {
     name: "path",
     defaultValue: "Downloads",
+    alwaysAsk: false,
+  },
+  runDatabase: {
+    name: "runDatabase",
+    defaultValue: false,
     alwaysAsk: false,
   },
 } as const;
@@ -110,7 +123,21 @@ export const defaultsDefaultValues: Defaults = {
   },
 } as const;
 
-export const dataFiles = ["collections", "config", "defaults"] as const;
+export const projectDefaultValues: Project = {
+  database: "JSON",
+} as const;
+
+export const productsDefaultValues: Product[] = [];
+export const notionDefaultValues: Product[] = [];
+
+export const dataFiles = [
+  "collections",
+  "config",
+  "defaults",
+  "project",
+  "products",
+  "notion",
+] as const;
 
 // Define a helper type to get default values based on the key
 type DefaultValues<
@@ -121,6 +148,12 @@ type DefaultValues<
   ? Config
   : Key extends "defaults"
   ? Defaults
+  : Key extends "project"
+  ? Project
+  : Key extends "products"
+  ? Product[]
+  : Key extends "notion"
+  ? Product[]
   : never;
 
 // Create the object with inferred keys and default values
@@ -130,4 +163,9 @@ export const dataFilesInitialValue: {
   collections: collectionsDefaultValues,
   config: configDefaultValues,
   defaults: defaultsDefaultValues,
+  project: projectDefaultValues,
+  products: productsDefaultValues,
+  notion: notionDefaultValues,
 };
+
+export const databases = ["Notion", "JSON"] as const;
