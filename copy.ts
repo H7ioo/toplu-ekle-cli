@@ -24,8 +24,8 @@ export async function copy() {
           value: i.id,
           name: `${i.productTitle} - ${i.productCode}`,
         })),
-
-        message: "Test",
+        message: "Ürün seçiniz",
+        suffix: ":",
       },
     ]).then((p) => p.product);
 

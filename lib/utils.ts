@@ -191,7 +191,7 @@ export function generateGTIN(trademark: string) {
   const checkDigit = (10 - (sum % 10)) % 10;
   gtin += checkDigit.toString();
 
-  return `${trademark}${gtin}`;
+  return `${trademark.replace(/\s+/gi, "-")}${gtin}`;
 }
 
 export async function writeToExcel<
@@ -237,14 +237,19 @@ export async function writeToExcel<
   // Add a row by contiguous Array (assign to columns A, B & C)
   data.forEach((dataItem) => worksheet.addRow(Object.values(dataItem)));
 
-  const fileName = `${homedir()}\\${outPath}\\${company.toUpperCase()}-${trademark}-${caseBrand}-${mainModalCode}-${new Date().toLocaleDateString(
-    "tr"
-  )}-${nanoId}.xlsx`;
+  // ${new Date().toLocaleDateString(
+  //   "tr"
+  // )}-
+  const fileName = `${company.toUpperCase()}-${
+    trademark.replace(/\s+/gi, "-").split("-")[0]
+  }-${caseBrand}-${mainModalCode}-${nanoId}.xlsx`;
+
+  const outFilePath = `${homedir()}\\${outPath}\\${fileName}`;
 
   // Save workbook
-  await workbook.xlsx.writeFile(fileName);
+  await workbook.xlsx.writeFile(outFilePath);
 
-  console.log("File created successfully!", fileName);
+  console.log("File created successfully!", outFilePath);
 }
 
 export function registerPrompts() {
