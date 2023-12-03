@@ -64,7 +64,7 @@ export async function TrendyolMainPrompts() {
       message: "Marka adı yazınız",
       validate: (input: string) => lengthValidator(input, true),
       suffix: TRENDYOL_SUFFIX,
-      default: defaults?.trendyol.trademark.value, // TODO:
+      default: defaults?.trendyol.trademark.value,
       when: defaults?.trendyol.trademark.alwaysAsk,
     },
     {

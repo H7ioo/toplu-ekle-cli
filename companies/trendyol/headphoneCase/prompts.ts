@@ -205,6 +205,3 @@ export async function headphoneCase(
     productKnownBrandName: result.productKnownBrandName,
   };
 }
-
-// TODO: replaceEmptyOptionWithString remove duplicates
-// TODO: Find a better way for OPTIONAL_FIELD and .optional

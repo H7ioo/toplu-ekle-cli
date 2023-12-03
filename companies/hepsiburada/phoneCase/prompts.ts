@@ -269,8 +269,7 @@ export async function phoneCase(
             : "",
           Renk: replaceEmptyOptionWithString(color),
           Seçenek: option,
-          // TODO: What if used from Extend List?
-          "Telefon Modeli": phone,
+          "Telefon Modeli": PhoneCase_PhonesList.includes(phone) ? phone : "1",
           "Uyumlu Marka": result.phoneBrand,
           "Garanti Tipi":
             replaceEmptyOptionWithString(result.guaranteeType) ?? "",

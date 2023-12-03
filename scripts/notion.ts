@@ -1,9 +1,8 @@
-import { Client } from "@notionhq/client";
-
 import {
   CreatePageParameters,
   RichTextItemResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import { notionDB } from "../lib/db";
 import { env } from "../lib/env";
 import { Product } from "../lib/types";
 import { lengthValidator } from "../lib/utils";
@@ -59,11 +58,7 @@ const databaseStructure = ({
 };
 
 export async function notionCreateProduct(props: Product) {
-  const client = new Client({
-    auth: env.NOTION_SECRET,
-  });
-
-  const product = await client.pages.create({
+  const product = await notionDB.pages.create({
     parent: {
       database_id: env.NOTION_DATABASE,
     },
@@ -72,12 +67,13 @@ export async function notionCreateProduct(props: Product) {
     },
   });
 
+  console.log(`Created ${props.productTitle} in Notion`);
+
   return product;
 }
 
 export async function notionCheckProduct(productCode: string) {
-  const client = new Client({ auth: env.NOTION_SECRET });
-  const product = await client.databases.query({
+  const product = await notionDB.databases.query({
     database_id: env.NOTION_DATABASE,
     filter: {
       property: "productCode",
@@ -95,9 +91,7 @@ export async function notionGetProducts({
   size?: number;
   nextCursor?: null | string;
 }) {
-  const client = new Client({ auth: env.NOTION_SECRET });
-
-  const products = await client.databases.query({
+  const products = await notionDB.databases.query({
     database_id: env.NOTION_DATABASE,
     start_cursor: nextCursor === null ? undefined : nextCursor,
     page_size: size,

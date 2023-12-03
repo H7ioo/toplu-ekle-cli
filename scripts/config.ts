@@ -5,8 +5,6 @@ import { registerPrompts, returnDataFile } from "../lib/utils";
 import { configQuestionsObject } from "../lib/variables";
 registerPrompts();
 
-// TODO: CONFIG CONCEPT, IT'S SO BAD AND NOT CLEAN
-
 (async () => {
   const option = await select({
     message: "Değiştirmek istediğiniz seçeneği seçiniz",

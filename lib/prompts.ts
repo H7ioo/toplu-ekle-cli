@@ -4,10 +4,13 @@ import {
   cleanUp,
   lengthValidator,
   numberPromptConfig,
+  returnDataFile,
 } from "../lib/utils";
 import { ProductMainOptions, ProductMainOptionsScheme } from "../lib/types";
+import { notionCheckProduct } from "../scripts/notion";
 
 export async function productMainPrompt() {
+  let productExists = false;
   const mainCollection: QuestionCollection<ProductMainOptions> = [
     {
       type: "input",
@@ -26,7 +29,27 @@ export async function productMainPrompt() {
       filter: (input: string) => {
         return cleanUp(input).toUpperCase();
       },
-      validate: async (input) => lengthValidator(input, true),
+      validate: async (input) => {
+        const project = returnDataFile("project");
+
+        breakMe: if (project.database === "JSON") {
+          const products = returnDataFile("products");
+          if (!products.length) break breakMe;
+          const doesExist = products.find((p) => p.productCode === input);
+          if (!doesExist) break breakMe;
+          if (productExists) return lengthValidator(input, true);
+          productExists = true;
+          return "This product is already in the database! Press enter again to continue.";
+        } else if (project.database === "Notion") {
+          const { doesExist } = await notionCheckProduct(input);
+          if (!doesExist) break breakMe;
+          if (productExists) return lengthValidator(input, true);
+          productExists = true;
+          return "This product is already in the database! Press enter again to continue.";
+        }
+
+        return lengthValidator(input, true);
+      },
       suffix: ":",
     },
     {
@@ -54,5 +77,5 @@ export async function productMainPrompt() {
 
   ProductMainOptionsScheme.parse(result);
 
-  return result;
+  return { productMainOptions: result, productExists };
 }

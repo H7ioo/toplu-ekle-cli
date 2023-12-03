@@ -1,9 +1,11 @@
 import { prompt } from "inquirer";
 import { registerPrompts, returnDataFile } from "./lib/utils";
 import { notionGetProducts } from "./scripts/notion";
+import { main } from "./main";
 
 registerPrompts();
 
+// TODO: Remove duplication
 export async function copy() {
   const project = returnDataFile("project");
 
@@ -27,7 +29,7 @@ export async function copy() {
       },
     ]).then((p) => p.product);
 
-    // pass to main
+    await main(products.find((p) => p.id === productId));
   } else if (project.database === "Notion") {
     try {
       const { products } = await notionGetProducts({});
@@ -50,15 +52,12 @@ export async function copy() {
         },
       ]).then((p) => p.product);
 
-      // pass to main
+      await main(products.find((p) => p.id === productId));
     } catch (error) {
       console.log(error);
       return;
     }
   }
-
-  // Check the length, and return based on it.
-  // If length, copy the data and pass it to main(duplicate, mainPrompts, shouldAskAgain...)
 }
 
 copy();

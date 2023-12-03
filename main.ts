@@ -10,7 +10,13 @@ import {
   TrendyolPromptsWrapper,
 } from "./companies/trendyol/prompts";
 import { productMainPrompt } from "./lib/prompts";
-import { ArrayOfLiterals, Companies, ProductCategories } from "./lib/types";
+import {
+  ArrayOfLiterals,
+  Companies,
+  Product,
+  ProductCategories,
+  ProductMainOptions,
+} from "./lib/types";
 import {
   configPrompt,
   lengthValidator,
@@ -22,7 +28,7 @@ import { notionCreateProduct } from "./scripts/notion";
 
 // TODO: REMOVE DUPLICATES
 
-export async function main() {
+export async function main(productMainOptionsParam?: Product) {
   const { companies: selectedCompanies, productCategory } = await prompt<{
     companies: ArrayOfLiterals<Companies>;
     productCategory: keyof ProductCategories[Companies[number]];
@@ -50,7 +56,6 @@ export async function main() {
           const categories = answers.companies
             .map((company) => Object.values(productCategories[company]))
             .flat();
-          // TODO: DOESN'T WORK
           return categories.filter(
             (item, index) => !(categories.indexOf(item) === index)
           );
@@ -79,9 +84,20 @@ export async function main() {
     },
   ]);
 
-  const productMainOptions = await productMainPrompt();
+  let productMainOptions: Product | ProductMainOptions;
+  let productExists: boolean;
 
-  // TODO: Product code exists
+  if (productMainOptionsParam) {
+    productMainOptions = productMainOptionsParam;
+    productExists = true;
+  } else {
+    const {
+      productMainOptions: productMainOptionsP,
+      productExists: productExistsP,
+    } = await productMainPrompt();
+    productMainOptions = productMainOptionsP;
+    productExists = productExistsP;
+  }
 
   const configData = await configPrompt();
 
@@ -118,38 +134,6 @@ export async function main() {
       mainModalCode: productMainOptions.productCode,
       nanoId,
     });
-
-    if (configData.runDatabase) {
-      const product = {
-        id: nanoId,
-        productTitle: productMainOptions.productTitle,
-        productCode: productMainOptions.productCode,
-        productDescription: productMainOptions.productDescription,
-        price: productMainOptions.price,
-        stockAmount: productMainOptions.stockAmount,
-      };
-
-      const project = returnDataFile("project");
-      if (project.database === "JSON") {
-        const products = returnDataFile("products");
-        writeFileSync(
-          "./data/products.json",
-          JSON.stringify([...products, product])
-        );
-      } else if (project.database === "Notion") {
-        try {
-          await notionCreateProduct(product);
-        } catch (error) {
-          console.log(error);
-          // When fails writes it to notion.json
-          const notion = returnDataFile("notion");
-          writeFileSync(
-            "./data/notion.json",
-            JSON.stringify([...notion, product])
-          );
-        }
-      }
-    }
   }
 
   if (selectedCompanies.includes("trendyol")) {
@@ -184,36 +168,37 @@ export async function main() {
       mainModalCode: productMainOptions.productCode,
       nanoId,
     });
+  }
 
-    if (configData.runDatabase) {
-      const product = {
-        id: nanoId,
-        productTitle: productMainOptions.productTitle,
-        productCode: productMainOptions.productCode,
-        productDescription: productMainOptions.productDescription,
-        price: productMainOptions.price,
-        stockAmount: productMainOptions.stockAmount,
-      };
+  // If product doesn't exists and config set to run database
+  if (!productExists && configData.runDatabase) {
+    const product = {
+      id: nanoId,
+      productTitle: productMainOptions.productTitle,
+      productCode: productMainOptions.productCode,
+      productDescription: productMainOptions.productDescription,
+      price: productMainOptions.price,
+      stockAmount: productMainOptions.stockAmount,
+    };
 
-      const project = returnDataFile("project");
-      if (project.database === "JSON") {
-        const products = returnDataFile("products");
+    const project = returnDataFile("project");
+    if (project.database === "JSON") {
+      const products = returnDataFile("products");
+      writeFileSync(
+        "./data/products.json",
+        JSON.stringify([...products, product])
+      );
+    } else if (project.database === "Notion") {
+      try {
+        await notionCreateProduct(product);
+      } catch (error) {
+        console.log(error);
+        // When fails writes it to notion.json
+        const notion = returnDataFile("notion");
         writeFileSync(
-          "./data/products.json",
-          JSON.stringify([...products, product])
+          "./data/notion.json",
+          JSON.stringify([...notion, product])
         );
-      } else if (project.database === "Notion") {
-        try {
-          await notionCreateProduct(product);
-        } catch (error) {
-          console.log(error);
-          // When fails writes it to notion.json
-          const notion = returnDataFile("notion");
-          writeFileSync(
-            "./data/notion.json",
-            JSON.stringify([...notion, product])
-          );
-        }
       }
     }
   }

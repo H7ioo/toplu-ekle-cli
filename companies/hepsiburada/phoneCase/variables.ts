@@ -3051,6 +3051,7 @@ export const PhoneCase_Colors = [
  */
 
 export const PhoneCase_PhonesList = [
+  "1", // EMPTY OPTION, It does exists in the list of phones
   "Galaxy  M01 Core",
   "Galaxy 21S",
   "Galaxy 7 Fold",

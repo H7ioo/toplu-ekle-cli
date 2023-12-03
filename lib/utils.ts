@@ -381,7 +381,6 @@ export async function createCollection<
         break;
     }
 
-    // TODO:
     const obj: Collections<"trendyol">[number] = {
       id: nanoid(),
       company: "trendyol",
