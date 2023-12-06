@@ -8,8 +8,6 @@ import { Product } from "../lib/types";
 import { lengthValidator } from "../lib/utils";
 import { logger } from "../lib/logger";
 
-// TODO: Client duplicate!
-
 type DatabaseStructure = Record<
   keyof Product,
   CreatePageParameters["properties"][string]

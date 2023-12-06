@@ -280,7 +280,7 @@ export function returnDataFile<TDataFiles extends (typeof dataFiles)[number]>(
 ) {
   try {
     const fileString = readFileSync(`./data/${file}.json`, "utf8");
-    return JSON.parse(fileString) as (typeof dataFilesInitialValue)[TDataFiles]; // TODO: AS CONST BASED ON THE FILE
+    return JSON.parse(fileString) as (typeof dataFilesInitialValue)[TDataFiles];
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message, error);
@@ -349,25 +349,39 @@ export function createFileWithDirectory(filePath: string, content = {}) {
 
 export async function createCollection<
   CompanyT extends Companies[number] = Companies[number]
->(company: CompanyT, category: keyof ProductCategories[CompanyT]) {
+>({
+  company,
+  category,
+  defaultCollectionName,
+}: {
+  company: CompanyT;
+  category: keyof ProductCategories[CompanyT];
+  defaultCollectionName?: string; // If passed it means it is +1 company
+}) {
   const collectionData = returnDataFile("collections");
 
-  const collectionName = await input({
-    message: "Koleksiyon adı yazınız",
-    validate(collectionName) {
-      if (collectionData) {
-        const collectionNameExists = !collectionData?.find(
-          (c) =>
-            c.category === category &&
-            c.company === company &&
-            c.collectionName.toLowerCase() === collectionName.toLowerCase()
-        );
-        return collectionNameExists ? true : "Koleksiyon adı kullanılmış!";
-      } else {
-        return lengthValidator(collectionName, true);
-      }
-    },
-  });
+  let collectionName: string;
+  if (defaultCollectionName) {
+    collectionName = defaultCollectionName;
+  } else {
+    collectionName = await input({
+      message: "Koleksiyon adı yazınız",
+      default: defaultCollectionName,
+      validate(collectionName) {
+        if (collectionData) {
+          const collectionNameExists = !collectionData?.find(
+            (c) =>
+              c.category === category &&
+              c.company === company &&
+              c.collectionName.toLowerCase() === collectionName.toLowerCase()
+          );
+          return collectionNameExists ? true : "Koleksiyon adı kullanılmış!";
+        } else {
+          return lengthValidator(collectionName, true);
+        }
+      },
+    });
+  }
 
   let collectionList: string[] = [];
 
@@ -377,7 +391,7 @@ export async function createCollection<
         collectionList = await prompt<{ collectionList: string[] }>({
           type: "search-checkbox",
           name: "collectionList",
-          message: "Koleksiyon değerleri seçiniz",
+          message: `Koleksiyon değerleri seçiniz (${company})`,
           choices: [
             ...Trendyol_PhoneCase_PhonesList,
             ...Trendyol_PhoneCase_PhonesListExtend,
@@ -401,7 +415,7 @@ export async function createCollection<
         collectionList = await prompt<{ collectionList: string[] }>({
           type: "search-checkbox",
           name: "collectionList",
-          message: "Koleksiyon değerleri seçiniz",
+          message: `Koleksiyon değerleri seçiniz (${company})`,
           choices: [
             ...Hepsiburada_PhoneCase_PhonesList,
             ...Hepsiburada_PhoneCase_PhonesListExtend,

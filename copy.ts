@@ -6,7 +6,6 @@ import { logger } from "./lib/logger";
 
 registerPrompts();
 
-// TODO: Remove duplication
 export async function copy() {
   const project = returnDataFile("project");
 

@@ -8,7 +8,7 @@ import { dataFiles, dataFilesInitialValue } from "../lib/variables";
     const data = returnDataFile(dataFile);
     const initialValue = dataFilesInitialValue[dataFile];
 
-    // TODO: Array doesn't really matter because the initial value is almost always the same []
+    // Array doesn't really matter because the initial value is almost always the same []
     if (Array.isArray(data) && Array.isArray(initialValue)) {
       writeFileSync(path, JSON.stringify([...initialValue, ...data]));
     } else {

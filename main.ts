@@ -27,9 +27,7 @@ import { companies, productCategories } from "./lib/variables";
 import { notionCreateProduct } from "./scripts/notion";
 import { logger } from "./lib/logger";
 
-// TODO: REMOVE DUPLICATES
-
-export async function main(productMainOptionsParam?: Product) {
+export async function mainPrompt() {
   const { companies: selectedCompanies, productCategory } = await prompt<{
     companies: ArrayOfLiterals<Companies>;
     productCategory: keyof ProductCategories[Companies[number]];
@@ -84,6 +82,12 @@ export async function main(productMainOptionsParam?: Product) {
       suffix: ":",
     },
   ]);
+
+  return { selectedCompanies, productCategory };
+}
+
+export async function main(productMainOptionsParam?: Product) {
+  const { productCategory, selectedCompanies } = await mainPrompt();
 
   let productMainOptions: Product | ProductMainOptions;
   let productExists: boolean;

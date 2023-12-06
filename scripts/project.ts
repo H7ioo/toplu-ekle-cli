@@ -1,5 +1,3 @@
-// TODO: If notion fails, log to notion.json instead
-
 import { select } from "@inquirer/prompts";
 import { databases, projectDefaultValues } from "../lib/variables";
 import { returnDataFile } from "../lib/utils";
