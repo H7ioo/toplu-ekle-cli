@@ -19,10 +19,11 @@ import {
   LensProtectorOptions,
   LensProtectorOptionsScheme,
 } from "./types";
+import { LensProtector_PhoneBrands } from "./variables";
 import {
-  LensProtector_CustomPhonesList,
-  LensProtector_PhoneBrands,
-} from "./variables";
+  PhoneCase_PhonesList,
+  PhoneCase_PhonesListExtend,
+} from "../phoneCase/variables";
 
 const CATEGORY_ID = 5511 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
@@ -67,7 +68,7 @@ export async function lensProtector(
       type: "search-checkbox",
       name: "phonesList",
       message: `Telefon modelleri seçiniz`,
-      choices: [...LensProtector_CustomPhonesList],
+      choices: [...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend],
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -123,7 +124,7 @@ export async function lensProtector(
     ) {
       const phone = [...result.phonesList, ...result.customPhonesList][
         p
-      ] as (typeof LensProtector_CustomPhonesList)[number];
+      ] as (typeof PhoneCase_PhonesList)[number];
       // Galaxy A12 or A12 based on the input
       const phoneWithoutTheBrand = capitalizeLetters(
         cleanUp(replaceTurkishI(phone).toLowerCase().replace(regex, ""), false)

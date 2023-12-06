@@ -1,42 +1,44 @@
 import { z } from "zod";
-import { TrendyolMainOptionsFieldsScheme } from "../types";
-import { LensProtector_PhoneBrands } from "./variables";
+import {
+  LensProtector_ColorProductType,
+  LensProtector_ColorVariant,
+} from "./variables";
+import { HepsiburadaMainOptionsFieldsScheme } from "../types";
 import {
   PhoneCase_PhonesList,
   PhoneCase_PhonesListExtend,
 } from "../phoneCase/variables";
 export const LensProtectorOptionsScheme = z
   .object({
-    colors: z.array(z.string()),
+    colors: z.array(z.enum(LensProtector_ColorProductType)),
+    options: z.array(z.string()),
     phonesList: z.array(
       z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
     ),
     customPhonesList: z.array(z.string()),
-    phoneBrand: z.enum(LensProtector_PhoneBrands),
     productKnownBrandName: z.string(),
   })
   .refine(({ phonesList, customPhonesList }) => {
     if (!phonesList && !customPhonesList) return false;
     return true;
   }, "One of the lists must exist");
+
 /**
- * @CategoryName Kamera Lens Koruyucu Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kamera Lens Koruyucu
- * @Category 5511
+ * @CategoryName Telefon > Cep Telefonu Aksesuarları > Diğer Telefon Aksesuarları
  */
 export type LensProtectorOptions = z.infer<typeof LensProtectorOptionsScheme>;
 
 export const LensProtectorFieldsScheme = z
 
   .object({
-    Kategori: z.literal(5511),
-    "Uyumlu Marka": z.enum([...LensProtector_PhoneBrands]),
-    Renk: z.string(),
+    Renk: z.enum(LensProtector_ColorProductType),
+    Seçenek: z.string(),
+    Renk2: z.enum(LensProtector_ColorVariant),
   })
-  .merge(TrendyolMainOptionsFieldsScheme);
+  .merge(HepsiburadaMainOptionsFieldsScheme);
 /**
  * @ExcelFields
- * @CategoryName Kamera Lens Koruyucu Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kamera Lens Koruyucu
- * @Category 5511
+ * @CategoryName Telefon > Cep Telefonu Aksesuarları > Diğer Telefon Aksesuarları
  */
 export type LensProtectorFieldsOptions = z.infer<
   typeof LensProtectorFieldsScheme

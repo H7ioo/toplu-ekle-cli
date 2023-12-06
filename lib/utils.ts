@@ -27,6 +27,7 @@ import {
 } from "../lib/variables";
 import { Companies } from "./types";
 import { EMPTY_OPTION, sheetNames } from "./variables";
+import { logger } from "./logger";
 
 /**
  * It validates the string or the array. It checks if the length is bigger than zero. Since split returns [''], we need to check multiple times for the Array
@@ -249,7 +250,7 @@ export async function writeToExcel<
   // Save workbook
   await workbook.xlsx.writeFile(outFilePath);
 
-  console.log("File created successfully!", outFilePath);
+  logger.info("File created successfully!", outFilePath);
 }
 
 export function registerPrompts() {
@@ -282,7 +283,7 @@ export function returnDataFile<TDataFiles extends (typeof dataFiles)[number]>(
     return JSON.parse(fileString) as (typeof dataFilesInitialValue)[TDataFiles]; // TODO: AS CONST BASED ON THE FILE
   } catch (error) {
     if (error instanceof Error) {
-      console.log({ error }, error.message);
+      logger.error(error.message, error);
       throw new Error(error.message);
     } else {
       throw new Error(`${error}`);
@@ -336,13 +337,13 @@ export function createFileWithDirectory(filePath: string, content = {}) {
   // Create the directory if it doesn't exist
   if (!existsSync(directory)) {
     mkdirSync(directory, { recursive: true });
-    console.log(`${directory} directory created!`);
+    logger.info(`${directory} directory created!`);
   }
 
   // Create the file if it doesn't exist
   if (!existsSync(filePath)) {
     writeFileSync(filePath, JSON.stringify(content));
-    console.log(`${directory} file created!`);
+    logger.info(`${directory} file created!`);
   }
 }
 

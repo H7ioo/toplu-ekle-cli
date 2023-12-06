@@ -3,6 +3,7 @@ import { writeFile } from "fs";
 import { prompt } from "inquirer";
 import { registerPrompts, returnDataFile } from "../lib/utils";
 import { configQuestionsObject } from "../lib/variables";
+import { logger } from "../lib/logger";
 registerPrompts();
 
 (async () => {
@@ -39,7 +40,7 @@ registerPrompts();
 
   writeFile("./data/config.json", JSON.stringify(configData), (err) => {
     if (err) {
-      console.log(err);
+      logger.error(err);
     }
   });
 })();

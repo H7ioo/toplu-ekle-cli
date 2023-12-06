@@ -2,6 +2,7 @@ import { prompt } from "inquirer";
 import { registerPrompts, returnDataFile } from "./lib/utils";
 import { notionGetProducts } from "./scripts/notion";
 import { main } from "./main";
+import { logger } from "./lib/logger";
 
 registerPrompts();
 
@@ -54,7 +55,7 @@ export async function copy() {
 
       await main(products.find((p) => p.id === productId));
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       return;
     }
   }

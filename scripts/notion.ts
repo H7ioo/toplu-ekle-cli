@@ -6,6 +6,7 @@ import { notionDB } from "../lib/db";
 import { env } from "../lib/env";
 import { Product } from "../lib/types";
 import { lengthValidator } from "../lib/utils";
+import { logger } from "../lib/logger";
 
 // TODO: Client duplicate!
 
@@ -67,7 +68,7 @@ export async function notionCreateProduct(props: Product) {
     },
   });
 
-  console.log(`Created ${props.productTitle} in Notion`);
+  logger.info(`Created ${props.productTitle} in Notion`);
 
   return product;
 }

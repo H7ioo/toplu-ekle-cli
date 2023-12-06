@@ -29,6 +29,8 @@
     "inquirer-search-checkbox": "^1.0.0",
     "inquirer-search-list": "^1.2.6",
     "nanoid": "^3.3.7",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1",
     "xlsx": "^0.18.5",
     "zod": "^3.22.2"
   },

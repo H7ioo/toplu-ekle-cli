@@ -35,7 +35,7 @@ export const productCategories = {
     // watchCharm: "Kordon süsü",
     cableProtector: "Kablo koryucu seti",
     // screenProtector: "Ekran koruyucu",
-    // lensProtector: "Lens koruyucu",
+    lensProtector: "Lens koruyucu",
     caseStand: "Aparat",
     // Saat Kasası
     earphone: "Kulaklık",
@@ -68,7 +68,7 @@ export const sheetNames: SheetNames = {
     // watchCharm: "Ürünlerinizi Burada Listeleyin",
     cableProtector: "Diğer Telefon Aksesuarları",
     // screenProtector: "Ürünlerinizi Burada Listeleyin",
-    // lensProtector: "Ürünlerinizi Burada Listeleyin",
+    lensProtector: "Diğer Telefon Aksesuarları",
     caseStand: "Diğer Telefon Aksesuarları",
     inCarPhoneHolder: "Araç İçi Telefon Tutacakları",
     earphone: "Kulak İçi Kulaklık",

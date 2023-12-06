@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { companies } from "../lib/variables";
 import { Companies } from "../lib/types";
+import { logger } from "../lib/logger";
 
 const companiesDir = path.join(__dirname, "../companies"); // Adjust the path as needed
 
@@ -54,4 +55,4 @@ function checkDirectories(directory: string) {
 // Start checking from the 'companies' directory
 checkDirectories(companiesDir);
 
-console.log("All required files are present in the specified directories.");
+logger.info("All required files are present in the specified directories.");

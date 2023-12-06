@@ -25,6 +25,7 @@ import {
 } from "./lib/utils";
 import { companies, productCategories } from "./lib/variables";
 import { notionCreateProduct } from "./scripts/notion";
+import { logger } from "./lib/logger";
 
 // TODO: REMOVE DUPLICATES
 
@@ -192,7 +193,7 @@ export async function main(productMainOptionsParam?: Product) {
       try {
         await notionCreateProduct(product);
       } catch (error) {
-        console.log(error);
+        logger.error(error);
         // When fails writes it to notion.json
         const notion = returnDataFile("notion");
         writeFileSync(
