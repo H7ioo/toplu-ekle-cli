@@ -57,6 +57,7 @@ export const PhoneCaseFieldsScheme = z
     "Malzeme Türü": z.enum([...PhoneCase_CaseMaterials, ""]),
     "Garanti Tipi2": z.enum([...PhoneCase_GuaranteeTypes, ""]),
     "Kılıf Tipi": z.enum([...PhoneCase_CaseTypes, ""]),
+    "Uyumlu Model2": z.enum([""]),
   })
   .merge(HepsiburadaMainOptionsFieldsScheme);
 /**

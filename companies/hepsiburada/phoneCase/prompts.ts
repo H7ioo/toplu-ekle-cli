@@ -286,6 +286,7 @@ export async function phoneCase(
             replaceEmptyOptionWithString(result.guaranteeType) ?? "",
 
           "Kılıf Tipi": replaceEmptyOptionWithString(result.caseType) ?? "",
+          "Uyumlu Model2": "",
         };
 
         FIELDS_SCHEME.parse(fields);
