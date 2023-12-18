@@ -4,6 +4,7 @@ import {
   capitalizeLetters,
   cleanUp,
   generateGTIN,
+  generateModelCodeHash,
   lengthValidator,
   removePhoneBrandRegEx,
   removeWhiteSpaces,
@@ -196,10 +197,10 @@ export async function watchBand(
         // Example: iPhone 11 Pro Uyumlu I Love Your Mom
         const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${productMainOptions.productTitle}`;
 
-        // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm
-        const productModalCode = `${
-          productMainOptions.productCode
-        }-${phoneCode}-${mm.slice(0, 2)}mm`;
+        // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm, SB-HASH-22m
+        const productModalCode = `${productMainOptions.productCode}-${
+          phoneCode.length > 20 ? generateModelCodeHash(phoneCode) : phoneCode
+        }-${mm.slice(0, 2)}mm`;
 
         const barcode = generateGTIN(companyMainOptions.trademark);
 

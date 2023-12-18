@@ -1,5 +1,5 @@
 import ExcelJS from "exceljs";
-
+import * as crypto from "crypto";
 import { checkbox, input, select } from "@inquirer/prompts";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { Question, QuestionCollection, prompt, registerPrompt } from "inquirer";
@@ -536,4 +536,19 @@ export async function editCollection() {
   }
 
   writeFileSync("./data/collections.json", JSON.stringify(editedCollection));
+}
+
+/**
+ * Used for Kordon, when text as Galaxy Watch3(45mm)/Galaxy Watch(46mm)/S3 Frontier/S3 Classic passed it spits an hash that consists between loops
+ * @param productName
+ * @returns 20 characters length hash
+ */
+export function generateModelCodeHash(productName: string): string {
+  // Use a cryptographic hash function to create a consistent hash
+  const hash = crypto.createHash("sha256").update(productName).digest("hex");
+
+  // Take the first 20 characters of the hash to get a 20-character identifier
+  const productId = hash.substring(0, 10);
+
+  return productId;
 }

@@ -11,12 +11,13 @@ export type HepsiburadaMainOptions = z.infer<
 >;
 
 export const HepsiburadaMainOptionsFieldsScheme = z.object({
-  "Ürün Adı": z.string().max(100, "En fazla 100 karakterden oluşmalıdır."),
+  "Ürün Adı": z.string().max(200, "En fazla 200 karakterden oluşmalıdır."),
   "Satıcı Stok Kodu": z
     .string()
     .max(100, "En fazla 100 karakterden oluşmalıdır."),
   Barkod: z.string(),
-  "Varyant Grup Id": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
+  // "Varyant Grup Id": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
+  "Varyant Grup Id": z.string(),
   "Ürün Açıklaması": z
     .string()
     .max(30_000, "En fazla 30.000 karakterden oluşmalıdır."),

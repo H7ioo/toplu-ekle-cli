@@ -61,17 +61,17 @@ export const WatchBand_Materials = [
  * @Field Uyumlu Marka
  */
 export const WatchBand_Brands = [
-  "Apple",
-  "Samsung",
-  "Xiaomi",
-  "Amazfit",
-  "Fitbit",
-  "Garmin",
-  "Haylou",
-  "Honor",
-  "Huawei",
-  "Oppo",
-  "Winex",
+  "Apple Uyumlu",
+  "Amazfit Uyumlu",
+  "Fitbit Uyumlu",
+  "Garmin Uyumlu",
+  "Haylou Uyumlu",
+  "Honor Uyumlu",
+  "Huawei Uyumlu",
+  "Oppo Uyumlu",
+  "Samsung Uyumlu",
+  "Winex Uyumlu",
+  "Xiaomi Uyumlu",
   "Belirtilmemiş",
 ] as const;
 /**

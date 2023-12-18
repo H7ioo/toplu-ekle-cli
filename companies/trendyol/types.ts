@@ -12,7 +12,8 @@ export type TrendyolMainOptions = z.infer<typeof TrendyolMainOptionsScheme>;
 
 export const TrendyolMainOptionsFieldsScheme = z.object({
   Barkod: z.string(),
-  "Model Kodu": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
+  // "Model Kodu": z.string().max(40, "En fazla 40 karakterden oluşmalıdır."),
+  "Model Kodu": z.string(),
   Marka: z.string(),
   "Para Birimi": z.literal("TRY"),
   "Ürün Adı": z.string().max(100, "En fazla 100 karakterden oluşmalıdır."),

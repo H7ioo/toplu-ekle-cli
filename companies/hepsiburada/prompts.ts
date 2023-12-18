@@ -21,6 +21,7 @@ import { cableProtector } from "./cableProtector/prompts";
 import { inCarPhoneHolder } from "./inCarPhoneHolder/prompts";
 import { earphone } from "./earphone/prompts";
 import { lensProtector } from "./lensProtector/prompts";
+import { screenProtector } from "./screenProtector/prompts";
 //
 export const HepsiburadaPromptsWrapper: Record<
   keyof ProductCategories["hepsiburada"],
@@ -34,7 +35,7 @@ export const HepsiburadaPromptsWrapper: Record<
     | typeof caseStand
     // | typeof watchCharm
     | typeof cableProtector
-    // | typeof screenProtector
+    | typeof screenProtector
     | typeof lensProtector
     | typeof inCarPhoneHolder
     | typeof earphone
@@ -46,7 +47,7 @@ export const HepsiburadaPromptsWrapper: Record<
   caseStand,
   // watchCharm,
   cableProtector,
-  // screenProtector,
+  screenProtector,
   lensProtector,
   inCarPhoneHolder,
   earphone,

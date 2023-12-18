@@ -4,6 +4,7 @@ import {
   capitalizeLetters,
   cleanUp,
   generateGTIN,
+  generateModelCodeHash,
   lengthValidator,
   removePhoneBrandRegEx,
   removeWhiteSpaces,
@@ -180,9 +181,9 @@ export async function watchBand(
           const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${productMainOptions.productTitle}`;
 
           // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm
-          const productModalCode = `${
-            productMainOptions.productCode
-          }-${phoneCode}-${mm.slice(0, 2)}mm`;
+          const productModalCode = `${productMainOptions.productCode}-${
+            phoneCode.length > 20 ? generateModelCodeHash(phoneCode) : phoneCode
+          }-${mm.slice(0, 2)}mm`; // HAVE TO BECAUSE ON 20 and 22 it's too long
 
           const productCodeForHepsiburada =
             `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
