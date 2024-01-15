@@ -106,10 +106,10 @@ export async function watchBand(
       message: `Saat modeli yazınız (aralarında virgül koyarak)`,
       filter: (input: string) => {
         if (!lengthValidator(input)) return [];
-        return cleanUp(input)
+        return cleanUp(input, false)
           .split(",")
           .map((phone) => {
-            return capitalizeLetters(phone);
+            return capitalizeLetters(phone, false);
           });
       },
       validate: (input) => lengthValidator(input, true),
@@ -186,9 +186,11 @@ export async function watchBand(
         // Galaxy A12 or A12 based on the input
         const phoneWithoutTheBrand = capitalizeLetters(
           cleanUp(
-            replaceTurkishI(watchBand).toLowerCase().replace(regex, ""),
+            // replaceTurkishI(watchBand).toLowerCase().replace(regex, ""),
+            replaceTurkishI(watchBand).replace(regex, ""),
             false
-          )
+          ),
+          false
         );
 
         // 11Pro, GalaxyA12, A12
@@ -236,7 +238,14 @@ export async function watchBand(
           "Uyumlu Model": replaceEmptyOptionWithString(result.model),
         };
 
-        FIELDS_SCHEME.parse(fields);
+        const fieldParseResult = FIELDS_SCHEME.safeParse(fields);
+
+        if (!fieldParseResult.success) {
+          console.error(
+            `Zod error occur but the file will be created\nTitle length: ${productTitle.length}`,
+            fieldParseResult.error
+          );
+        }
 
         products.push(fields);
       }

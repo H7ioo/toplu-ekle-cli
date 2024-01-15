@@ -245,7 +245,9 @@ export async function phoneCase(
         const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;
 
         const productCodeForHepsiburada =
-          `${productModalCode}-${removeWhiteSpaces(color)}`.toUpperCase();
+          `${productModalCode}-${removeWhiteSpaces(color)}${
+            option ? `-${option}` : ""
+          }`.toUpperCase();
 
         const barcode = generateGTIN(companyMainOptions.trademark);
 

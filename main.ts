@@ -9,13 +9,13 @@ import {
   TrendyolMainPrompts,
   TrendyolPromptsWrapper,
 } from "./companies/trendyol/prompts";
+import { logger } from "./lib/logger";
 import { productMainPrompt } from "./lib/prompts";
 import {
   ArrayOfLiterals,
   Companies,
   Product,
   ProductCategories,
-  ProductMainOptions,
 } from "./lib/types";
 import {
   configPrompt,
@@ -25,7 +25,6 @@ import {
 } from "./lib/utils";
 import { companies, productCategories } from "./lib/variables";
 import { notionCreateProduct } from "./scripts/notion";
-import { logger } from "./lib/logger";
 
 export async function mainPrompt() {
   const { companies: selectedCompanies, productCategory } = await prompt<{
@@ -89,20 +88,9 @@ export async function mainPrompt() {
 export async function main(productMainOptionsParam?: Product) {
   const { productCategory, selectedCompanies } = await mainPrompt();
 
-  let productMainOptions: Product | ProductMainOptions;
-  let productExists: boolean;
-
-  if (productMainOptionsParam) {
-    productMainOptions = productMainOptionsParam;
-    productExists = true;
-  } else {
-    const {
-      productMainOptions: productMainOptionsP,
-      productExists: productExistsP,
-    } = await productMainPrompt();
-    productMainOptions = productMainOptionsP;
-    productExists = productExistsP;
-  }
+  const { productMainOptions, productExists } = await productMainPrompt(
+    productMainOptionsParam
+  );
 
   const configData = await configPrompt();
 

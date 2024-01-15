@@ -753,8 +753,8 @@
  * @Field Uyumlu Marka
  */
 export const LensProtector_PhoneBrands = [
-  "Apple",
-  "Samsung",
-  "Xiaomi",
+  "Apple Uyumlu",
+  "Samsung Uyumlu",
+  "Xiaomi Uyumlu",
   "Belirtilmemiş",
 ] as const;

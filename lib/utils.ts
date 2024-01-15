@@ -66,9 +66,15 @@ export function lengthValidator<T extends string | T[]>(
  * @param text The text.
  * @returns Capitalized text.
  */
-export function capitalizeLetters(text: string) {
+export function capitalizeLetters(text: string, toLowerCase = true) {
+  if (toLowerCase)
+    return text
+      .toLowerCase()
+      .trim()
+      .split(" ")
+      .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+      .join(" ");
   return text
-    .toLowerCase()
     .trim()
     .split(" ")
     .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)

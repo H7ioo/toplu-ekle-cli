@@ -6,11 +6,17 @@ import {
   numberPromptConfig,
   returnDataFile,
 } from "../lib/utils";
-import { ProductMainOptions, ProductMainOptionsScheme } from "../lib/types";
+import {
+  Product,
+  ProductMainOptions,
+  ProductMainOptionsScheme,
+} from "../lib/types";
 import { notionCheckProduct } from "../scripts/notion";
 
-export async function productMainPrompt() {
+export async function productMainPrompt(productMainOptionsParam?: Product) {
+  const productMainOptionsExists = !!productMainOptionsParam;
   let productExists = false;
+
   const mainCollection: QuestionCollection<ProductMainOptions> = [
     {
       type: "input",
@@ -21,6 +27,7 @@ export async function productMainPrompt() {
       },
       validate: (input) => lengthValidator(input, true),
       suffix: ":",
+      when: !productMainOptionsExists,
     },
     {
       type: "input",
@@ -51,18 +58,23 @@ export async function productMainPrompt() {
         return lengthValidator(input, true);
       },
       suffix: ":",
+      when: !productMainOptionsExists,
     },
     {
       name: "price",
       message: "Satış fiyatı yazınız (.)",
       ...numberPromptConfig(true),
       suffix: ":",
+      default: productMainOptionsExists
+        ? productMainOptionsParam?.price
+        : undefined,
     },
     {
       name: "stockAmount",
       message: "Stock adedi yazınız",
       ...numberPromptConfig(true),
       suffix: ":",
+      when: !productMainOptionsExists,
     },
     {
       type: "input",
@@ -70,12 +82,19 @@ export async function productMainPrompt() {
       message: "Ürün açıklaması yazınız",
       validate: (input) => lengthValidator(input, true),
       suffix: ":",
+      when: !productMainOptionsExists,
     },
   ];
 
-  const result = await prompt(mainCollection);
+  const result = {
+    ...productMainOptionsParam,
+    ...(await prompt(mainCollection)),
+  };
 
   ProductMainOptionsScheme.parse(result);
 
-  return { productMainOptions: result, productExists };
+  return {
+    productMainOptions: result,
+    productExists: productMainOptionsExists,
+  };
 }
