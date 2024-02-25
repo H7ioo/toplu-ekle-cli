@@ -1,5 +1,10 @@
-import { EMPTY_OPTION } from "../../../lib/variables";
-
+import { readFileSync } from "fs";
+import {
+  EMPTY_OPTION,
+  dataFiles,
+  dataFilesInitialValue,
+} from "../../../lib/variables";
+import { logger } from "../../../lib/logger";
 /**
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf
  * @Category 766
@@ -7,7 +12,7 @@ import { EMPTY_OPTION } from "../../../lib/variables";
  * @Optional
  */
 
-export const PhoneCase_PhonesList = [
+export const Self_PhoneCase_PhonesList = [
   "A5s",
   "A7x",
   "Alcatel 1 2022",
@@ -992,6 +997,41 @@ export const PhoneCase_PhonesList = [
   "İnfinix Note 11 Pro",
   "İnfinix Note 30",
 ] as const;
+
+// TODO: For some reason I'm getting error when I'm calling this function from utils. So I'll rewrite it here till I find a solution.
+
+function returnDataFile<TDataFiles extends (typeof dataFiles)[number]>(
+  file: TDataFiles
+) {
+  try {
+    const fileString = readFileSync(`./data/${file}.json`, "utf8");
+    return JSON.parse(fileString) as (typeof dataFilesInitialValue)[TDataFiles];
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message, error);
+      throw new Error(error.message);
+    } else {
+      throw new Error(`${error}`);
+    }
+  }
+}
+
+/**
+ * This function gets the fetched data from the JSON file, if it fails it returns the default Self one
+ * @returns Array of phones list
+ */
+
+const JSON_PhoneCase_PhonesList = () => {
+  try {
+    const list = returnDataFile("trendyol/PhoneCase_PhonesList");
+    if (!list || !list.length) return Self_PhoneCase_PhonesList;
+    return list;
+  } catch (error) {
+    return Self_PhoneCase_PhonesList;
+  }
+};
+
+export const PhoneCase_PhonesList = JSON_PhoneCase_PhonesList();
 
 /**
  * @CategoryName Kapak & Kılıf Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Kapak & Kılıf

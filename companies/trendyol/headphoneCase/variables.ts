@@ -6,6 +6,7 @@ import { EMPTY_OPTION } from "../../../lib/variables";
  * @Field Garanti Süresi
  */
 export const HeadphoneCase_GuaranteePeriods = [
+  "Belirtilmemiş",
   "1 Yıl",
   "2 Yıl",
   "3 Yıl",
@@ -15,7 +16,6 @@ export const HeadphoneCase_GuaranteePeriods = [
   "6 Ay",
   "6 Yıl",
   "7 Yıl",
-  "Belirtilmemiş",
 ] as const;
 
 /**

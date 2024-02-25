@@ -30,7 +30,7 @@ import {
   PhoneCase_PhonesListExtend,
 } from "./variables";
 
-const CATEGORY_ID = 766 as const;
+export const CATEGORY_ID = 766 as const;
 const CATEGORY_NAME: keyof (typeof sheetNames)["trendyol"] =
   "phoneCase" as const;
 type OPTIONS_TYPE = PhoneCaseOptions;

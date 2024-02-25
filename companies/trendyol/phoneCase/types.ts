@@ -36,7 +36,7 @@ export const PhoneCaseOptionsScheme = z
 export type PhoneCaseOptions = z.infer<typeof PhoneCaseOptionsScheme>;
 
 export const PhoneCaseFieldsScheme = z
-
+  // TODO: ALLOW STRING BECAUSE THE NEW LIST MIGHT FAIL IF THE PHONE NAME DOES'T MATCH
   .object({
     Kategori: z.literal(766),
     Renk: z.string(),

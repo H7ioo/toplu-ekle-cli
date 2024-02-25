@@ -325,7 +325,7 @@ export const HeadphoneCase_Colors = [
  * @CategoryName Telefon > Cep Telefonu Aksesuarları > Bluetooth Kulaklık Aksesuarları
  * @Field Kulaklık Aksesuarı Türü
  */
-export const HeadphoneCase_HeadphoneAccessoryType = ["Askı", "Kılıf"] as const;
+export const HeadphoneCase_HeadphoneAccessoryType = ["Kılıf", "Askı"] as const;
 
 /**
  * @Selfmade

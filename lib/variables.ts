@@ -6,10 +6,11 @@ import {
   Config,
   ConfigOptions,
   Defaults,
-  ProductCategories,
   Product,
+  ProductCategories,
   Project,
 } from "./types";
+import { Self_PhoneCase_PhonesList } from "../companies/trendyol/phoneCase/variables";
 export const companies = ["trendyol", "hepsiburada"] as const;
 export const KDV = [0, 1, 10, 20] as const;
 export const EMPTY_OPTION = "Bu alanı boş bırakmak istiyorum";
@@ -130,6 +131,9 @@ export const projectDefaultValues: Project = {
 export const productsDefaultValues: Product[] = [];
 export const notionDefaultValues: Product[] = [];
 
+export const trendyolPhoneModelsDefaultValues =
+  [] as unknown as typeof Self_PhoneCase_PhonesList;
+
 export const dataFiles = [
   "collections",
   "config",
@@ -137,6 +141,7 @@ export const dataFiles = [
   "project",
   "products",
   "notion",
+  "trendyol/PhoneCase_PhonesList",
 ] as const;
 
 // Define a helper type to get default values based on the key
@@ -154,6 +159,8 @@ type DefaultValues<
   ? Product[]
   : Key extends "notion"
   ? Product[]
+  : Key extends "trendyol/PhoneCase_PhonesList"
+  ? typeof Self_PhoneCase_PhonesList
   : never;
 
 // Create the object with inferred keys and default values
@@ -166,6 +173,7 @@ export const dataFilesInitialValue: {
   project: projectDefaultValues,
   products: productsDefaultValues,
   notion: notionDefaultValues,
+  "trendyol/PhoneCase_PhonesList": trendyolPhoneModelsDefaultValues,
 };
 
 export const databases = ["Notion", "JSON"] as const;

@@ -11,7 +11,8 @@
     "config": "npm run setup && ts-node ./scripts/config.ts",
     "collections": "npm run setup && ts-node ./scripts/collections.ts",
     "defaults": "npm run setup && ts-node ./scripts/defaults.ts",
-    "fix": "npm run setup && ts-node ./scripts/fixDataFiles.ts"
+    "fix": "npm run setup && ts-node ./scripts/fixDataFiles.ts",
+    "t.fetch.PhoneCase": "npm run setup && ts-node scripts/trendyol/fetch/PhoneCase_PhonesList.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "@inquirer/prompts": "^3.0.4",
     "@notionhq/client": "^2.2.13",
     "@types/node": "^20.6.0",
+    "axios": "^1.6.7",
     "dotenv": "^16.3.1",
     "eslint-config-prettier": "^9.0.0",
     "exceljs": "^4.3.0",

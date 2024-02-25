@@ -558,3 +558,59 @@ export function generateModelCodeHash(productName: string): string {
 
   return productId;
 }
+
+/**
+ * Used to call Trendyol or Hepsiburada's APIs
+ * @param username
+ * @param password
+ * @returns base 64 auth token
+ */
+export function generateAuthToken(username: string, password: string) {
+  const authToken = Buffer.from(username + ":" + password).toString("base64");
+  return authToken;
+}
+
+// TODO: Better sorting algorithm
+/**
+ * Sorts phone models list so iPhone models are sorted by number then pro then pro max
+ * Passed to the sort function
+ * @example const sortedArray = array.sort(phoneModelsSort);
+ * @param a
+ * @param b
+ * @returns sorted number to compare (array)
+ */
+export function phoneModelsSort(
+  a: string | undefined,
+  b: string | undefined
+): number {
+  if (a?.includes("iPhone") && b?.includes("iPhone")) {
+    const regex = /iPhone (\d+)( Pro)?( Max)?/;
+    const aMatch = a?.match(regex) || [];
+    const bMatch = b?.match(regex) || [];
+
+    const aNumber = parseInt(aMatch[1]!) || 0;
+    const bNumber = parseInt(bMatch[1]!) || 0;
+
+    if (aMatch[2] && !bMatch[2]) {
+      return 1;
+    } else if (!aMatch[2] && bMatch[2]) {
+      return -1;
+    }
+
+    if (aMatch[3] && !bMatch[3]) {
+      return 1;
+    } else if (!aMatch[3] && bMatch[3]) {
+      return -1;
+    }
+
+    if (aNumber !== bNumber) {
+      return aNumber - bNumber;
+    }
+
+    return 0;
+  } else {
+    // Standard sorting
+    // TODO:
+    return a!.localeCompare(b!);
+  }
+}
