@@ -9,7 +9,8 @@ export const LensProtectorOptionsScheme = z
   .object({
     colors: z.array(z.string()),
     phonesList: z.array(
-      z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
+      // z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
+      z.string()
     ),
     customPhonesList: z.array(z.string()),
     phoneBrand: z.enum(LensProtector_PhoneBrands),

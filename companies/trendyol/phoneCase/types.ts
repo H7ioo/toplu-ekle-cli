@@ -16,7 +16,8 @@ export const PhoneCaseOptionsScheme = z
     caseType: z.enum(PhoneCase_CaseTypes).optional(),
     phonesCollection: z.array(z.string()).optional(),
     phonesList: z.array(
-      z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
+      // z.enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend])
+      z.string()
     ),
     customPhonesList: z.array(z.string()),
     guaranteeType: z.enum(PhoneCase_GuaranteeTypes).optional(),
@@ -36,17 +37,14 @@ export const PhoneCaseOptionsScheme = z
 export type PhoneCaseOptions = z.infer<typeof PhoneCaseOptionsScheme>;
 
 export const PhoneCaseFieldsScheme = z
-  // TODO: ALLOW STRING BECAUSE THE NEW LIST MIGHT FAIL IF THE PHONE NAME DOES'T MATCH
   .object({
     Kategori: z.literal(766),
     Renk: z.string(),
     Materyal: z.enum([...PhoneCase_CaseMaterials, ""]),
     Model: z.enum([...PhoneCase_CaseTypes, ""]),
-    "Cep Telefonu Modeli": z.enum([
-      ...PhoneCase_PhonesList,
-      ...PhoneCase_PhonesListExtend,
-      "",
-    ]),
+    "Cep Telefonu Modeli": z.string(),
+    // .enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend, ""])
+    // .or(z.string()),
     "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),
     "Garanti Süresi": z.enum([...PhoneCase_GuaranteePeriods, ""]),
     "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands, ""]),
