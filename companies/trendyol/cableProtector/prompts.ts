@@ -86,6 +86,13 @@ export async function cableProtector(
       choices: CableProtector_ProdcutTypes,
       suffix: TRENDYOL_SUFFIX,
     },
+    {
+      type: "confirm",
+      name: "includeOptionInTitle",
+      message: "Renk ürünün başlığında yer alsın mı?",
+      default: false,
+      suffix: TRENDYOL_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -105,7 +112,9 @@ export async function cableProtector(
       result.productType === "Adaptör ve Kablo Koruyucu Set"
         ? "Şarj Adaptörü"
         : ""
-    } ile Uyumlu ${productMainOptions.productTitle}`;
+    } ile Uyumlu ${result.includeOptionInTitle ? `${color} ` : ""}${
+      productMainOptions.productTitle
+    }`;
 
     // Example: SB-Apple
     const productModalCode = `${productMainOptions.productCode}-${phoneCode}`;

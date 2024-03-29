@@ -12,6 +12,7 @@ export const CableProtectorOptionsScheme = z.object({
   guaranteePeriod: z.enum(CableProtector_GuaranteePeriods),
   productType: z.enum(CableProtector_ProdcutTypes),
   productKnownBrandName: z.string(),
+  includeOptionInTitle: z.boolean(),
 });
 /**
  * @CategoryName Kablo Aksesuarları Elektronik > Elektronik Aksesuarlar > Cep Telefonu Aksesuarları > Şarj Kabloları > Kablo Aksesuarları
