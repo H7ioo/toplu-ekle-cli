@@ -144,6 +144,13 @@ export async function watchBand(
       choices: WatchBand_Models,
       suffix: TRENDYOL_SUFFIX,
     },
+    {
+      type: "confirm",
+      name: "includeOptionInTitle",
+      message: "Renk ürünün başlığında yer alsın mı?",
+      default: false,
+      suffix: TRENDYOL_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -197,7 +204,11 @@ export async function watchBand(
         const phoneCode = removeWhiteSpaces(phoneWithoutTheBrand);
 
         // Example: iPhone 11 Pro Uyumlu I Love Your Mom
-        const productTitle = `${result.productKnownBrandName} ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${productMainOptions.productTitle}`;
+        const productTitle = `${
+          result.productKnownBrandName
+        } ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${
+          result.includeOptionInTitle ? `${color} ` : ""
+        }${productMainOptions.productTitle}`;
 
         // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm, SB-HASH-22m
         const productModalCode = `${productMainOptions.productCode}-${

@@ -21,6 +21,7 @@ export const WatchBandOptionsScheme = z
     watchBandBrand: z.enum(WatchBand_Brands),
     model: z.enum(WatchBand_Models),
     productKnownBrandName: z.string(),
+    includeOptionInTitle: z.boolean(),
   })
   .refine(({ watchBandSizesList, customWatchBandSizesList }) => {
     if (!watchBandSizesList && !customWatchBandSizesList) return false;
