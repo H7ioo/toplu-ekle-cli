@@ -251,7 +251,9 @@ export async function writeToExcel<
     trademark.replace(/\s+/gi, "-").split("-")[0]
   }-${caseBrand}-${mainModalCode}-${nanoId}.xlsx`;
 
-  const outFilePath = `${homedir()}\\${outPath}\\${fileName}`;
+  // TODO: edit config to not rely on homedir.
+  // const outFilePath = `${homedir()}\\${outPath}\\${fileName}`;
+  const outFilePath = path.join(outPath, fileName);
 
   // Save workbook
   await workbook.xlsx.writeFile(outFilePath);

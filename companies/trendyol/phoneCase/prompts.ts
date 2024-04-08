@@ -149,13 +149,13 @@ export async function phoneCase(
       choices: PhoneCase_CaseTypes,
       suffix: TRENDYOL_SUFFIX,
     },
-    {
-      type: "search-list",
-      name: "guaranteePeriod",
-      message: "Garanti süresi seçiniz",
-      choices: PhoneCase_GuaranteePeriods,
-      suffix: TRENDYOL_SUFFIX,
-    },
+    // {
+    //   type: "search-list",
+    //   name: "guaranteePeriod",
+    //   message: "Garanti süresi seçiniz",
+    //   choices: PhoneCase_GuaranteePeriods,
+    //   suffix: TRENDYOL_SUFFIX,
+    // },
     {
       type: "search-list",
       name: "phoneBrand",
@@ -241,10 +241,10 @@ export async function phoneCase(
         "Cep Telefonu Modeli": PhoneCase_PhonesList.includes(phone)
           ? phone
           : "",
-        "Garanti Tipi":
-          replaceEmptyOptionWithString(result.guaranteeType) ?? "",
-        "Garanti Süresi":
-          replaceEmptyOptionWithString(result.guaranteePeriod) ?? "",
+        // "Garanti Tipi":
+        // replaceEmptyOptionWithString(result.guaranteeType) ?? "",
+        // "Garanti Süresi":
+        // replaceEmptyOptionWithString(result.guaranteePeriod) ?? "",
         "Uyumlu Marka": replaceEmptyOptionWithString(result.phoneBrand) ?? "",
       };
 

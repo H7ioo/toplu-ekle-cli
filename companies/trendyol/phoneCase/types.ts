@@ -20,8 +20,8 @@ export const PhoneCaseOptionsScheme = z
       z.string()
     ),
     customPhonesList: z.array(z.string()),
-    guaranteeType: z.enum(PhoneCase_GuaranteeTypes).optional(),
-    guaranteePeriod: z.enum(PhoneCase_GuaranteePeriods).optional(),
+    // guaranteeType: z.enum(PhoneCase_GuaranteeTypes).optional(),
+    // guaranteePeriod: z.enum(PhoneCase_GuaranteePeriods).optional(),
     phoneBrand: z.enum(PhoneCase_PhoneBrands).optional(),
     productKnownBrandName: z.string(),
     includeOptionInTitle: z.boolean(),
@@ -45,8 +45,8 @@ export const PhoneCaseFieldsScheme = z
     "Cep Telefonu Modeli": z.string(),
     // .enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend, ""])
     // .or(z.string()),
-    "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),
-    "Garanti Süresi": z.enum([...PhoneCase_GuaranteePeriods, ""]),
+    // "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),
+    // "Garanti Süresi": z.enum([...PhoneCase_GuaranteePeriods, ""]),
     "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands, ""]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
