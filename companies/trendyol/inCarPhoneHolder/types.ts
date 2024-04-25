@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   InCarPhoneHolder_GuaranteePeriods,
+  InCarPhoneHolder_Material,
   InCarPhoneHolder_StandProperties,
   InCarPhoneHolder_Type,
 } from "./variables";
@@ -10,6 +11,7 @@ export const InCarPhoneHolderOptionsScheme = z.object({
   standProperty: z.enum(InCarPhoneHolder_StandProperties).optional(),
   guaranteePeriod: z.enum(InCarPhoneHolder_GuaranteePeriods),
   standType: z.enum(InCarPhoneHolder_Type).optional(),
+  material: z.enum(InCarPhoneHolder_Material).optional(),
 });
 
 /**
@@ -31,6 +33,7 @@ export const InCarPhoneHolderFieldsScheme = z
     Renk: z.string(),
     "Garanti Süresi": z.enum([...InCarPhoneHolder_GuaranteePeriods]),
     Türü: z.enum([...InCarPhoneHolder_Type, ""]),
+    Materyal: z.enum([...InCarPhoneHolder_Material, ""]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
 /**

@@ -19,6 +19,7 @@ import {
 } from "./types";
 import {
   InCarPhoneHolder_GuaranteePeriods,
+  InCarPhoneHolder_Material,
   InCarPhoneHolder_StandProperties,
   InCarPhoneHolder_Type,
 } from "./variables";
@@ -71,6 +72,13 @@ export async function inCarPhoneHolder(
       choices: InCarPhoneHolder_Type,
       suffix: TRENDYOL_SUFFIX,
     },
+    {
+      type: "search-list",
+      name: "material",
+      message: "Materyal seçiniz",
+      choices: InCarPhoneHolder_Material,
+      suffix: TRENDYOL_SUFFIX,
+    },
   ];
   const result = await prompt<OPTIONS_TYPE>(promptQuestions);
 
@@ -110,6 +118,7 @@ export async function inCarPhoneHolder(
       Renk: color,
       "Garanti Süresi": result.guaranteePeriod,
       Türü: replaceEmptyOptionWithString(result.standType) ?? "",
+      Materyal: replaceEmptyOptionWithString(result.material) ?? "",
     };
 
     FIELDS_SCHEME.parse(fields);
