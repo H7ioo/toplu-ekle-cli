@@ -152,6 +152,10 @@ export async function headphoneCase(
           false
         )
       );
+      // MainModalCode = XYKK, StockCode = ABCD
+      let [mainModelCode, productCode] =
+        productMainOptions.productCode.split("-");
+      if (!productCode) productCode = mainModelCode;
 
       // 11Pro, GalaxyA12, A12
       const headphoneCode = removeWhiteSpaces(headPhoneWithoutTheBrand);
@@ -165,7 +169,8 @@ export async function headphoneCase(
       }${productMainOptions.productTitle}`.replace("Airpods", "Arpds");
 
       // Example: SB-11Pro
-      const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
+      // const productModalCode = `${productMainOptions.productCode}-${headphoneCode}`;
+      const productModalCode = `${mainModelCode}-${headphoneCode}`;
 
       const barcode = generateGTIN(companyMainOptions.trademark);
 
@@ -179,7 +184,7 @@ export async function headphoneCase(
           productDescription: productMainOptions.productDescription,
           marketPrice: companyMainOptions.marketPrice,
           price: productMainOptions.price,
-          productCode: productMainOptions.productCode,
+          productCode: productCode!,
           shipmentTime: companyMainOptions.shipmentTime,
           shipmentType: companyMainOptions.shipmentType,
           stockAmount: productMainOptions.stockAmount,
