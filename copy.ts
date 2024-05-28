@@ -32,13 +32,31 @@ export async function copy() {
     await main(products.find((p) => p.id === productId));
   } else if (project.database === "Notion") {
     try {
-      const { products } = await notionGetProducts({});
+
+      const { products, hasMore, nextCursor } = await notionGetProducts({});
       if (!products.length) {
         console.log("Ürün bulunmadı!");
         return;
       }
+      const allProducts = products;
+      let hasMoreProducts = hasMore;
+      let nextCursorProduct = nextCursor;
+      while (hasMoreProducts) {
+        const { products, nextCursor } = await notionGetProducts({
+          nextCursor: nextCursorProduct
+        });
+        if (!products.length) {
+          hasMoreProducts = false;
+          continue
+        }
+        nextCursorProduct = nextCursor;
+        allProducts.push(...products);
+        if (nextCursor === null) {
+          hasMoreProducts = false;
+          continue;
+        }
+      }
 
-      // TODO: Pagination
       const productId = await prompt<{ product: string }>([
         {
           name: "product",
