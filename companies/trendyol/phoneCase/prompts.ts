@@ -240,12 +240,9 @@ export async function phoneCase(
         Model: replaceEmptyOptionWithString(result.caseType) ?? "",
         "Cep Telefonu Modeli": PhoneCase_PhonesList.includes(phone)
           ? phone
-          : "",
-        // "Garanti Tipi":
-        // replaceEmptyOptionWithString(result.guaranteeType) ?? "",
-        // "Garanti Süresi":
-        // replaceEmptyOptionWithString(result.guaranteePeriod) ?? "",
-        "Uyumlu Marka": replaceEmptyOptionWithString(result.phoneBrand) ?? "",
+          : "", // This shouldn't be empty
+        "Uyumlu Marka":
+          replaceEmptyOptionWithString(result.phoneBrand) || "Belirtilmemiş",
       };
 
       FIELDS_SCHEME.parse(fields);

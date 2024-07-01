@@ -88,16 +88,16 @@ export async function watchBand(
             return capitalizeLetters(phone);
           });
       },
-      validate: (input, answers) => {
-        if (answers?.watchBandSizesList) {
-          if (answers.watchBandSizesList.length <= 0 && input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
-        } else {
-          if (input.length <= 0)
-            return "Toplam en az 1 telefom modlei eklenmeli";
-        }
-        return true;
-      },
+      // validate: (input, answers) => {
+      //   if (answers?.watchBandSizesList) {
+      //     if (answers.watchBandSizesList.length <= 0 && input.length <= 0)
+      //       return "Toplam en az 1 MM yazılmalı";
+      //   } else {
+      //     if (input.length <= 0)
+      //       return "Toplam en az 1 MM yazılmalı";
+      //   }
+      //   return true;
+      // },
       suffix: TRENDYOL_SUFFIX,
     },
     {
@@ -171,20 +171,26 @@ export async function watchBand(
       const watchBand = result.customWatchBandList[w]!;
 
       // # Sizes Loop
-      for (
-        let p = 0;
-        p <
-        [...result.watchBandSizesList, ...result.customWatchBandSizesList]
-          .length;
-        p++
-      ) {
+      // TODO: Fix this stupid workaround
+      const mmExist = !(
+        !result.watchBandSizesList.length &&
+        !result.customWatchBandSizesList.length
+      );
+      const sizes = mmExist
+        ? [...result.watchBandSizesList, ...result.customWatchBandSizesList]
+            .length
+        : 1;
+
+      for (let p = 0; p < sizes; p++) {
         const watchBandSize = [
           ...result.watchBandSizesList,
           ...result.customWatchBandSizesList,
         ][p]!;
 
         // 42, 41, 38-40-41
-        const mm = removeWhiteSpaces(watchBandSize).replace(/m/gi, "");
+        const mm = mmExist
+          ? removeWhiteSpaces(watchBandSize).replace(/m/gi, "")
+          : "";
 
         const watchBandMm = [
           ...result.watchBandSizesList,
@@ -206,14 +212,14 @@ export async function watchBand(
         // Example: iPhone 11 Pro Uyumlu I Love Your Mom
         const productTitle = `${
           result.productKnownBrandName
-        } ${phoneWithoutTheBrand} (${mm} mm) Uyumlu ${
+        } ${phoneWithoutTheBrand} ${mmExist ? `(${mm} mm) ` : ""}Uyumlu ${
           result.includeOptionInTitle ? `${color} ` : ""
         }${productMainOptions.productTitle}`;
 
         // Example: SB-Watch1-42mm, SB-1-42mm, SB-1-2-3-4-42mm, SB-HASH-22m
         const productModalCode = `${productMainOptions.productCode}-${
           phoneCode.length > 20 ? generateModelCodeHash(phoneCode) : phoneCode
-        }-${mm.slice(0, 2)}mm`;
+        }${mmExist ? `-${mm.slice(0, 2)}mm` : ""}`;
 
         const barcode = generateGTIN(companyMainOptions.trademark);
 

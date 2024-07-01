@@ -12,7 +12,7 @@ export const WatchBandOptionsScheme = z
   .object({
     colors: z.array(z.string()),
     watchBandSizesList: z.array(
-      z.enum([...WatchBand_Sizes, ...WatchBand_CustomSizes])
+      z.enum([...WatchBand_Sizes, ...WatchBand_CustomSizes, ""])
     ),
     customWatchBandSizesList: z.array(z.string()),
     customWatchBandList: z.array(z.string()),

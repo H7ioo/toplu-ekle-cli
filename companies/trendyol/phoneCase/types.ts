@@ -2,11 +2,7 @@ import { z } from "zod";
 import {
   PhoneCase_CaseMaterials,
   PhoneCase_CaseTypes,
-  PhoneCase_GuaranteePeriods,
-  PhoneCase_GuaranteeTypes,
   PhoneCase_PhoneBrands,
-  PhoneCase_PhonesListExtend,
-  PhoneCase_PhonesList,
 } from "./variables";
 import { TrendyolMainOptionsFieldsScheme } from "../types";
 export const PhoneCaseOptionsScheme = z
@@ -45,9 +41,7 @@ export const PhoneCaseFieldsScheme = z
     "Cep Telefonu Modeli": z.string(),
     // .enum([...PhoneCase_PhonesList, ...PhoneCase_PhonesListExtend, ""])
     // .or(z.string()),
-    // "Garanti Tipi": z.enum([...PhoneCase_GuaranteeTypes, ""]),
-    // "Garanti Süresi": z.enum([...PhoneCase_GuaranteePeriods, ""]),
-    "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands, ""]),
+    "Uyumlu Marka": z.enum([...PhoneCase_PhoneBrands]),
   })
   .merge(TrendyolMainOptionsFieldsScheme);
 /**
